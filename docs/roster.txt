@@ -4,5 +4,3 @@ Martinez, Francisco - Meeting times: Tues and Thurs before 2PM; Friday, Saturday
 Nguyen, Dan - Meeting times, all day any day except Tues/Thurs 8am to 10am
 Willis, Scott - Meeting times, Mon, Wed - before noon, after class Tues, Thurs, - Before noon, after 2
 Yang, David - Professor for CS4310
-
-Editing done via eclipse SDK to be deleted later
