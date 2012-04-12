@@ -1,1 +1,6 @@
 Abriam, Andrew - UserInput.class
+Chaudhry, Sidra - Display.class
+Martinez, Francisco - Map.class Unit.class
+Nguyen, Dan - Actions.class
+Willis, Scott - Main.class Player.class
+
