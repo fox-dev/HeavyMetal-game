@@ -44,7 +44,22 @@ public class Input {
 			System.out.println("Please enter your first command (Unit Coordinates, Cancel, or Do nothing)");
 			this.firstCommand = in.readLine();
 			System.out.println(firstCommand);
-			
+			if(!(firstCommand.equalsIgnoreCase("Unit Coordinates") || firstCommand.equalsIgnoreCase("Cancel") || firstCommand.equalsIgnoreCase("Do nothing"))){
+				System.out.print("Your first command was not a valid input. ");
+				inputFirstCommand();
+			}
+			else if(firstCommand.equalsIgnoreCase("Unit Coordinates")){ //Not fully implemented yet
+				System.out.println("Checking unit location...");
+				if(thePlayer.getUnitAt(0, 0) == null){
+					System.out.println(thePlayer.getUnit(0).getLocationY());
+					System.out.print("You entered invalid coordinates. ");
+					inputFirstCommand();
+				}
+				else{
+					System.out.println("Unit Coordinates are valid.");
+				}
+			}
+	
 		}catch(Exception e){//catch any exception if any
 			System.err.println("Error: " + e.getMessage());
 		}
@@ -56,7 +71,7 @@ public class Input {
 		try{
 			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 			
-			System.out.println("Please enter your second command (Coordinates of a locaiton to move the selected unit to.)");
+			System.out.println("Please enter your second command (Coordinates of a location to move the selected unit to.)");
 			this.secondCommand = in.readLine();
 			System.out.println(secondCommand);
 			
@@ -74,11 +89,29 @@ public class Input {
 			
 			System.out.println("Please enter your third command (Attack, Do nothing, Cancel)");
 			this.thirdCommand = in.readLine();
+			while(!(thirdCommand.equalsIgnoreCase("Attack") || thirdCommand.equalsIgnoreCase("Do nothing") || thirdCommand.equalsIgnoreCase("cancel"))){
+				this.thirdCommand = in.readLine();
+			}
 			System.out.println(thirdCommand);
 			
 		}catch(Exception e){//catch any exception if any
 			System.err.println("Error: " + e.getMessage());
 		}
+	}
+	
+	//get function for firstCommand string
+	public String getFirstCommand(){
+		return firstCommand;
+	}
+	
+	//get function for secondCommand string
+	public String getSecondCommand(){
+		return secondCommand;
+	}
+		
+	//get function for thirdCommand string
+	public String getThirdCommand(){
+		return thirdCommand;
 	}
 }
 
