@@ -1,59 +1,73 @@
+// UnitAir.java
+// Implements Unit.java
+//
+// A generic air unit will have the following:
+// HP = 3
+// NUMBER OF MOVES = 4
+// ATTACK POWER = 1
+// SPAWN AT LOCATION (0,0)
+//
+// Specific constructor = (HP, Number of Moves, ATK, locX, locY) 
+//
+// Ground units can have specified attributes by inputting HP, number of moves, attack,
+//	and its location
+//
+// Will add new things as project goes on
+
 package project;
 
-public class UnitAir implements Unit{
+public class UnitAir implements Unit {
 
-	@Override
+	private int HP;
+	private int numMoves;
+	private int attack;
+	private int locX;
+	private int locY;
+	private boolean moved = false;
+	
+	public UnitAir() {
+		HP = 3;
+		numMoves = 4;
+		attack = 1;
+		locX = 0;
+		locY = 0;
+	}
+	
+	public UnitAir(int setHP, int setNumMoves, int ATK, int locationX, int locationY) {
+		HP = setHP;
+		numMoves = setNumMoves;
+		attack = ATK;
+		locX = locationX;
+		locY = locationY;
+	}
 	public int getMoves() {
-		// TODO Auto-generated method stub
-		return 0;
+		return numMoves;
 	}
-
-	@Override
 	public int getHP() {
-		// TODO Auto-generated method stub
-		return 0;
+		return HP;
 	}
-
-	@Override
-	public void setHP(int hp) {
-		// TODO Auto-generated method stub
-		
+	public void setHP(int setHP) {
+		HP = setHP;
 	}
-
-	@Override
-	public boolean moved() {
-		// TODO Auto-generated method stub
-		return false;
+	public void moved() {
+		moved = true;
 	}
-
-	@Override
+	public boolean hasMoved() {
+		return moved;
+	}
 	public int getAttack() {
-		// TODO Auto-generated method stub
-		return 0;
+		return attack;
 	}
-
-	@Override
 	public void setLocationX(int x) {
-		// TODO Auto-generated method stub
-		
+		locX = x;
 	}
-
-	@Override
 	public void setLocationY(int y) {
-		// TODO Auto-generated method stub
-		
+		locY = y;
 	}
-
-	@Override
 	public int getLocationX() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
+		return locX;
+	}	
 	public int getLocationY() {
-		// TODO Auto-generated method stub
-		return 0;
+		return locY;
 	}
-
 }
