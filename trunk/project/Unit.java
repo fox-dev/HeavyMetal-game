@@ -6,7 +6,8 @@ public interface Unit {
 	public int getMoves();
 	public int getHP();
 	public void setHP(int hp);
-	public boolean moved();
+	public void moved();
+	public boolean hasMoved();
 	public int getAttack();
 	public void setLocationX(int x);
 	public void setLocationY(int y);
