@@ -12,9 +12,6 @@
 
 package project;
 
-import project.Input;
-import project.Player;
-
 public class Actions {
 	
 	Player player1, player2;
