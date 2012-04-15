@@ -1,4 +1,19 @@
+/** Program Name: Actions.java
+ *  Name: Dan Q. Nguyen
+ *  Professor: Yang, David
+ *  Class: CS4310
+ *  Description:  
+ *  Date Start: April 7, 2012
+ *  Date Last Modified: mmddyy/time
+ *  	-n/a
+ *  Modification List: mmddyy/time
+ *  	-n/a
+*/
+
 package project;
+
+import project.Input;
+import project.Player;
 
 public class Actions {
 	
@@ -17,5 +32,6 @@ public class Actions {
 		player2 = play2;
 		input = inp;
 	}
+	
 	
 }
