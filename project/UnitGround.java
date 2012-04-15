@@ -1,18 +1,19 @@
-// UnitGround.java
-// Implements Unit.java
-//
-// A generic ground unit will have the following:
-// HP = 4
-// NUMBER OF MOVES = 2
-// ATTACK POWER = 2
-// SPAWN AT LOCATION (0,0)
-//
-// Specific constructor = (HP, Number of Moves, ATK, locX, locY) 
-//
-// Ground units can have specified attributes by inputting HP, number of moves, attack,
-//	and its location
-//
-// Will add new things as project goes on
+/* UnitGround.java
+ * Implements Unit.java
+ * 
+ * A generic ground unit will have the following:
+ *  HP = 4
+ *  NUMBER OF MOVES = 2
+ *  ATTACK POWER = 2
+ *  SPAWN AT LOCATION (0,0)
+ *  
+ * Specific constructor = (HP, Number of Moves, ATK, locX, locY) 
+ *  
+ * Ground units can have specified attributes by inputting HP, number of moves, attack,
+ * and its location
+ *  
+ * Will add new things as project goes on
+ */
 
 package project;
 

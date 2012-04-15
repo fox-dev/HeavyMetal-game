@@ -1,8 +1,23 @@
+ /* Unit.java
+  * An interface for all units
+  * 
+  * A rundown of the functions:
+  *		getMoves() =>       returns number of moves the unit has
+  *  	getHP() =>          returns how much HP a unit has
+  *   	setHP(int HP) =>    sets the number of HP the unit has
+  *   	moved() =>          toggle the moved flag to TRUE
+  *   	hasMoved() =>       returns the moved flag
+  *   	getAttack() =>      returns how much attack the unit has
+  *   	setLocationX =>     move the unit to a specific X location
+  *   	setLocationY =>     move the unit to a specific Y location
+  *   	getLocationX =>     return the unit's X location
+  *   	getLocationY =>     return the unit's Y location
+  */
+
 package project;
 
 public interface Unit {
-	//Basic information for the units
-	
+
 	public int getMoves();
 	public int getHP();
 	public void setHP(int hp);

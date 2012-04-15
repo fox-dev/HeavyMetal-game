@@ -1,15 +1,17 @@
-// Map.java
-// This java file will make a 20x20 2D array and (at this time) fill it randomly with
-// only water tiles.
-//
-// Default constructor makes a 2D array of size 20x20 and randomly adds water tiles if
-//	Math.random() returns >= 0.8
-//
-// Specific constructor = (X Size, Y Size)
-//
-// ** MAP LEGEND **
-// 1 = Normal
-// 2 = Water
+/* Map.java
+ * This java file will make a 20x20 2D array and (at this time) fill it with
+ * land tiles and water tiles. Water tiles are added if double rand >= 0.8 (using Math.random())
+ * 
+ * Default constructor makes a 2D array of size 20x20 and randomly adds water tiles if
+ * Math.random() returns >= 0.8
+ * 
+ * Specific constructor = (X Size, Y Size)
+ * 
+ * !! MAP LEGEND !!
+ * 1 = Normal
+ * 2 = Water
+ */
+
 
 public class Map {
 	private int[][] mapArr; // 2D Map array
