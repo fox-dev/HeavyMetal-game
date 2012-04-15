@@ -1,18 +1,19 @@
-// UnitAir.java
-// Implements Unit.java
-//
-// A generic air unit will have the following:
-// HP = 3
-// NUMBER OF MOVES = 4
-// ATTACK POWER = 1
-// SPAWN AT LOCATION (0,0)
-//
-// Specific constructor = (HP, Number of Moves, ATK, locX, locY) 
-//
-// Ground units can have specified attributes by inputting HP, number of moves, attack,
-//	and its location
-//
-// Will add new things as project goes on
+/* UnitAir.java
+ * Implements Unit.java
+ * 
+ * A generic air unit will have the following:
+ *  HP = 3
+ *  NUMBER OF MOVES = 4
+ *  ATTACK POWER = 1
+ *  SPAWN AT LOCATION (0,0)
+ *  
+ * Specific constructor = (HP, Number of Moves, ATK, locX, locY) 
+ *  
+ * Air units can have specified attributes by inputting HP, number of moves, attack,
+ * and its location
+ *  
+ * Will add new things as project goes on
+ */
 
 package project;
 
