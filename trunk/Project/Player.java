@@ -81,9 +81,12 @@ public class Player {
 	}
 	
 	//Reset all units of Player to Unit.moved == false Dan
-	public void unitsResetMoved(){
-    for (int i = 0; i < units.size(); i++)
+	//Reset all units of Player to Unit.hasUnitShot = false Dan
+	public void unitsReset(){
+    for (int i = 0; i < units.size(); i++){
       units.get(i).movedFalse();
+      units.get(i).hasUnitShot = false;
+    }
 	}
 }
 
