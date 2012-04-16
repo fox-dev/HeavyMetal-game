@@ -24,6 +24,8 @@ public class UnitAir implements Unit {
 	private int locX;
 	private int locY;
 	private boolean moved = false;
+	public boolean hasUnitShot = false;   //Dan: ensures that unit can only shoot once
+	                                      //made public temporarily for convenience
 	
 	public UnitAir() {
 		HP = 3;
