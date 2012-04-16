@@ -1,25 +1,16 @@
 package project;
 
-import project.Map;
-import project.MoveEl;
-import project.QueueMove;
-import project.Unit;
-import project.UnitGround;
-
 public class Actions {
-  
   Player p1, p2;
   Input input;
   Map mapRef;
   private static final int[][] moveArray = {  {-1, 1, 0,  0},
                                                {0, 0, 1, -1} };
-  //java.util.Queue<MoveEl> myQ = new java.util.Queue<MoveEl>();
-  //Check Input, do any actions involved, update Player class
-  //Figure out when turn is over by checking player information
-  //Calls information on units in the Player passed in
-  //Update player locations
-  //Update player health
-  //Update everything else
+  //Figure out when turn is over by checking player information  ??? done here???
+  //Calls information on units in the Player passed in 
+  //Update player locations  DONE
+  //Update player health  DONE
+  //Update everything else ??? What else to update???
   
   public Actions(Player p1, Player p2, Input input, Map mapRef) {
     this.p1 = p1;
@@ -29,20 +20,56 @@ public class Actions {
   }
   
   //Attack options
-    //check if there is a target there (add friendly fire?)
-    //fire on target
-      //update targets hp
-      //hasUnitShot = true
+  //check if fire is Legal returns true if legal, false if ILLEGAL
+  //(add friendly fire?)
+  public boolean fire(Unit src, Unit tgt){
+    if(fireLegal(src, tgt)){
+      tgt.setHP(tgt.getHP() - src.getAttack());
+      src.setHasUnitShot(true);
+      return true;
+    }
+    return false;
+  }
+  public boolean fire(Unit src, int x, int y){//method overload for convenience
+    return fire(src, p1.getUnitAt(x, y));
+  }
+  private boolean fireLegal(Unit src, Unit tgt){
+    //units don't exist
+    if(src == null || tgt == null)
+      return false;
+    //one of the units are dead
+    if(src.getHP() <= 0 || tgt.getHP() <= 0)
+      return false;
+    //src has already shot
+    if(src.getHasUnitShot())
+      return false;
+    //check range, may be changed later if range is changed
+    //attack is able to be done in adjacent squares to include diagonal
+    double x = (double)Math.abs(src.getLocationX() - tgt.getLocationX());
+    double y = (double)Math.abs(src.getLocationY() - tgt.getLocationY());
+    int distance = (int)(Math.sqrt(x*x+y*y));
+    if(distance > 1)
+      return false;
+    //all is good, fire away
+    return true;
+  }
   
-
-  //Move options
-    //make sure move is not atop another unit
-    //make out paths
-    //remove paths that cannot be made from map comparison
-    //if any paths remain
-      //move unit there and update their data
-      //unit that moved, moved = true
-  public boolean moveLegal(Unit u, int x, int y){
+   /*  returns true if unit was moved successfully
+   *   returns false if unit cannot be moved, no data changed in this case */
+  public boolean moveUnit(Unit u, int x, int y){
+    if(moveLegal(u,x,y)){
+      u.setLocationX(x);
+      u.setLocationY(y);
+      u.moved();
+      return true;
+    }
+    return false;
+  }
+  //make sure move is not atop another unit DONE moveLegal()
+  //make out paths DONE moveLegal()
+  //remove paths that cannot be made from map comparison DONE moveLegal()
+  //if any paths remain DONE moveLegal()
+  private boolean moveLegal(Unit u, int x, int y){
     //if unit has moved already, it cannot move again
     if(u.hasMoved()) 
       return false;
@@ -92,7 +119,7 @@ public class Actions {
   }
 }
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
- * Help classes for Actions.moveLegal(Unit u, int x, int y) 
+ * Helper classes for Actions.moveLegal(Unit u, int x, int y) 
  * 
  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
 class QueueMove{
