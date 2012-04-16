@@ -24,8 +24,7 @@ public class UnitGround implements Unit {
 	private int locX;
 	private int locY;
 	private boolean moved = false;
-	public boolean hasUnitShot = false;   //Dan: ensures that unit can only shoot once
-	                                      //made public temporarily for convenience
+	private boolean hasUnitShot = false;   //Dan: ensures that unit can only shoot once
 	
 	public UnitGround() {
 		HP = 4;
@@ -75,4 +74,11 @@ public class UnitGround implements Unit {
 	public int getLocationY() {
 		return locY;
 	}
+  public void setHasUnitShot(boolean b){
+    hasUnitShot = b;
+  }
+  
+  public boolean getHasUnitShot(){
+    return hasUnitShot;
+  }
 }
