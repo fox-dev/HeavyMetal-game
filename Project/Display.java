@@ -4,7 +4,7 @@ import project.Map;
 import project.Player;
 
 //This file will display all maps/actions/units
-//And update after each action
+//And update after each action if called on; Displaying moves once the Player class is updated.
 
 public class Display {
 
@@ -14,7 +14,7 @@ public class Display {
 		private String[][] board;
 
 
-		//constructor
+		//set constructor
 		public Display(Map m, Player p1, Player p2){
 			theMap = m;
 			player1 = p1;
@@ -27,20 +27,30 @@ public class Display {
 			}
 		}
 		
+		//Fill map with content: 
+		//Unit Locations; Player1 units [o] / Player2 units [x];
+		//Map Terrain (Water: ~ /Land: - );
+		
 		public void fillMap(){
 			for(int x = 0; x < theMap.getX(); x++){
 				for(int y = 0; y < theMap.getY(); y++){
-					if(player1.getUnitAt(x, y) != null){
+					if(player1.getUnitAt(x, y) != null){ 
+						//If player1 units are in Map coordinates (x,y), fill with [o]
 						board[y][x] = "[o]";
 					}
 					if(player2.getUnitAt(x, y) != null){
+						//If player2 units are in Map coordinates (x,y), fill with [x]
 						board[y][x] = "[x]";
 					}
-					else {//If getUnitAt is null
+					else {
+						//If unit coordinates are not filled with either players, check...
 						if(theMap.getArr(x, y) == 2 ){
+							//...if map input is 2 (As stated in Map.java), fill with icon for water
 							board[y][x] = "~~~";
 						}
 						else{
+							//...if map input is 1, or not 2, (As stated in Map.java), 
+							//   fill with icon for land
 							board[y][x] = "---";
 						}
 					}
@@ -52,6 +62,7 @@ public class Display {
 			fillMap();
 			for(int x = 0; x < theMap.getX(); x++){
 				for(int y = 0; y < theMap.getY(); y++){
+					//Print coordinate icons filled in array by calling fillMap();
 					System.out.print(board[x][y] + "  ");
 				}
 				System.out.println();
