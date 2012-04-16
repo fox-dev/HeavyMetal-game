@@ -1,7 +1,10 @@
 package project;
 
-import project.Input;
-import project.Player;
+import project.Map;
+import project.MoveEl;
+import project.QueueMove;
+import project.Unit;
+import project.UnitGround;
 
 public class Actions {
   
@@ -40,12 +43,11 @@ public class Actions {
       //move unit there and update their data
       //unit that moved, moved = true
   public boolean moveLegal(Unit u, int x, int y){
-    
     //if unit has moved already, it cannot move again
     if(u.hasMoved()) 
       return false;
     //unit cannot move ontop of itself, and cannot move ontop of any other unit
-    if( p1.getUnitAt(x,y) != null )
+    if( p1.getUnitAt(x,y) != null )               //MAKE p1.get... into a STATIC method
       return false;
     //unit cannot move off of the map
     if( !isXY_onMap(x,y) )
@@ -89,7 +91,78 @@ public class Actions {
     return false;
   }
 }
+/*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+ * Help classes for Actions.moveLegal(Unit u, int x, int y) 
+ * 
+ XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
+class QueueMove{
+  private MoveEl head, tail;
+  public QueueMove() {
+    head = tail = null;
+  }
+  public void enqueue(MoveEl el){
+    if(el == null)
+      return;
+    if(head == null)
+      tail = el;
+    el.next = head;
+    head = el; 
+  }
+  public MoveEl dequeue(){  //needs refinement
+    if(isEmpty())
+      return null;
+    MoveEl temp;
+    if(head == tail){
+      temp = head;
+      head = tail = null;
+    }
+    else{
+      temp = tail;
+      MoveEl tempT = head;
+      while(tempT.next != tail)
+        tempT = tempT.next;
+      tail = tempT;
+      tail.next = null;
+    }
+    return temp;
+  }
+  public boolean isEmpty(){
+    if(head == null)
+      return true;
+    return false;
+  }
+  public String toString(){
+    String s = "enqueue here->";
+    MoveEl temp = head;
+    while(temp != null){
+      s += temp.toString() + "--";
+      temp = temp.next;
+    }
+    s += "<-dequeue here";
+    return s;
+  }
+}
 
+class MoveEl {
+  public final int numMovesLeft;
+  public final int x;
+  public final int y;
+  public MoveEl next;
+  
+  private MoveEl(){
+    this(0, 0, 0, null);
+  }
+  
+  public MoveEl( int n, int locL_R, int locU_D, MoveEl next) {
+    numMovesLeft = n;
+    x = locL_R;
+    y = locU_D; 
+    this.next = next;
+  }
+  public String toString(){
+    return "" + numMovesLeft + "[" + x + "]" + "[" + y + "]";
+  }
+}
 
 
 
