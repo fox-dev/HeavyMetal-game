@@ -26,9 +26,9 @@ public class Main {
 			// get user input
 			// update actions
 			if(currentPlayer.checkTurnOver()) {
-				if(currentPlayer == player1) {
+			  currentPlayer.unitsResetMoved();  //added by Dan
+				if(currentPlayer == player1)
 					currentPlayer = player2;
-				}
 				else
 					currentPlayer = player1;
 			}
