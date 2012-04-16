@@ -36,39 +36,64 @@ public class Display {
 				for(int y = 0; y < theMap.getY(); y++){
 					if(player1.getUnitAt(x, y) != null){ 
 						//If player1 units are in Map coordinates (x,y), fill with [o]
-						board[y][x] = "[o]";
+						board[x][y] = "[o]";
 					}
 					if(player2.getUnitAt(x, y) != null){
 						//If player2 units are in Map coordinates (x,y), fill with [x]
-						board[y][x] = "[x]";
+						board[x][y] = "[x]";
 					}
 					else {
 						//If unit coordinates are not filled with either players, check...
 						if(theMap.getArr(x, y) == 2 ){
 							//...if map input is 2 (As stated in Map.java), fill with icon for water
-							board[y][x] = "~~~";
+							board[x][y] = "~~~";
 						}
 						else{
 							//...if map input is 1, or not 2, (As stated in Map.java), 
 							//   fill with icon for land
-							board[y][x] = "---";
+							board[x][y] = "   ";
 						}
 					}
 				}
 			}
 		}
+		
+		/*public void topGrid(){
+			System.out.print("┌──────────────────────────────────────────┐");
+			}
+		
+		public void leftGrid(){
+			System.out.print("│");
+			}
+		
+		public void rightGrid(){
+			System.out.print("│");
+			}
 			
+		public void bottomGrid(){
+			System.out.print("└──────────────────────────────────────────┘");
+			}
+		*/
+		
 		public void printMap(){
 			fillMap();
+			
+			//topGrid();
 			for(int x = 0; x < theMap.getX(); x++){
+				if(x == 0){
+					//leftGrid();
+				}
 				for(int y = 0; y < theMap.getY(); y++){
 					//Print coordinate icons filled in array by calling fillMap();
 					System.out.print(board[x][y] + "  ");
+					if(x == 19){
+						//rightGrid();
+					}
 				}
-				System.out.println();
-				System.out.println();
 			}
+			//bottomGrid();
+			//System.out.println();
+			//System.out.println();
 		}
-		
 
 	}
