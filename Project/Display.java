@@ -1,21 +1,21 @@
 package project;
 
-import Proj.MapTest;
-import Proj.PlayerTest;
+import project.Map;
+import project.Player;
 
 //This file will display all maps/actions/units
 //And update after each action
 
-public class DisplayTest {
+public class Display {
 
-		private MapTest theMap;
-		private PlayerTest player1;
-		private PlayerTest player2;
+		private Map theMap;
+		private Player player1;
+		private Player player2;
 		private String[][] board;
 
 
 		//constructor
-		public DisplayTest(MapTest m, PlayerTest p1, PlayerTest p2){
+		public Display(Map m, Player p1, Player p2){
 			theMap = m;
 			player1 = p1;
 			player2 = p2;
