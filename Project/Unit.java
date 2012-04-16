@@ -29,4 +29,6 @@ public interface Unit {
 	public void setLocationY(int y);
 	public int getLocationX();
 	public int getLocationY();
+	public void setHasUnitShot(boolean);
+	public boolean getHasUnitShot();
 }
