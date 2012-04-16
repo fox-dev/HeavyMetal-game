@@ -37,7 +37,7 @@ public class Player {
 
 	//Removes units that have no more HP
 	public void removeDeadUnits() {
-		for (int i = 0; i < units.size() - 1; i++) {   //Question? "i < units.size()-1" isn't that going to be one short of all the units??
+		for (int i = 0; i < units.size(); i++) {
 			Unit tempUnit = units.get(i);
 			if(tempUnit.getHP() <= 0) {
 				units.remove(i);
@@ -48,8 +48,8 @@ public class Player {
 	
 	//Checks to see if the player's turn is over
 	public boolean checkTurnOver() {
-		for (int i = 0; i < units.size() - 1; i++) {  //Question? "i < units.size()-1" isn't that going to be one short of all the units??
-      if((units.get(i)).hasMoved() == false)        //changed by Dan (didn't compile)
+		for (int i = 0; i < units.size(); i++) {
+      if((units.get(i)).hasMoved() == false)
 				return false;
 		}
 		
@@ -58,7 +58,7 @@ public class Player {
 	
 	//Returns a unit at a position x, y or null if there is nothing at that position
 	public Unit getUnitAt(int x, int y) {
-		for(int i = 0; i < units.size() - 1; i++) {//Question? "i < units.size()-1" isn't that going to be one short of all the units??
+		for(int i = 0; i < units.size(); i++) {
 			if(units.get(i).getLocationX() == x && units.get(i).getLocationY() == y) {
 				return units.get(i);
 			}
