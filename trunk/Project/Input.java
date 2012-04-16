@@ -1,6 +1,6 @@
 package project;
 
-mport java.util.*;
+import java.util.*;
 import java.io.*;
 public class Input {
 	//Gets user input
@@ -89,19 +89,24 @@ public class Input {
 	}
 	
 	//second Command
+	/*
+	 * If a unit is moved, the "moved" boolean of the unit should be set to true;
+	 * If "move to coordinate" is typed and the "moved" boolean is set to true, have function return and print that no further movements for that unit can be made.
+	 */
 	public void inputSecondCommand(){
 		try{
 			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 			
-			System.out.println("Please enter your second command (Move to Coordinate, or enter Stay)");
+			System.out.println("Please enter your second command (Move to Coordinate, or Cancel)");
 			this.secondCommand = in.readLine();
 		
-			while(!(secondCommand.equalsIgnoreCase("Move to Coordinate") || secondCommand.equalsIgnoreCase("Stay"))){
-				System.out.println("Your second command was not a valid input. Please enter your second command (The coordinates to move your unit to, or enter Stay)");
+			while(!(secondCommand.equalsIgnoreCase("Move to Coordinate") || secondCommand.equalsIgnoreCase("Cancel"))){
+				System.out.println("Your second command was not a valid input. Please enter your second command (The coordinates to move your unit to, or Cancel)");
 				this.secondCommand = in.readLine();
 			}
 			
 			if(secondCommand.equalsIgnoreCase("Move to Coordinate")){
+				
 				System.out.println("Please enter the coordinates you want to the selected unit");
 				this.moveCoordinates = in.readLine();
 				
