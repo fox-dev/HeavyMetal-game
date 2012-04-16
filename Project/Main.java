@@ -18,7 +18,7 @@ public class Main {
 	public static void main(String[] args) {
 		boolean gameDone = false;
 		Display gameDisplay = new Display(map, player1, player2);
-		Actions actions = new Actions(player1, player2, input);
+		Actions actions = new Actions(player1, player2, input, map);
 		Player currentPlayer = player1;
 		
 		while (!gameDone) {
