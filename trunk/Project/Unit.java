@@ -22,7 +22,7 @@ public interface Unit {
 	public int getHP();
 	public void setHP(int hp);
 	public void moved();
-	public void movedFalse()
+	public void movedFalse();
 	public boolean hasMoved();
 	public int getAttack();
 	public void setLocationX(int x);
