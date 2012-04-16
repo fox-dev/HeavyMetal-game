@@ -27,7 +27,7 @@ public class Player {
 		if(playNum == 2) {
 			ground.setLocationX(12);
 			ground.setLocationY(5);
-			air.setLocationX(12);
+			air.setLocationX(11);
 			air.setLocationY(5);
 		}
 		
