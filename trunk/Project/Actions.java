@@ -1,6 +1,5 @@
 /** Program Name: Actions.java
  *  Name: Dan Q. Nguyen
- *  Student ID: qa6732
  *  Professor: Yang, David
  *  Class: CS4310 Software Engineering I
  *  Assignment Name: Project for class
