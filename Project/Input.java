@@ -1,6 +1,6 @@
 package project;
 
-import java.util.*;
+mport java.util.*;
 import java.io.*;
 public class Input {
 	//Gets user input
@@ -12,15 +12,20 @@ public class Input {
 	
 	/*
 	 * Input command functions are separate to allow for board updating in between inputs.
+	 * -secondCommand should only be accessed if the firstCommand = "Select Unit"
+	 * -thirdCommand should only be accessed if the firstCommand = "Select Unit"
+	 * -secondCommand and thirdCommand should return to previous commands if they = "cancel"
 	 */
 	
 	
-	/*firstCommand = do nothing, or coordinate of unit
-	 *secondCommand = cancel, or coordinates to move unit to
+	/*firstCommand = do nothing, or select unit coordinates
+	 *secondCommand = cancel, or move to a coordinate
 	 *thirdCommand = action (attack, do nothing, cancel) 
-	 *attackCoordinates are need if the "thirdCommand" is an attack.
+	 *selectUnitCoordinates = coordinates of a selected unit (not always necessary)
+	 *moveCoordiantes = coordinates to move a selected unit to (not always necessary)
+	 *attackCoordinates are need if the "thirdCommand" is an attack. (not always necessary)
 	*/
-	private String firstCommand, secondCommand, thirdCommand, attackCoordinates;
+	private String firstCommand, secondCommand, thirdCommand, selectUnitCoordinates, moveCoordinates, attackCoordinates;
 	
 	/*activePlayer = the player who has control of the board.
 	 *waitingPlayer = the player that is waiting.
@@ -31,7 +36,11 @@ public class Input {
 		firstCommand = "";
 		secondCommand = "";
 		thirdCommand = "";
+		
+		selectUnitCoordinates = "";
+		moveCoordinates = "";
 		attackCoordinates = "";
+		
 		activePlayer = aP;
 		waitingPlayer = wP;
 	}
@@ -40,6 +49,9 @@ public class Input {
 		firstCommand = "";
 		secondCommand = "";
 		thirdCommand = "";
+		
+		selectUnitCoordinates = "";
+		moveCoordinates = "";
 		attackCoordinates = "";
 	}
 	
@@ -49,17 +61,19 @@ public class Input {
 		try{
 			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 			
-			System.out.println("Please enter your first command (Unit Coordinates, Cancel, or Do nothing)");
+			System.out.println("Please enter your first command (Select Unit, or Do nothing)");
 			this.firstCommand = in.readLine();
-			System.out.println(firstCommand);
-			while(!(firstCommand.equalsIgnoreCase("Unit Coordinates") || firstCommand.equalsIgnoreCase("Cancel") || firstCommand.equalsIgnoreCase("Do nothing"))){
-				System.out.println("Your first command was not a valid input. Please enter your first command (Unit Coordinates, Cancel, or Do nothing)");
+		
+			while(!(firstCommand.equalsIgnoreCase("Select Unit") || firstCommand.equalsIgnoreCase("Do nothing"))){
+				System.out.println("Your first command was not a valid input. Please enter your first command (Select Unit, or Do nothing)");
 				this.firstCommand = in.readLine();
 			}
-			if(firstCommand.equalsIgnoreCase("Unit Coordinates")){ //Not fully implemented yet
+			if(firstCommand.equalsIgnoreCase("Select Unit")){ //Not fully implemented yet
+				System.out.println("Please enter the coordinates of a friendly unit.");
+				selectUnitCoordinates = in.readLine();
+				
 				System.out.println("Checking unit location...");
-				if(activePlayer.getUnitAt(0, 0) == null){
-					System.out.println(activePlayer.getUnit(0).getLocationY());
+				if(activePlayer.getUnitAt(10, 6) == null){
 					System.out.print("You entered invalid coordinates. ");
 					inputFirstCommand();
 				}
@@ -79,10 +93,24 @@ public class Input {
 		try{
 			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 			
-			System.out.println("Please enter your second command (Coordinates of a location to move the selected unit to.)");
+			System.out.println("Please enter your second command (Move to Coordinate, or enter Stay)");
 			this.secondCommand = in.readLine();
-			System.out.println(secondCommand);
+		
+			while(!(secondCommand.equalsIgnoreCase("Move to Coordinate") || secondCommand.equalsIgnoreCase("Stay"))){
+				System.out.println("Your second command was not a valid input. Please enter your second command (The coordinates to move your unit to, or enter Stay)");
+				this.secondCommand = in.readLine();
+			}
 			
+			if(secondCommand.equalsIgnoreCase("Move to Coordinate")){
+				System.out.println("Please enter the coordinates you want to the selected unit");
+				this.moveCoordinates = in.readLine();
+				
+				if(false){ //Need to check if a unit can make that move
+					System.out.println("You cannot make that move.");
+					inputSecondCommand();
+				}
+				
+			}
 			
 		}catch(Exception e){//catch any exception if any
 			System.err.println("Error: " + e.getMessage());
@@ -103,19 +131,18 @@ public class Input {
 			}
 			if(thirdCommand.equalsIgnoreCase("Attack")){
 				System.out.println("Please enter the coordinates of an enemy unit to attack.");
-				attackCoordinates = in.readLine();
+				this.attackCoordinates = in.readLine();
 				
-				if(waitingPlayer.getUnitAt(1, 0) == null){ //not fully implemented
+				if(waitingPlayer.getUnitAt(1, 0) == null){//not fully implemented
 					System.out.print("The coordinates you entered for the enemy unit are invalid. ");
 					inputThirdCommand();
 				}
 				else{
-					System.out.println("Unit Coordinates are valid.");
+					System.out.println("Enemy Unit Coordinates are valid.");
 				}
 				
 				
 			}
-			System.out.println(thirdCommand);
 			
 		}catch(Exception e){//catch any exception if any
 			System.err.println("Error: " + e.getMessage());
@@ -137,9 +164,33 @@ public class Input {
 		return thirdCommand;
 	}
 	
+	//get function for the selected unit's coordinates
+	public String getSelectUnitCoordinates(){
+		return selectUnitCoordinates;
+	}
+	//get function for move coordinates
+	public String getMoveCoordinates(){
+		return moveCoordinates;
+	}
+	
 	//get function for attackCoordinates string
 	public String getAttackCoordinates(){
 		return attackCoordinates;
+	}
+	
+	//function for switching the activePlayer with the waitingPlayer, used when activePlayer turn ends.
+	public void switchPlayerStatuses(){
+		Player temp = activePlayer;
+		activePlayer = waitingPlayer;
+		waitingPlayer = temp;
+		
+		firstCommand = "";
+		secondCommand = "";
+		thirdCommand = "";
+		
+		selectUnitCoordinates = "";
+		moveCoordinates = "";
+		attackCoordinates = "";
 	}
 }
 
