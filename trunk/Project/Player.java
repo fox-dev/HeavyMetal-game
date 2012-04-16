@@ -49,7 +49,7 @@ public class Player {
 	//Checks to see if the player's turn is over
 	public boolean checkTurnOver() {
 		for (int i = 0; i < units.size() - 1; i++) {  //Question? "i < units.size()-1" isn't that going to be one short of all the units??
-			if(units.get(i).moved() == false)
+      if(units.get(i).hasMoved() == false)        //changed by Dan (didn't compile)
 				return false;
 		}
 		
