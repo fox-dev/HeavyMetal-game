@@ -28,30 +28,33 @@ public class Display {
 	}
 	
 	//Fill map with content: 
-	//Unit Locations; Player1 units [o] / Player2 units [x];
+	//Unit Locations; Player1 units O / Player2 units X;
 	//Map Terrain (Water: ~ /Land: - );
+	
+	//board[][] uses (Y,X). This corrects the reversed coordinates problem (19,0) will place
+	//	a unit at the bottom-left instead of top-right
 	
 	public void fillMap(){
 		for(int x = 0; x < theMap.getX(); x++){
 			for(int y = 0; y < theMap.getY(); y++){
 				if(player1.getUnitAt(x, y) != null){ 
 					//If player1 units are in Map coordinates (x,y), fill with [o]
-					board[x][y] = "O";
+					board[y][x] = "O";
 				}
 				if(player2.getUnitAt(x, y) != null){
 					//If player2 units are in Map coordinates (x,y), fill with [x]
-					board[x][y] = "X";
+					board[y][x] = "X";
 				}
 				else {
 					//If unit coordinates are not filled with either players, check...
 					if(theMap.getArr(x, y) == 2 ){
 						//...if map input is 2 (As stated in Map.java), fill with icon for water
-						board[x][y] = "~";
+						board[y][x] = "~";
 					}
 					else{
 						//...if map input is 1, or not 2, (As stated in Map.java), 
 						//   fill with icon for land
-						board[x][y] = "-";
+						board[y][x] = "-";
 					}
 				}
 			}
@@ -59,19 +62,19 @@ public class Display {
 	}
 	
 	/*public void topGrid(){
-		System.out.print("â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”�");
+		System.out.print("Ã¢â€�Å’Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�ï¿½");
 		}
 	
 	public void leftGrid(){
-		System.out.print("â”‚");
+		System.out.print("Ã¢â€�â€š");
 		}
 	
 	public void rightGrid(){
-		System.out.print("â”‚");
+		System.out.print("Ã¢â€�â€š");
 		}
 		
 	public void bottomGrid(){
-		System.out.print("â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜");
+		System.out.print("Ã¢â€�â€�Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�Ëœ");
 		}
 	*/
 	
@@ -96,5 +99,4 @@ public class Display {
 		//System.out.println();
 		//System.out.println();
 	}
-
 }
