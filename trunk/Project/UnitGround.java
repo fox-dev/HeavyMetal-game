@@ -52,6 +52,9 @@ public class UnitGround implements Unit {
 	public void moved() {
 		moved = true;
 	}
+	public void movedFalse() { //added by Dan
+	  moved = false;
+	}
 	public boolean hasMoved() {
 		return moved;
 	}
