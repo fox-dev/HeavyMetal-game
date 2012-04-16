@@ -21,6 +21,8 @@ public class Main {
 		Actions actions = new Actions(player1, player2, input, map);
 		Player currentPlayer = player1;
 		
+		gameDisplay.printMap(); // Print out the map
+		
 		while (!gameDone) {
 			// display game window
 			// get user input
@@ -31,6 +33,7 @@ public class Main {
 					currentPlayer = player2;
 				else
 					currentPlayer = player1;
+				gameDisplay.printMap(); // Refresh map after turn is over
 			}
 			if(player1.checkNumUnits() == 0)
 				gameDone = true;
