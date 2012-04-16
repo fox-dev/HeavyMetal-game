@@ -1,3 +1,36 @@
+/** Program Name: Actions.java
+ *  Name: Dan Q. Nguyen
+ *  Student ID: qa6732
+ *  Professor: Yang, David
+ *  Class: CS4310 Software Engineering I
+ *  Assignment Name: Project for class
+ *  Description: CONTAINS ONLY 3 PUBLIC METHODS plus a constructor 
+ *    all others are private helpers(you won't need them)
+ *    
+ *    - public boolean fire(Unit src, Unit tgt) 
+ *    - public boolean fire(Unit src, int x, int y)
+ *      -returns true if "fire" is done and updates appropriate data
+ *        to include cleaning up dead units with Player.removeDeadUnits()
+ *      -returns false if "fire" is NOT valid and makes no changes
+ *      -2 above methods check if a fire action is legal by:
+ *        - if one of the units don't exist
+ *        - if one of the units are dead
+ *        - if the unit attack has already attacked it can't
+ *        - if the target unit is in range of the attacking unit
+ *            
+ *    - public boolean moveUnit(Unit u, int x, int y)
+ *      -returns true if "move" is done and updates appropriate data
+ *      -returns false if "move" is NOT valid and makes no changes
+ *      -method check if a move is legal by:
+ *        - unit cannot move if it has already moved
+ *        - unit cannot move on top of itself
+ *        - unit cannot move on top of any other unit
+ *        - unit must not move off of map
+ *        - ground unit cannot move on water
+ *        
+ *    -3 methods listed make checks for legality of move
+ *    note: "helper" classes listed at end of code
+*/
 package project;
 
 public class Actions {
@@ -7,9 +40,7 @@ public class Actions {
   private static final int[][] moveArray = {  {-1, 1, 0,  0},
                                                {0, 0, 1, -1} };
   //Figure out when turn is over by checking player information  ??? done here???
-  //Calls information on units in the Player passed in 
-  //Update player locations  DONE
-  //Update player health  DONE
+  //Calls information on units in the Player passed in  ???
   //Update everything else ??? What else to update???
   
   public Actions(Player p1, Player p2, Input input, Map mapRef) {
@@ -21,11 +52,13 @@ public class Actions {
   
   //Attack options
   //check if fire is Legal returns true if legal, false if ILLEGAL
+  //updates target HP, units has shot boolean, and cleans map of dead units
   //(add friendly fire?)
   public boolean fire(Unit src, Unit tgt){
     if(fireLegal(src, tgt)){
       tgt.setHP(tgt.getHP() - src.getAttack());
       src.setHasUnitShot(true);
+      p1.removeDeadUnits();
       return true;
     }
     return false;
@@ -65,10 +98,6 @@ public class Actions {
     }
     return false;
   }
-  //make sure move is not atop another unit DONE moveLegal()
-  //make out paths DONE moveLegal()
-  //remove paths that cannot be made from map comparison DONE moveLegal()
-  //if any paths remain DONE moveLegal()
   private boolean moveLegal(Unit u, int x, int y){
     //if unit has moved already, it cannot move again
     if(u.hasMoved()) 
