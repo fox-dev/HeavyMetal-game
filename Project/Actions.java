@@ -128,7 +128,8 @@ public class Actions {
         if( isXY_onMap(xTemp,yTemp) ) //check if intermediate move is on map
           //add move if ( !(a ground unit and its on water) )
           if(!isGroundOnWater(u, xTemp,yTemp))
-            q.enqueue(new MoveEl(moveEl.numMovesLeft-1, xTemp, yTemp, null));
+            if(moveEl.numMovesLeft > 0)  //added by Dan Apr17 1218am
+              q.enqueue(new MoveEl(moveEl.numMovesLeft-1, xTemp, yTemp, null));
       }
     }
     //all possible moves have been tried
