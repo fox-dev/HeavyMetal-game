@@ -45,7 +45,7 @@ public class Display {
 					//If player2 units are in Map coordinates (x,y), fill with [x]
 					board[y][x] = "X";
 				}
-				else {
+				else if(player2.getUnitAt(x, y) == null && player1.getUnitAt(x,y) == null){
 					//If unit coordinates are not filled with either players, check...
 					if(theMap.getArr(x, y) == 2 ){
 						//...if map input is 2 (As stated in Map.java), fill with icon for water
