@@ -104,6 +104,9 @@ public class Actions {
     //unit cannot move ontop of itself, and cannot move ontop of any other unit
     if( p1.getUnitAt(x,y) != null )               //MAKE p1.get... into a STATIC method
       return false;
+    //unit cannot move ontop of itself, also for p2 units. 
+    if( p2.getUnitAt(x,y) != null ) //added -Andrew
+      return false;
     //unit cannot move off of the map
     if( !isXY_onMap(x,y) )
       return false;
