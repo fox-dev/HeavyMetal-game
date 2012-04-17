@@ -33,7 +33,10 @@ public class Input {
 	/*activePlayer = the player who has control of the board.
 	 *waitingPlayer = the player that is waiting.
 	 */
-	Player activePlayer, waitingPlayer;
+	private Player activePlayer, waitingPlayer;
+	
+	//The unit that is selected, when moved, will also have its location updated.
+	private Unit selectedUnit;
 	
 	private unitCoordinates unit_Coordinates;
 	private moveCoordinates move_Coordinates;
@@ -87,7 +90,7 @@ public class Input {
 				System.out.println("Your first command was not a valid input. Please enter your first command (Select Unit, or Do nothing)");
 				this.firstCommand = in.readLine();
 			}
-			if(firstCommand.equalsIgnoreCase("Select Unit")){ //Not fully implemented yet
+			if(firstCommand.equalsIgnoreCase("Select Unit")){
 				try{
 					System.out.println("Please enter the X coordinate of a friendly unit.");
 					unit_Coordinates.setX(Integer.parseInt(in.readLine()));
@@ -99,19 +102,22 @@ public class Input {
 					System.out.println("Please enter digits only.");
 					unit_Coordinates.resetXY();
 					inputFirstCommand();
+					return;
 				}
 				
 				System.out.println("Checking unit location...");
 				if(activePlayer.getUnitAt(unit_Coordinates.getX(), unit_Coordinates.getY()) == null){
 					System.out.print("You entered invalid coordinates. ");
 					inputFirstCommand();
+					return;
 				}
 				else{
 					System.out.println("Unit Coordinates are valid.");
+					selectedUnit = activePlayer.getUnitAt(unit_Coordinates.getX(), unit_Coordinates.getY());
 				}
 			}
 	
-		}catch(Exception e){//catch any exception if any
+		}catch(Exception e){//catch exception if any
 			System.err.println("Error: " + e.getMessage());
 		}
 		
@@ -148,12 +154,14 @@ public class Input {
 					System.out.println("Please enter digits only.");
 					move_Coordinates.resetXY();
 					inputSecondCommand();
+					return;
 				}
 				
 		
 				if(checkActions.moveUnit(activePlayer.getUnitAt(unit_Coordinates.getX(), unit_Coordinates.getY()), move_Coordinates.getX(), move_Coordinates.getY()) == false){
 					System.out.println("You cannot make that move.");
 					inputSecondCommand();
+					return;
 				}
 				else{
 					System.out.println("Move coordinates accepted.");
@@ -161,7 +169,7 @@ public class Input {
 				
 			}
 			
-		}catch(Exception e){//catch any exception if any
+		}catch(Exception e){//catch exception if any
 			System.err.println("Error: " + e.getMessage());
 		}
 		
@@ -192,16 +200,18 @@ public class Input {
 					System.out.println("Please enter digits only.");
 					attack_Coordinates.resetXY();
 					inputThirdCommand();
+					return;
 				}
-				
 				
 				if(waitingPlayer.getUnitAt(attack_Coordinates.getX(), attack_Coordinates.getY()) == null){
-					System.out.print("There is nothing at that coordinate");
+					System.out.println("There is nothing at that coordinate");
 					inputThirdCommand();
+					return;
 				}
-				else if(checkActions.fire(activePlayer.getUnitAt(unit_Coordinates.getX(), unit_Coordinates.getY()), waitingPlayer.getUnitAt(attack_Coordinates.getX(), attack_Coordinates.getY())) != true){
+				else if(checkActions.fire(selectedUnit, waitingPlayer.getUnitAt(attack_Coordinates.getX(), attack_Coordinates.getY())) == false){
 					System.out.println("You cannot attack that unit");
 					inputThirdCommand();
+					return;
 				}
 				else{
 					System.out.println("Enemy Unit Coordinates are valid. Proceed with attack.");
@@ -267,6 +277,10 @@ public class Input {
 		Player temp = activePlayer;
 		activePlayer = waitingPlayer;
 		waitingPlayer = temp;
+		
+		unit_Coordinates.resetXY();
+		move_Coordinates.resetXY();
+		attack_Coordinates.resetXY();
 		
 		firstCommand = "";
 		secondCommand = "";
@@ -374,5 +388,6 @@ class attackCoordinates{
 	}
 	
 }
+
 
 
