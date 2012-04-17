@@ -1,5 +1,6 @@
 package project;
 
+
 import java.util.*;
 import java.io.*;
 public class Input {
@@ -150,7 +151,7 @@ public class Input {
 				}
 				
 		
-				if(checkActions.moveLegal(activePlayer.getUnitAt(unit_Coordinates.getX(), unit_Coordinates.getY()), move_Coordinates.getX(), move_Coordinates.getY()) != true){
+				if(checkActions.moveUnit(activePlayer.getUnitAt(unit_Coordinates.getX(), unit_Coordinates.getY()), move_Coordinates.getX(), move_Coordinates.getY()) == false){
 					System.out.println("You cannot make that move.");
 					inputSecondCommand();
 				}
@@ -198,7 +199,7 @@ public class Input {
 					System.out.print("There is nothing at that coordinate");
 					inputThirdCommand();
 				}
-				else if(checkActions.fireLegal(activePlayer.getUnitAt(unit_Coordinates.getX(), unit_Coordinates.getY()), waitingPlayer.getUnitAt(attack_Coordinates.getX(), attack_Coordinates.getY())) != true){
+				else if(checkActions.fire(activePlayer.getUnitAt(unit_Coordinates.getX(), unit_Coordinates.getY()), waitingPlayer.getUnitAt(attack_Coordinates.getX(), attack_Coordinates.getY())) != true){
 					System.out.println("You cannot attack that unit");
 					inputThirdCommand();
 				}
@@ -373,4 +374,5 @@ class attackCoordinates{
 	}
 	
 }
+
 
