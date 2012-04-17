@@ -38,6 +38,7 @@ public class Input {
 	private moveCoordinates move_Coordinates;
 	private attackCoordinates attack_Coordinates;
 	
+	private Actions checkActions;
 	
 	public Input(Player aP, Player wP){
 		firstCommand = "";
@@ -61,6 +62,15 @@ public class Input {
 		unit_Coordinates = new unitCoordinates();
 		move_Coordinates = new moveCoordinates();
 		attack_Coordinates = new attackCoordinates();
+	}
+	
+	/*This setActions method is needed since we cannot include
+	 * an Actions object in the input constructor before an Actions object is made.
+	 * Therefore you must set the actions later after both the Input object and Actions object
+	 * have both been created with their appropriate constructor.
+	 */
+	public void setActions(Actions a){
+		checkActions = a;
 	}
 	
 	
@@ -132,6 +142,7 @@ public class Input {
 				
 					System.out.println("Please enter the Y coordinate of the location to move the selected unit");
 					move_Coordinates.setY(Integer.parseInt(in.readLine()));
+					
 				}catch(NumberFormatException nfe){
 					System.out.println("Please enter digits only.");
 					move_Coordinates.resetXY();
@@ -139,9 +150,12 @@ public class Input {
 				}
 				
 		
-				if(false){ //Need to check if a unit can make that move
+				if(checkActions.moveLegal(activePlayer.getUnitAt(unit_Coordinates.getX(), unit_Coordinates.getY()), move_Coordinates.getX(), move_Coordinates.getY()) != true){
 					System.out.println("You cannot make that move.");
 					inputSecondCommand();
+				}
+				else{
+					System.out.println("Move coordinates accepted.");
 				}
 				
 			}
@@ -180,12 +194,16 @@ public class Input {
 				}
 				
 				
-				if(waitingPlayer.getUnitAt(attack_Coordinates.getX(), attack_Coordinates.getY()) == null){//not fully implemented
-					System.out.print("The coordinates you entered for the enemy unit are invalid. ");
+				if(waitingPlayer.getUnitAt(attack_Coordinates.getX(), attack_Coordinates.getY()) == null){
+					System.out.print("There is nothing at that coordinate");
+					inputThirdCommand();
+				}
+				else if(checkActions.fireLegal(activePlayer.getUnitAt(unit_Coordinates.getX(), unit_Coordinates.getY()), waitingPlayer.getUnitAt(attack_Coordinates.getX(), attack_Coordinates.getY())) != true){
+					System.out.println("You cannot attack that unit");
 					inputThirdCommand();
 				}
 				else{
-					System.out.println("Enemy Unit Coordinates are valid.");
+					System.out.println("Enemy Unit Coordinates are valid. Proceed with attack.");
 				}
 				
 				
@@ -213,9 +231,7 @@ public class Input {
 	
 	/*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 	 * the Following functions are COORDINATE getter functions
-	 * for X and Y coordinates.  These methods can be called
-	 * by the Input class without having to reference
-	 * the helper classes in other classes.
+	 * for X and Y coordinates.
 	 *XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
 	//get function for the selected unit's coordinates
 	public int getUnitCoordinates_X(){
