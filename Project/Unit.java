@@ -1,5 +1,5 @@
  /* Unit.java
-  * An interface for all units
+  * An interface for all units //Changed to a super class to all units DAN
   * 
   * A rundown of the functions:
   *		getMoves() =>       returns number of moves the unit has
@@ -16,20 +16,68 @@
 
 package project;
 
-public interface Unit {
-
-	public int getMoves();
-	public int getHP();
-	public void setHP(int hp);
-	public void moved();
-	public void movedFalse();
-	public boolean hasMoved();
-	public int getAttack();
-	public void setLocationX(int x);
-	public void setLocationY(int y);
-	public int getLocationX();
-	public int getLocationY();
-	public void setHasUnitShot(boolean b);
-	public boolean getHasUnitShot();
-	public void setXY(int x, int y);  //method for convenience DAN
+public class Unit {
+  protected int HP;
+  protected int numMoves;
+  protected int attack;
+  protected int locX;
+  protected int locY;
+  protected boolean moved = false;
+  protected boolean hasUnitShot = false;   //Dan: ensures that unit can only shoot once
+  
+  public Unit(){
+    HP = numMoves = attack = locX = locY;
+  }
+  
+  public Unit(int setHP, int setNumMoves, int ATK, int locationX, int locationY){
+    HP = setHP;
+    numMoves = setNumMoves;
+    attack = ATK;
+    locX = locationX;
+    locY = locationY;   
+  }
+  public int getMoves() {
+    return numMoves;
+  }
+  public int getHP() {
+    return HP;
+  }
+  public void setHP(int setHP) {
+    HP = setHP;
+  }
+  public void moved() {
+    moved = true;
+  }
+  public void movedFalse() { //added by Dan
+    moved = false;
+  }
+  public boolean hasMoved() {
+    return moved;
+  }
+  public int getAttack() {
+    return attack;
+  }
+  public void setLocationX(int x) {
+    locX = x;
+  }
+  public void setLocationY(int y) {
+    locY = y;
+  }
+  public int getLocationX() {
+    return locX;
+  } 
+  public int getLocationY() {
+    return locY;
+  }
+  public void setHasUnitShot(boolean b){
+    hasUnitShot = b;
+  }
+  
+  public boolean getHasUnitShot(){
+    return hasUnitShot;
+  }
+  public void setXY(int x, int y){ //added by DAN for convenience
+    setLocationX(x);
+    setLocationY(y);
+  }
 }
