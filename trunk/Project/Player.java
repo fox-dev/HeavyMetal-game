@@ -7,7 +7,8 @@ public class Player {
 	// Keep track of active units
 	// How many units that have been moved during the turn
 
-	private ArrayList<Unit> units = new ArrayList<Unit>();
+  //Changed to package class access because of a lack of methods to access certian portions of data members DAN
+	ArrayList<Unit> units = new ArrayList<Unit>();
 
 	private UnitAir air;
 	private UnitGround ground;
