@@ -81,7 +81,7 @@ public class UnitGround implements Unit {
   public boolean getHasUnitShot(){
     return hasUnitShot;
   }
-  void setXY(int x, int y){ //added by DAN for convenience
+  public void setXY(int x, int y){ //added by DAN for convenience
     setLocationX(x);
     setLocationY(y);
   }
