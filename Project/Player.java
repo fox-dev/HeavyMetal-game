@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 public class Player {
   //default coordinates
-  //Created so that units will not be atop each other and to have them
-  //located in one area.  REMAKE LATER INTO FINAL INT[][]
   private static final int P1_AIR_X = 4;      // ( 4, 5)
   private static final int P1_AIR_Y = 5;
   private static final int P1_GROUND_X = 4;   // ( 4,10)
@@ -19,7 +17,6 @@ public class Player {
   // Keep track of active units
   // How many units that have been moved during the turn
 
-  //Changed to package class access because of a lack of methods to access certian portions of data members DAN
   private ArrayList<Unit> units = new ArrayList<Unit>();
 
   private UnitAir air;
