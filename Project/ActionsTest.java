@@ -11,7 +11,7 @@ public class ActionsTest {
   Unit myUnit = new UnitAir();
   Input in = new Input(p1, p2);
   Map map = new Map(); //nt current default is a 20x20, all filled with zeros
-  Actions act = new Actions(p1, p2, in, map);
+  Actions act = new Actions(p1, p2, map);
   //p1.units.get(0).sexLocationX(0);
   //HelloWorld me = new HelloWorld();
   
