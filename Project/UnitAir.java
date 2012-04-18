@@ -1,5 +1,5 @@
 // UnitAir.java
-// Implements Unit.java
+// Implements Unit.java  // changed by DAN
 //
 // A generic air unit will have the following:
 // HP = 3
@@ -16,73 +16,19 @@
 
 package project;
 
-public class UnitAir implements Unit {
-
-	private int HP;
-	private int numMoves;
-	private int attack;
-	private int locX;
-	private int locY;
-	private boolean moved = false;
-	private boolean hasUnitShot = false;   //Dan: ensures that unit can only shoot once
+public class UnitAir extends Unit {
+  //defaults for UnitAir DAN
+	private static final int HP_DEFAULT = 3;
+	private static final int MOVES_DEFAULT = 4;
+	private static final int ATK_DEFAULT = 1;
+	private static final int SPAWN_LOC_X = 0;
+	private static final int SPAWN_LOC_Y = 0;
 	
 	public UnitAir() {
-		HP = 3;
-		numMoves = 4;
-		attack = 1;
-		locX = 0;
-		locY = 0;
+	  super(HP_DEFAULT,MOVES_DEFAULT,ATK_DEFAULT,SPAWN_LOC_X,SPAWN_LOC_Y);
 	}
 	
 	public UnitAir(int setHP, int setNumMoves, int ATK, int locationX, int locationY) {
-		HP = setHP;
-		numMoves = setNumMoves;
-		attack = ATK;
-		locX = locationX;
-		locY = locationY;
+		super(setHP, setNumMoves, ATK, locationX, locationY);
 	}
-	public int getMoves() {
-		return numMoves;
-	}
-	public int getHP() {
-		return HP;
-	}
-	public void setHP(int setHP) {
-		HP = setHP;
-	}
-	public void moved() {
-		moved = true;
-	}
-	public void movedFalse() { //added by Dan
-	  moved = false;
-	}
-	public boolean hasMoved() {
-		return moved;
-	}
-	public int getAttack() {
-		return attack;
-	}
-	public void setLocationX(int x) {
-		locX = x;
-	}
-	public void setLocationY(int y) {
-		locY = y;
-	}
-	public int getLocationX() {
-		return locX;
-	}	
-	public int getLocationY() {
-		return locY;
-	}
-	 public void setHasUnitShot(boolean b){
-	   hasUnitShot = b;
-	 }
-	 
-	 public boolean getHasUnitShot(){
-	   return hasUnitShot;
-	 }
-	 public void setXY(int x, int y){ //added by DAN for convenience
-	   setLocationX(x);
-	   setLocationY(y);
-	 }
 }
