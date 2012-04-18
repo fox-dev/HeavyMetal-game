@@ -1,8 +1,6 @@
 package project;
 
 
-//my copy
-
 import java.util.*;
 import java.io.*;
 public class Input {
@@ -163,8 +161,11 @@ public class Input {
 				}
 				
 		
-				if(checkActions.moveUnit(activePlayer.getUnitAt(unit_Coordinates.getX(), unit_Coordinates.getY()), move_Coordinates.getX(), move_Coordinates.getY()) == false){
+				if(checkActions.moveUnit(selectedUnit, move_Coordinates.getX(), move_Coordinates.getY()) == false){
 					System.out.println("You cannot make that move.");
+					if(selectedUnit.hasMoved() == true){
+						System.out.println("A unit can only move once per turn.");
+					}
 					inputSecondCommand();
 					return;
 				}
@@ -210,11 +211,17 @@ public class Input {
 				
 				if(waitingPlayer.getUnitAt(attack_Coordinates.getX(), attack_Coordinates.getY()) == null){
 					System.out.println("There is nothing at that coordinate");
+					if(selectedUnit.getHasUnitShot() == true){
+						System.out.println("A unit can only attack once per turn.");
+					}
 					inputThirdCommand();
 					return;
 				}
 				else if(checkActions.fire(selectedUnit, waitingPlayer.getUnitAt(attack_Coordinates.getX(), attack_Coordinates.getY())) == false){
 					System.out.println("You cannot attack that unit");
+					if(selectedUnit.getHasUnitShot() == true){
+						System.out.println("A unit can only attack once per turn.");
+					}
 					inputThirdCommand();
 					return;
 				}
@@ -276,6 +283,13 @@ public class Input {
 		return attack_Coordinates.getY();
 	}
 	/////////////////////////////////////////////////////////////
+	
+	//Getter function for the current selected unit
+	//**ONLY RETURNS IF A UNIT HAS BEEN SELECTED, OTHERWISE RETURNS NULL**
+	//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+	public Unit getSelectedUnit(){
+		return selectedUnit;
+	}//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 	
 	//function for switching the activePlayer with the waitingPlayer, used when activePlayer turn ends.
 	public void switchPlayerStatuses(){
@@ -393,6 +407,4 @@ class attackCoordinates{
 	}
 	
 }
-
-
 
