@@ -33,6 +33,7 @@ public class Main {
 			player2.removeDeadUnits();
 			if(currentPlayer.checkTurnOver()) {
 			  currentPlayer.unitsReset();  //added by Dan
+			  input.switchPlayerStatuses(); //added by Andrew to switch the activePlayer with waitingPlayer at end of turn.
 				if(currentPlayer == player1)
 					currentPlayer = player2;
 				else
