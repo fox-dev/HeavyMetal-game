@@ -60,43 +60,42 @@ public class Display {
 			}
 		}
 	}
-	
-	/*public void topGrid(){
-		System.out.print("Ã¢â€�Å’Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�ï¿½");
-		}
-	
-	public void leftGrid(){
-		System.out.print("Ã¢â€�â€š");
-		}
-	
-	public void rightGrid(){
-		System.out.print("Ã¢â€�â€š");
-		}
-		
-	public void bottomGrid(){
-		System.out.print("Ã¢â€�â€�Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�â‚¬Ã¢â€�Ëœ");
-		}
-	*/
+
 	
 	public void printMap(){
 		fillMap();
 		
-		//topGrid();
+		System.out.println("");
+
+		for(int i = 0; i < theMap.getX(); i++){ //Print Numbers;
+			if(i < 10){
+				if(i == 0)
+					System.out.print("  ");	
+				System.out.print(i);
+				System.out.print("  ");
+			}
+			else{
+				System.out.print(i);
+				System.out.print(" ");
+			}
+		}
+		
 		for(int x = 0; x < theMap.getX(); x++){
-			//if(x == 0){
-				//leftGrid();i
-			System.out.println("");
-			//}
+			System.out.println("");	
 			for(int y = 0; y < theMap.getY(); y++){
+				if(y == 0){
+					System.out.print("  ");	
+				}
 				//Print coordinate icons filled in array by calling fillMap();
 				System.out.print(board[x][y] + "  ");
-				if(x == 19){
-					//rightGrid();
+				
+				if(y == 19){ //Print Numbers;
+					System.out.print(x);
+					System.out.print(" ");
 				}
 			}
 		}
-		//bottomGrid();
-		//System.out.println();
-		//System.out.println();
+		System.out.println();
+		System.out.println();
 	}
 }
