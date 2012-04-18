@@ -31,4 +31,5 @@ public interface Unit {
 	public int getLocationY();
 	public void setHasUnitShot(boolean b);
 	public boolean getHasUnitShot();
+	void setXY(int x, int y);  //pkg access, method for convenience DAN
 }
