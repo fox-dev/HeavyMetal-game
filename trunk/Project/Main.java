@@ -5,7 +5,6 @@ public class Main {
 	static Map map = new Map();
 	static Player player1 = new Player(1);
 	static Player player2 = new Player(2);
-	static Input input = new Input();
 
 	/*
 	 * Main game loop 
@@ -16,17 +15,22 @@ public class Main {
 	 */
 
 	public static void main(String[] args) {
+		String NL = System.getProperty("line.separator");
 		boolean gameDone = false;
+		Input input = new Input(player1, player2);
 		Display gameDisplay = new Display(map, player1, player2);
-		Actions actions = new Actions(player1, player2, input, map);
+		Actions actions = new Actions(player1, player2, map);
+		input.setActions(actions);
 		Player currentPlayer = player1;
 		
-		gameDisplay.printMap(); // Print out the map
-		
 		while (!gameDone) {
-			// display game window
-			// get user input
-			// update actions
+			gameDisplay.printMap();
+			System.out.println(NL);
+			input.inputFirstCommand();
+			input.inputSecondCommand();
+			input.inputThirdCommand();
+			player1.removeDeadUnits();
+			player2.removeDeadUnits();
 			if(currentPlayer.checkTurnOver()) {
 			  currentPlayer.unitsReset();  //added by Dan
 				if(currentPlayer == player1)
