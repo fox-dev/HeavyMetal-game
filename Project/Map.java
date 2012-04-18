@@ -1,3 +1,5 @@
+package project;
+
 /* Map.java
  * This java file will make a 20x20 2D array and (at this time) fill it with
  * land tiles and water tiles. Randomized water tiles are disabled at this time.)
