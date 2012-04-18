@@ -64,8 +64,8 @@ public class Player {
   
   //Checks to see if the player's turn is over
   public boolean checkTurnOver() {
-    for (int i = 0; i < units.size(); i++) {
-      if((units.get(i)).hasMoved() == false)
+    for (Unit currentUnit : units) {
+      if(currentUnit.hasMoved() == false && currentUnit.getHasUnitShot() == false)
         return false;
     }
     
@@ -74,9 +74,9 @@ public class Player {
   
   //Returns a unit at a position x, y or null if there is nothing at that position
   public Unit getUnitAt(int x, int y) {
-    for(int i = 0; i < units.size(); i++) {
-      if(units.get(i).getLocationX() == x && units.get(i).getLocationY() == y) {
-        return units.get(i);
+    for(Unit currentUnit : units) {
+      if(currentUnit.getLocationX() == x && currentUnit.getLocationY() == y) {
+        return currentUnit;
       }
     }
     

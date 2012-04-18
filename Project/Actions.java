@@ -34,7 +34,6 @@ package project;
 
 public class Actions {
   Player p1, p2;
-  Input input;
   Map mapRef;
   private static final int[][] moveArray = {  {-1, 1, 0,  0},
                                                {0, 0, 1, -1} };
@@ -42,10 +41,9 @@ public class Actions {
   //Calls information on units in the Player passed in  ???
   //Update everything else ??? What else to update???
   
-  public Actions(Player p1, Player p2, Input input, Map mapRef) {
+  public Actions(Player p1, Player p2, Map mapRef) {
     this.p1 = p1;
     this.p2 = p2;
-    this.input = input;
     this.mapRef = mapRef;
   }
   
