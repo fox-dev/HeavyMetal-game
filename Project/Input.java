@@ -1,6 +1,8 @@
 package project;
 
 
+//my copy
+
 import java.util.*;
 import java.io.*;
 public class Input {
@@ -42,7 +44,10 @@ public class Input {
 	private moveCoordinates move_Coordinates;
 	private attackCoordinates attack_Coordinates;
 	
+	//This needs to be set after the Actions class is created, using the setActions method
+	//XXXXXXXXXXXXXXXXXXX***IMPORTANT***XXXXXXXXXXXXXXXXXXXXXXXXXX
 	private Actions checkActions;
+	//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 	
 	public Input(Player aP, Player wP){
 		firstCommand = "";
