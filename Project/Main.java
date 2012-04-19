@@ -27,6 +27,14 @@ public class Main {
 			while(!currentPlayer.checkTurnOver()){
 				gameDisplay.printMap();
 				System.out.println(NL);
+				if(player1.checkNumUnits() == 0){
+					gameDone = true;
+					break;
+				}
+				else if (player2.checkNumUnits() == 0){
+					gameDone = true;
+					break;
+				}
 			
 				input.inputFirstCommand();
 				if(input.getFirstCommand().equalsIgnoreCase("Do Nothing")){
@@ -41,6 +49,7 @@ public class Main {
 				input.inputThirdCommand();
 				player1.removeDeadUnits();
 				player2.removeDeadUnits();
+				
 				if(input.getThirdCommand().equalsIgnoreCase("Do Nothing")){
 					currentPlayer.getUnitAt(input.getSelectedUnit().getLocationX(), input.getSelectedUnit().getLocationY()).attacked();
 				}
