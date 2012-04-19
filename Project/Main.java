@@ -14,7 +14,7 @@ public class Main {
 	 *   Change player turn.
 	 */
 
-	public static void main(String[] args) {
+	public static void main(String args[]){
 		String NL = System.getProperty("line.separator");
 		boolean gameDone = false;
 		Input input = new Input(player1, player2);
@@ -24,13 +24,57 @@ public class Main {
 		Player currentPlayer = player1;
 		
 		while (!gameDone) {
-			gameDisplay.printMap();
-			System.out.println(NL);
-			input.inputFirstCommand();
-			input.inputSecondCommand();
-			input.inputThirdCommand();
+			while(!currentPlayer.checkTurnOver()){
+				gameDisplay.printMap();
+				System.out.println(NL);
+			
+				input.inputFirstCommand();
+				if(input.getFirstCommand().equalsIgnoreCase("Do Nothing")){
+					currentPlayer.forceTurnOver();
+					break;
+				}
+			
+				input.inputSecondCommand();
+				if(input.getSecondCommand().equalsIgnoreCase("Cancel")){
+					break;
+				}
+				input.inputThirdCommand();
+				player1.removeDeadUnits();
+				player2.removeDeadUnits();
+				if(input.getThirdCommand().equalsIgnoreCase("Do Nothing")){
+					currentPlayer.getUnitAt(input.getSelectedUnit().getLocationX(), input.getSelectedUnit().getLocationY()).attacked();
+				}
+				if(input.getThirdCommand().equalsIgnoreCase("Cancel")){
+					while(input.getThirdCommand().equalsIgnoreCase("Cancel")){
+						input.inputSecondCommand();
+						if(input.getSecondCommand().equalsIgnoreCase("Cancel")){
+							while(input.getSecondCommand().equalsIgnoreCase("Cancel")){
+								input.inputFirstCommand();
+								if(input.getFirstCommand().equalsIgnoreCase("Do Nothing")){
+									currentPlayer.forceTurnOver();
+									break;
+								}
+								input.inputSecondCommand();
+							}
+							if(currentPlayer.checkTurnOver()){
+								break;
+							}
+							input.inputThirdCommand();
+							player1.removeDeadUnits();
+							player2.removeDeadUnits();
+						}
+						else{
+							input.inputThirdCommand();
+							player1.removeDeadUnits();
+							player2.removeDeadUnits();
+						}
+					}
+				}
+			}
+			
 			player1.removeDeadUnits();
 			player2.removeDeadUnits();
+				
 			if(currentPlayer.checkTurnOver()) {
 			  currentPlayer.unitsReset();  //added by Dan
 			  input.switchPlayerStatuses(); //added by Andrew to switch the activePlayer with waitingPlayer at end of turn.
@@ -44,9 +88,7 @@ public class Main {
 				gameDone = true;
 			else if (player2.checkNumUnits() == 0)
 				gameDone = true;
-			
 		}
-
 	}
 
 }
