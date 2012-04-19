@@ -21,6 +21,7 @@ public class Player {
 
   private UnitAir air;
   private UnitGround ground;
+  private int playNo; // Francisco Edit
 
   //Constructor, creates units, sets their location
   public Player(int playNum) {
@@ -31,10 +32,12 @@ public class Player {
     if(playNum == 1) {
       air.setXY(P1_AIR_X, P1_AIR_Y);
       ground.setXY(P1_GROUND_X, P1_GROUND_Y);
+      playNo = playNum; // Francisco Edit
     }
     if(playNum == 2) {
       air.setXY(P2_AIR_X, P2_AIR_Y);
       ground.setXY(P2_GROUND_X, P2_GROUND_Y);
+      playNo = playNum; // Francisco Edit
     }
     
     units.add(air);
@@ -50,6 +53,9 @@ public class Player {
     units.add(air);
     units.add(ground);    
   }
+  
+  // Francisco Edit: Returns player number
+  public int getPlayerNum() { return playNo; }
   
   //Removes units that have no more HP
   public void removeDeadUnits() {

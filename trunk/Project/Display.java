@@ -98,4 +98,43 @@ public class Display {
 		System.out.println();
 		System.out.println();
 	}
+	
+	// Francisco Edit: Print the current player and the description of Units
+	public void printStatus(Player p) {
+		System.out.println("Player " + p.getPlayerNum() + "'s turn");
+		for (int i = 0; i < p.checkNumUnits(); i++) {
+			switch(p.getUnit(i).getType()) {
+			case 0: System.out.print("Ground Unit at (" + p.getUnit(i).getLocationX() + "," + p.getUnit(i).getLocationY() + ") has " + p.getUnit(i).getHP() + " HP, " + p.getUnit(i).getAttack() + " ATK and has " + p.getUnit(i).getMoves() + " moves.");
+					if(!p.getUnit(i).hasMoved())
+						System.out.print(" Has not moved yet.");
+					else
+						System.out.print(" Has already moved.");
+					if (!p.getUnit(i).getHasUnitShot())
+						System.out.println(" Has not attacked yet.");
+					else
+						System.out.println(" Has attacked.");
+					break;
+			case 1: System.out.print("Air Unit at (" + p.getUnit(i).getLocationX() + "," + p.getUnit(i).getLocationY() + ") has " + p.getUnit(i).getHP() + " HP, " + p.getUnit(i).getAttack() + " ATK and has " + p.getUnit(i).getMoves() + " moves.");
+					if(!p.getUnit(i).hasMoved())
+						System.out.print(" Has not moved yet.");
+					else
+						System.out.print(" Has already moved.");
+					if (!p.getUnit(i).getHasUnitShot())
+						System.out.println(" Has not attacked yet.");
+					else
+						System.out.println(" Has attacked.");
+					break;
+			default: System.out.print("Generic Unit at (" + p.getUnit(i).getLocationX() + "," + p.getUnit(i).getLocationY() + ") has " + p.getUnit(i).getHP() + " HP, " + p.getUnit(i).getAttack() + " ATK and has " + p.getUnit(i).getMoves() + " moves.");
+					if(!p.getUnit(i).hasMoved())
+						System.out.print(" Has not moved yet.");
+					else
+						System.out.print(" Has already moved.");
+					if (!p.getUnit(i).getHasUnitShot())
+						System.out.println(" Has not attacked yet.");
+					else
+						System.out.println(" Has attacked.");
+					break;
+			}
+		}
+	}
 }

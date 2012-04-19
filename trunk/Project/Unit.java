@@ -1,19 +1,3 @@
- /* Unit.java
-  * An interface for all units //Changed to a super class to all units DAN
-  * 
-  * A rundown of the functions:
-  *		getMoves() =>       returns number of moves the unit has
-  *  	getHP() =>          returns how much HP a unit has
-  *   	setHP(int HP) =>    sets the number of HP the unit has
-  *   	moved() =>          toggle the moved flag to TRUE
-  *   	hasMoved() =>       returns the moved flag
-  *   	getAttack() =>      returns how much attack the unit has
-  *   	setLocationX =>     move the unit to a specific X location
-  *   	setLocationY =>     move the unit to a specific Y location
-  *   	getLocationX =>     return the unit's X location
-  *   	getLocationY =>     return the unit's Y location
-  */
-
 package project;
 
 /* Unit.java
@@ -23,6 +7,7 @@ package project;
  *		getMoves() =>       returns number of moves the unit has
  *  	getHP() =>          returns how much HP a unit has
  *   	setHP(int HP) =>    sets the number of HP the unit has
+ *   	getType() =>		returns unit's type
  *   	moved() =>          toggle the moved flag to TRUE
  *   	hasMoved() =>       returns the moved flag
  *   	getAttack() =>      returns how much attack the unit has
@@ -30,6 +15,10 @@ package project;
  *   	setLocationY =>     move the unit to a specific Y location
  *   	getLocationX =>     return the unit's X location
  *   	getLocationY =>     return the unit's Y location
+ *   
+ * ID Types:
+ * 0 = Ground
+ * 1 = Air
  */
 
 
@@ -39,16 +28,18 @@ public class Unit {
  protected int attack;
  protected int locX;
  protected int locY;
+ protected int type; // ID's a unit as an air, ground, etc
  protected boolean moved = false;
  protected boolean hasUnitShot = false;   //Dan: ensures that unit can only shoot once
  
  public Unit(){
-   HP = numMoves = attack = locX = locY;
+   HP = numMoves = type = attack = locX = locY;
  }
  
- public Unit(int setHP, int setNumMoves, int ATK, int locationX, int locationY){
+ public Unit(int setHP, int setNumMoves, int Utype, int ATK, int locationX, int locationY){
    HP = setHP;
    numMoves = setNumMoves;
+   type = Utype;
    attack = ATK;
    locX = locationX;
    locY = locationY;   
@@ -61,6 +52,9 @@ public class Unit {
  }
  public void setHP(int setHP) {
    HP = setHP;
+ }
+ public int getType() {
+	 return type;
  }
  public void moved() {
    moved = true;
