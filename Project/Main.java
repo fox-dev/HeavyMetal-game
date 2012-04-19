@@ -1,5 +1,11 @@
 package project;
 
+import project.Actions;
+import project.Display;
+import project.Input;
+import project.Map;
+import project.Player;
+
 public class Main {
 	// Create players and map and input
 	static Map map = new Map();
@@ -26,16 +32,18 @@ public class Main {
 		while (!gameDone) {
 			while(!currentPlayer.checkTurnOver()){
 				gameDisplay.printMap();
-				System.out.println(NL);
 				if(player1.checkNumUnits() == 0){
 					gameDone = true;
+					System.out.println("Player 2 wins"); // Francisco Edit: Add winning message
 					break;
 				}
 				else if (player2.checkNumUnits() == 0){
 					gameDone = true;
+					System.out.println("Player 1 wins"); // Francisco Edit: Add winning message
 					break;
 				}
-			
+				gameDisplay.printStatus(currentPlayer); // Francisco Edit: Print status
+				
 				input.inputFirstCommand();
 				if(input.getFirstCommand().equalsIgnoreCase("Do Nothing")){
 					currentPlayer.forceTurnOver();
@@ -91,7 +99,6 @@ public class Main {
 					currentPlayer = player2;
 				else
 					currentPlayer = player1;
-				gameDisplay.printMap(); // Refresh map after turn is over
 			}
 			if(player1.checkNumUnits() == 0)
 				gameDone = true;
