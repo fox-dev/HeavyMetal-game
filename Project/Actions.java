@@ -56,6 +56,7 @@ public class Actions {
       tgt.setHP(tgt.getHP() - src.getAttack());
       src.setHasUnitShot(true);
       p1.removeDeadUnits();
+      p2.removeDeadUnits();
       return true;
     }
     return false;
