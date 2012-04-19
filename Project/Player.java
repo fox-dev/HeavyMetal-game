@@ -65,11 +65,19 @@ public class Player {
   //Checks to see if the player's turn is over
   public boolean checkTurnOver() {
     for (Unit currentUnit : units) {
-      if(currentUnit.hasMoved() == false && currentUnit.getHasUnitShot() == false)
+      if(currentUnit.hasMoved() == false || currentUnit.getHasUnitShot() == false) //Changed to || instead of && since a unit can attack then choose to move after. -Andrew
         return false;
     }
     
     return true;
+  }
+  
+  //Added by Andrew, Force turn over for the player.
+  public void forceTurnOver(){
+	  for(Unit currentUnit : units){
+		  currentUnit.moved();
+		  currentUnit.attacked();
+	  }
   }
   
   //Returns a unit at a position x, y or null if there is nothing at that position
