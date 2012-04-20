@@ -1,11 +1,5 @@
 package project;
 
-import project.Actions;
-import project.Display;
-import project.Input;
-import project.Map;
-import project.Player;
-
 public class Main {
 	// Create players and map and input
 	static Map map = new Map();
@@ -28,21 +22,20 @@ public class Main {
 		Actions actions = new Actions(player1, player2, map);
 		input.setActions(actions);
 		Player currentPlayer = player1;
+		Player waitingPlayer = player2;
 		
 		while (!gameDone) {
 			while(!currentPlayer.checkTurnOver()){
 				gameDisplay.printMap();
 				if(player1.checkNumUnits() == 0){
-					gameDone = true;
-					System.out.println("Player 2 wins"); // Francisco Edit: Add winning message
+					gameDone = true;	
 					break;
 				}
 				else if (player2.checkNumUnits() == 0){
 					gameDone = true;
-					System.out.println("Player 1 wins"); // Francisco Edit: Add winning message
 					break;
 				}
-				gameDisplay.printStatus(currentPlayer); // Francisco Edit: Print status
+				gameDisplay.printStatus(currentPlayer,waitingPlayer); // Francisco Edit: Print status
 				
 				input.inputFirstCommand();
 				if(input.getFirstCommand().equalsIgnoreCase("Do Nothing")){
@@ -95,15 +88,23 @@ public class Main {
 			if(currentPlayer.checkTurnOver()) {
 			  currentPlayer.unitsReset();  //added by Dan
 			  input.switchPlayerStatuses(); //added by Andrew to switch the activePlayer with waitingPlayer at end of turn.
-				if(currentPlayer == player1)
+				if(currentPlayer == player1) { // Swap active and waiting players
 					currentPlayer = player2;
-				else
+					waitingPlayer = player1;
+				}
+				else {
 					currentPlayer = player1;
+					waitingPlayer = player2;
+				}
 			}
-			if(player1.checkNumUnits() == 0)
+			if(player1.checkNumUnits() == 0) {
+				System.out.println("Player 2 wins"); // Francisco Edit: Add winning message
 				gameDone = true;
-			else if (player2.checkNumUnits() == 0)
+			}
+			else if (player2.checkNumUnits() == 0) {
+				System.out.println("Player 1 wins"); // Francisco Edit: Add winning message
 				gameDone = true;
+			}
 		}
 	}
 
