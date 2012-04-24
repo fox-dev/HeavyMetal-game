@@ -156,7 +156,7 @@ public class Actions {
     //        the unit cannot move back onto itself.  This method is only for CONTINUING to making
     //        the moveArrayDisplay.
     //      MUST NOT BE CALLED ELSEWHERE because of the dependency on
-    //        private boolean moveLegal(...)
+    //        public boolean moveLegal(...)
     
     //unit cannot move ontop of ANY OTHER unit.
     if(mvArr[currX][currY] == A_UNIT_IS_HERE)
