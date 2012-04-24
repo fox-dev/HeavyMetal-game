@@ -121,7 +121,7 @@ public class Player {
   
   //Added by Dan 23 Apr 2012
   //returns true if u is a unit of this.Player
-  //returns false if u is NOT in Player.units ArrayList<Unit>
+  //returns false if u is NOT in Player.units ArrayList<Unit> 
   public boolean isThisMyUnit(Unit testUnit){
     for(Unit thisUnits : units){
       if(thisUnits == testUnit)
