@@ -3,9 +3,11 @@
  *  Professor: Yang, David
  *  Class: CS4310 Software Engineering I
  *  Assignment Name: Project for class
- *  Description: CONTAINS ONLY 3 PUBLIC METHODS plus a constructor 
+ *  Description: CONTAINS ONLY 4 PUBLIC METHODS plus a constructor 
  *    all others are private helpers(you won't need them)
- *    
+ *    - MADE PUBLIC public boolean moveLegal(Unit u, int destX, int destY)
+ *      -has direct correlation to int[][] moveArrayDisplay
+ *      -if moveLegal(...) is called it will update/change moveArrayDisplay
  *    - public boolean fire(Unit src, Unit tgt) 
  *    - public boolean fire(Unit src, int x, int y)
  *      -returns true if "fire" is done and updates appropriate data
@@ -31,12 +33,6 @@
  *    note: "helper" classes listed at end of code
 */
 package project;
-
-import project.Map;
-import project.MoveEl;
-import project.Player;
-import project.Unit;
-import project.UnitGround;
 
 public class Actions {
   Player p1, p2;
@@ -115,7 +111,7 @@ public class Actions {
   //if moveArrayDisplay[i][j] == A_UNIT_IS_HERE then unit CANNOT move to that location (OTHER UNIT)
   
   int[][] moveArrayDisplay;
-  private boolean moveLegal(Unit u, int destX, int destY){   
+  public boolean moveLegal(Unit u, int destX, int destY){   
     //create an array the size of mapRef.  Fills with CANT_MOVE_HERE0 into all fields by default
     moveArrayDisplay = new int[mapRef.getX()][mapRef.getY()];
     
