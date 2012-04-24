@@ -32,6 +32,12 @@
 */
 package project;
 
+import project.Map;
+import project.MoveEl;
+import project.Player;
+import project.Unit;
+import project.UnitGround;
+
 public class Actions {
   Player p1, p2;
   Map mapRef;
@@ -96,47 +102,95 @@ public class Actions {
     }
     return false;
   }
-  private boolean moveLegal(Unit u, int x, int y){
-    //if unit has moved already, it cannot move again
-    if(u.hasMoved()) 
-      return false;
-    //unit cannot move ontop of itself, and cannot move ontop of any other unit
-    if( p1.getUnitAt(x,y) != null )               //MAKE p1.get... into a STATIC method
-      return false;
-    //unit cannot move ontop of itself, also for p2 units. 
-    if( p2.getUnitAt(x,y) != null ) //added -Andrew
-      return false;
-    //unit cannot move off of the map
-    if( !isXY_onMap(x,y) )
-      return false;
-    //final destination cannot be on water if ground unit
-    if( isGroundOnWater(u,x,y) )
-      return false;
+  
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXEDIT AREA START
+  //package class variable for displaying map of moves
+  //this moveArrayDisplay is used to verify a move rather than the
+  //queue class which will be removed
+  public static final int CANT_MOVE_HERE0 = 0;  
+  public static final int LEGAL_MOVE_HERE= 1;
+  public static final int A_UNIT_IS_HERE = 2;
+  //if moveArrayDisplay[i][j] == CANT_MOVE_HERE0 then unit CANNOT move to that location (TERRAIN)
+  //if moveArrayDisplay[i][j] == LEGAL_MOVE_HERE then unit CAN move to that location
+  //if moveArrayDisplay[i][j] == A_UNIT_IS_HERE then unit CANNOT move to that location (OTHER UNIT)
+  
+  int[][] moveArrayDisplay;
+  private boolean moveLegal(Unit u, int destX, int destY){   
+    //create an array the size of mapRef.  Fills with CANT_MOVE_HERE0 into all fields by default
+    moveArrayDisplay = new int[mapRef.getX()][mapRef.getY()];
     
-    //Make a move queue and add moves that are legal
-    QueueMove q = new QueueMove();
-    q.enqueue(new MoveEl(u.getMoves(),u.getLocationX(),u.getLocationY(),null));
-    MoveEl moveEl;
+    //update moveArrayDisplay to have all units(p1 and p2) with A_UNIT_IS_HERE on moveArrayDisplay
+    //update moveArrayDisplay with p1
+    Unit tempUnit;
+    for(int i = 0; p1.getUnit(i) != null; i++){
+      tempUnit = p1.getUnit(i);
+      moveArrayDisplay[tempUnit.getLocationX()][tempUnit.getLocationY()] = A_UNIT_IS_HERE;
+    }
+    //update moveArrayDisplay with p2
+    for(int i = 0; p2.getUnit(i) != null; i++){
+      tempUnit = p2.getUnit(i);
+      moveArrayDisplay[tempUnit.getLocationX()][tempUnit.getLocationY()] = A_UNIT_IS_HERE;
+    }
+    
+    //Call recursive function to CONTINUE building the moveArrayDisplay
+    if(!u.hasMoved()){ //if unit has not moved then continue to build moveArrayDisplay
+      moveArrayDisplay[u.getLocationX()][u.getLocationY()] = LEGAL_MOVE_HERE;  //TEMPORARY to allow recursion!!!! 
+      moveArrayBuildRecursive(u, u.getLocationX(), u.getLocationY(), u.getMoves(),
+                          destX, destY, moveArrayDisplay);    
+    }
+    
+    //make at the end, unit actual location a A_UNIT_IS_HERE
+    //  this will take care of the case "unit cannot move ontop of itself" from moveArrayBuildRecursive(...)
+    moveArrayDisplay[u.getLocationX()][u.getLocationY()] = A_UNIT_IS_HERE;
+    
+    //if (destX ,destY) is LEGAL_MOVE_HERE on moveArrayDisplay then return true. else then false
+    if(moveArrayDisplay[destX][destY] == LEGAL_MOVE_HERE)
+      return true;
+    else
+      return false;
+  }
+  
+  private void moveArrayBuildRecursive(Unit u, int currX, int currY, int movesRemaining,
+                                    int destX, int destY, int[][] mvArr){
+    //XXXXX breaks from recursive "branch" if unit cannot be on currX and currY
+    //      makes no change to mvArr if breaking from recursive "branch".
+    //      UNIT is allowed to move back on itself....ie move left one, then
+    //        move right one.  This will be "checked" for in private boolean moveLegal(...)
+    //        as the original unit location will be changed to a CANT_MOVE_HERE0 so that in the end
+    //        the unit cannot move back onto itself.  This method is only for CONTINUING to making
+    //        the moveArrayDisplay.
+    //      MUST NOT BE CALLED ELSEWHERE because of the dependency on
+    //        private boolean moveLegal(...)
+    
+    //unit cannot move ontop of ANY OTHER unit.
+    if(mvArr[currX][currY] == A_UNIT_IS_HERE)
+      return;
+    //unit cannot move off of map
+    if( !isXY_onMap(currX, currY) )
+      return; 
+    //final destination cannot be on water if ground unit
+    if( isGroundOnWater(u,currX,currY) )
+      return;
+    
+    //XXXXX currX, currY is a valid location or a "LEGAL_MOVE_HERE"
     int xTemp, yTemp;
-    while(!q.isEmpty()){
-      moveEl = q.dequeue();
-      for(int i = 0; i < 4; i++){
-        //make a move
-        xTemp = moveEl.x + moveArray[0][i];
-        yTemp = moveEl.y + moveArray[1][i];
-        //check if move is done
-        if(xTemp == x && yTemp == y)
-           return true;
-        if( isXY_onMap(xTemp,yTemp) ) //check if intermediate move is on map
-          //add move if ( !(a ground unit and its on water) )
-          if(!isGroundOnWater(u, xTemp,yTemp))
-            if(moveEl.numMovesLeft > 1)  //added by Dan Apr17 1218am
-              q.enqueue(new MoveEl(moveEl.numMovesLeft-1, xTemp, yTemp, null));
+    mvArr[currX][currY] = LEGAL_MOVE_HERE;
+    //move in each direction (up,down,left,right) 1 space and recursively call 
+    //  moveArrayRecursive for that new X, Y  while decrementing 
+    //  "movesRemaining" by 1 for each move to end recursive "branches"
+    if(movesRemaining > 0) {
+      for(int i = 0; i < 4; i++){  // 4 => max moves, left right up down
+        //make a move ( cycles for each i, left, right, up, down )
+        xTemp = currX + moveArray[0][i];
+        yTemp = currY + moveArray[1][i];
+        moveArrayBuildRecursive(u, xTemp, yTemp, movesRemaining - 1, destX, destY, mvArr);
       }
     }
-    //all possible moves have been tried
-    return false;
   }
+  
+  
+  
+  //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXEDIT AREA END
   private boolean isXY_onMap(int x, int y){
     if( x<0 || y<0 || x>mapRef.getX()-1 || y > mapRef.getY()-1 )
       return false;
