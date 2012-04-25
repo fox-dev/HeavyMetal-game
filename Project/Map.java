@@ -64,4 +64,9 @@ public class Map {
     }    
     
   }
+  
+	//Get map -Andrew
+	public Map getMap(){
+		return map;
+	}
 }
