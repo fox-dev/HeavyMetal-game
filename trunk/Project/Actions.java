@@ -29,7 +29,6 @@
  *        - unit must not move off of map
  *        - ground unit cannot move on water
 */
-package project;
 
 public class Actions {
   Player p1, p2;
@@ -71,7 +70,7 @@ public class Actions {
     return false;
   }
   
-  private boolean fireLegal(Unit src, Unit tgt){
+ public boolean fireLegal(Unit src, Unit tgt){ //made public -Andrew
     //units don't exist
     if(src == null || tgt == null)
       return false;

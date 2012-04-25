@@ -8,7 +8,7 @@ import javax.swing.ImageIcon;
 public class Drawing {
 
 	private Player player1, player2;
-	private Image ground1, ground2, air1, air2, current;
+	private Image ground1, ground2, air1, air2, current, TILE_GRASS;
 	private World world;
 	private UnitDisplay unitDisplay; 
 	
@@ -22,6 +22,8 @@ public class Drawing {
 		ground2 = new ImageIcon("images/tank2.png").getImage();
 		air1 = new ImageIcon("images/airplane.png").getImage();
 		air2 = new ImageIcon("images/airplane2.png").getImage();
+		
+		TILE_GRASS = new ImageIcon("images/grass.png").getImage(); // Added for drawing the grass - Andrew
 		
 	}
 	
@@ -40,6 +42,9 @@ public class Drawing {
 			else if (player1.getUnit(i).getType() == 1) {
 				current = air1;
 			}
+			else if(player1.getUnit(i).getHP() <= 0){ //If unit HP is 0, replace it with grass, change later - Andrew
+				current = TILE_GRASS;
+			}
 			g.drawImage(current, player1.getUnit(i).getLocationX()
 					* World.TILE_SIZE, player1.getUnit(i).getLocationY()
 					* World.TILE_SIZE, null);
@@ -54,6 +59,9 @@ public class Drawing {
 			}
 			else if (player2.getUnit(i).getType() == 1) {
 				current = air2;
+			}
+			else if(player2.getUnit(i).getHP() <= 0){ //If unit HP is 0, replace it with grass, change later - Andrew
+				current = TILE_GRASS;
 			}
 			g.drawImage(current, player2.getUnit(i).getLocationX()
 					* World.TILE_SIZE, player2.getUnit(i).getLocationY()

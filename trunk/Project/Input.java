@@ -1,9 +1,94 @@
 package project;
 
-
-import java.util.*;
-import java.io.*;
+//GUI Update Version ~ Add Comments later
+import java.awt.event.MouseEvent;
 public class Input {
+	
+	private Player activePlayer, waitingPlayer;
+	private Actions checkActions;
+	private int pressedX,pressedY;
+	private Unit selectedUnit;
+	
+	public Input(Player ap, Player wp, Actions a){
+		activePlayer = ap;
+		waitingPlayer = wp;
+		checkActions = a;
+	}
+	
+	public void mousePressed(MouseEvent e){
+			pressedX = e.getX() / World.TILE_SIZE;
+			pressedY = e.getY() / World.TILE_SIZE;			
+	}
+	
+	public void directInput(MouseEvent e){
+		
+		mousePressed(e);
+		try{
+		if(!activePlayer.unitSelected()){
+			if(activePlayer.getUnitAt(pressedX, pressedY) != null && activePlayer.getUnitAt(pressedX, pressedY).hasMoved() == false && activePlayer.unitSelected() == false){
+				System.out.println("You selected a unit");
+				selectedUnit = activePlayer.getUnitAt(pressedX, pressedY);
+				activePlayer.setSelectedTrue();
+			}
+		}
+		
+			
+		else if(activePlayer.unitSelected() && selectedUnit != null){
+			if(pressedX == selectedUnit.getLocationX() && pressedY == selectedUnit.getLocationY()){
+				System.out.println("Unit Unselected");
+				selectedUnit = null;
+				activePlayer.setSelectedFalse();
+			}
+		}
+
+		if(selectedUnit != null && checkActions.moveLegal(selectedUnit, pressedX, pressedY) == true && waitingPlayer.getUnitAt(pressedX, pressedY) == null){
+			System.out.println("Move coordinates accepted.");
+			checkActions.moveUnit(selectedUnit, pressedX, pressedY);
+			activePlayer.setSelectedFalse();
+			selectedUnit = null;
+		}
+		if(selectedUnit != null && waitingPlayer.getUnitAt(pressedX, pressedY) != null && selectedUnit.getHasUnitShot() == false && checkActions.fireLegal(selectedUnit, waitingPlayer.getUnitAt(pressedX,pressedY))){ //needs to check if an Attack is valid (range, etc)
+			System.out.println("Attacking that Unit.");
+			checkActions.fire(selectedUnit, waitingPlayer.getUnitAt(pressedX, pressedY));
+			activePlayer.setSelectedFalse();
+			selectedUnit = null;
+			waitingPlayer.removeDeadUnits();
+			activePlayer.removeDeadUnits();
+		}
+		
+		}catch(NullPointerException npe){
+			System.out.println("There is nothing there");
+		}
+		
+		
+	}
+	
+	//function for switching the activePlayer with the waitingPlayer, used when activePlayer turn ends.
+		public void switchPlayerStatuses(){
+			Player temp = activePlayer;
+			activePlayer = waitingPlayer;
+			waitingPlayer = temp;
+			
+			selectedUnit = null;
+		
+		}
+	
+	
+
+}
+
+
+
+
+
+
+
+
+//import java.util.*;
+//import java.io.*;
+/*
+public class Input {
+
 	//Gets user input
 	//Checks if move is valid
 	//Sends the information to player class
@@ -11,15 +96,15 @@ public class Input {
 	//the location to move it, and the action to be taken 
 	//attack, do nothing, cancel.  Initial string can be do nothing.
 	
-	/*
+	+
 	 * Input command functions are separate to allow for board updating in between inputs.
 	 * -secondCommand should only be accessed if the firstCommand = "Select Unit"
 	 * -thirdCommand should only be accessed if the firstCommand = "Select Unit"
 	 * -secondCommand and thirdCommand should return to previous commands if they = "cancel"
-	 */
+	 -
 	
 	
-	/*firstCommand = do nothing, or select unit coordinates
+	+firstCommand = do nothing, or select unit coordinates
 	 *secondCommand = cancel, or move to a coordinate
 	 *thirdCommand = action (attack, do nothing, cancel) 
 	 *
@@ -27,12 +112,12 @@ public class Input {
 	 *unit_Coordinates = coordinates of a selected unit (not always necessary)
 	 *move_Coordinates = coordinates to move a selected unit to (not always necessary)
 	 *attack_Coordinates are need if the "thirdCommand" is an attack. (not always necessary)
-	*/
+	-
 	private String firstCommand,secondCommand, thirdCommand;
 	
-	/*activePlayer = the player who has control of the board.
+	+activePlayer = the player who has control of the board.
 	 *waitingPlayer = the player that is waiting.
-	 */
+	 -
 	private Player activePlayer, waitingPlayer;
 	
 	//The unit that is selected, when moved, will also have its location updated.
@@ -71,11 +156,11 @@ public class Input {
 		attack_Coordinates = new attackCoordinates();
 	}
 	
-	/*This setActions method is needed since we cannot include
+	+This setActions method is needed since we cannot include
 	 * an Actions object in the input constructor before an Actions object is made.
 	 * Therefore you must set the actions later after both the Input object and Actions object
 	 * have both been created with their appropriate constructor.
-	 */
+	 -
 	public void setActions(Actions a){
 		checkActions = a;
 	}
@@ -127,11 +212,11 @@ public class Input {
 	}
 	
 	//second Command (This is the movement command, if user inputs Cancel, it should return to the firstCommand)
-	/*
+	+
 	 * If a unit is moved, the "moved" boolean of the unit should be set to true;
 	 * If "move to coordinate" is typed and the "moved" boolean is set to true, have function return and print that no further movements for that unit can be made.
 	 * If "Next" is inputed, the thirdCommand should be prompted, and the unit can still move after an attack.
-	 */
+	 -
 	public void inputSecondCommand(){
 		try{
 			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
@@ -182,9 +267,9 @@ public class Input {
 	}
 	
 	//third Command (This is the attack command)
-	/*This command should be prompted after the second command, if do nothing is inputed, this ends the movement of the selected unit.
+	+This command should be prompted after the second command, if do nothing is inputed, this ends the movement of the selected unit.
 	 * If cancel is selected, the second Command should be re-prompted to the user.
-	 */
+	 -
 	public void inputThirdCommand(){
 		try{
 			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
@@ -252,10 +337,10 @@ public class Input {
 		return thirdCommand;
 	}
 	
-	/*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+	+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 	 * the Following functions are COORDINATE getter functions
 	 * for X and Y coordinates.
-	 *XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
+	 *XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-
 	//get function for the selected unit's coordinates
 	public int getUnitCoordinates_X(){
 		return unit_Coordinates.getX();
@@ -285,7 +370,7 @@ public class Input {
 	/////////////////////////////////////////////////////////////
 	
 	//Getter function for the current selected unit
-	//**ONLY RETURNS IF A UNIT HAS BEEN SELECTED, OTHERWISE RETURNS NULL**
+	/+*ONLY RETURNS IF A UNIT HAS BEEN SELECTED, OTHERWISE RETURNS NULL**
 	//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 	public Unit getSelectedUnit(){
 		return selectedUnit;
@@ -307,7 +392,8 @@ public class Input {
 	}
 }
 
-/*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
++XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
  *  Helper Classes for Input Class
  * These classes are basically for keeping track of the following:
  * -Selected Unit Coordinates
@@ -315,7 +401,7 @@ public class Input {
  * -Attack Coordinates
  * Note: Default values are set to -1 since -1 is off the map and java
  * does not accept null ints.
- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
+ XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-
 
 class unitCoordinates{
 	private int x;
@@ -408,3 +494,4 @@ class attackCoordinates{
 	
 }
 
+*/
