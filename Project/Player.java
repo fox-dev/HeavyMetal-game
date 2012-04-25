@@ -22,9 +22,14 @@ public class Player {
   private UnitAir air;
   private UnitGround ground;
   private int playNo; // Francisco Edit
+  
+  // Boolean so that a player can only have 1 selected unit at a time -Andrew
+  private boolean selected;
+  private int selectedUnitNumber = -1;
 
   //Constructor, creates units, sets their location
   public Player(int playNum) {
+	selected = false;
     
     air = new UnitAir();
     ground = new UnitGround();
@@ -71,7 +76,7 @@ public class Player {
   //Checks to see if the player's turn is over
   public boolean checkTurnOver() {
     for (Unit currentUnit : units) {
-      if(currentUnit.hasMoved() == false || currentUnit.getHasUnitShot() == false) //Changed to || instead of && since a unit can attack then choose to move after. -Andrew
+      if(currentUnit.hasMoved() && false && currentUnit.getHasUnitShot() == false) //Changed back to && since we don't have a end turn button yet. -Andrew
         return false;
     }
     
@@ -129,5 +134,22 @@ public class Player {
     }
     return false;
   }
+  
+	// Checks to see if a unit is selected, only 1 unit selection at a time -Andrew
+	public boolean unitSelected() {
+		return selected;
+	}
+	// Set true selected -Andrew
+	public void setSelectedTrue(){
+		selected = true;
+	}
+	
+	// Set false selected -Andrew
+	public void setSelectedFalse(){
+		selected = false;
+	}
+	
+
 }
+
 

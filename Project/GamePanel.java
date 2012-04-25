@@ -21,6 +21,8 @@ public class GamePanel extends JPanel implements Runnable{
 	World world;
 	Player player1, player2;
 	// Input will go where select was in my old one Select select;
+	Input testinput;
+	Actions testactions;
 	UnitDisplay unitDisplay;
 	Drawing drawing;
 	
@@ -31,6 +33,10 @@ public class GamePanel extends JPanel implements Runnable{
 		world = new World();
 		unitDisplay = new UnitDisplay(player1);
 		drawing = new Drawing(player1, player2, world, unitDisplay);
+		
+		testactions = new Actions(player1,player2, world.getMap()); //Added -Andrew
+		testinput = new Input(player1,player2,testactions); //Added -Andrew
+		
 		//Replace with input select = new Select(player1, player2, world, 1, 2);
 		this.setPreferredSize(d);
 		this.setBackground(Color.WHITE);
@@ -40,10 +46,19 @@ public class GamePanel extends JPanel implements Runnable{
 		//Mouse listener
 		addMouseListener(new MouseAdapter() {
 			
-			public void mousePressed(MouseEvent e) {
-				
+			public void mousePressed(MouseEvent e) { //Added -Andrew
 				//Replace with input input.mousePressed(e);
-				e.consume();
+				testinput.directInput(e);
+				if(player1.checkTurnOver() == true){
+					System.out.println("Turn is over. Switching");
+					player1.unitsReset();
+					testinput.switchPlayerStatuses();
+				}
+				if(player2.checkTurnOver() == true){
+					System.out.println("Turn is over. Switching");
+					player2.unitsReset();
+					testinput.switchPlayerStatuses();
+				}
 			}
 			
 			public void mouseReleased(MouseEvent e) {
@@ -184,3 +199,4 @@ public class GamePanel extends JPanel implements Runnable{
 	
 
 }
+
