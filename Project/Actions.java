@@ -3,8 +3,9 @@
  *  Professor: Yang, David
  *  Class: CS4310 Software Engineering I
  *  Assignment Name: Project for class
- *  Description: CONTAINS ONLY 3 PUBLIC METHODS plus a constructor 
- *    all others are private helpers(you won't need them)
+ *  Description: CONTAINS ONLY 4 PUBLIC METHODS plus a constructor 
+ *    - public int[][] makeNewMovementDisplay(Unit u) added
+ *       -creates an array of sizes from map.java and list with '1's of movable locations
  *    - MADE PUBLIC public boolean moveLegal(Unit u, int destX, int destY)
  *      -has direct correlation to int[][] moveArrayDisplay
  *      -if moveLegal(...) is called it will update/change moveArrayDisplay
@@ -27,16 +28,8 @@
  *        - unit cannot move on top of any other unit
  *        - unit must not move off of map
  *        - ground unit cannot move on water
- *        
- *    -3 methods listed make checks for legality of move
- *    note: "helper" classes listed at end of code
 */
 package project;
-
-import project.Map;
-import project.Player;
-import project.Unit;
-import project.UnitGround;
 
 public class Actions {
   Player p1, p2;
@@ -54,7 +47,15 @@ public class Actions {
     this.p2 = p2;
     this.mapRef = mapRef;
   }
-  
+
+  public int[][] makeNewMovementDisplay(Unit u){
+    int[][] tempSwap;
+    int[][] temp = moveArrayDisplay;
+    moveLegal(u, 0, 0); //makes a new int[][] that is referenced by moveArrayDisplay
+    tempSwap = moveArrayDisplay;
+    moveArrayDisplay = temp;
+    return tempSwap;
+  }
   //Attack options
   //check if fire is Legal returns true if legal, false if ILLEGAL
   //updates target HP, units has shot boolean, and cleans map of dead units
