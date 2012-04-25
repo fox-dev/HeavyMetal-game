@@ -76,7 +76,7 @@ public class Player {
   //Checks to see if the player's turn is over
   public boolean checkTurnOver() {
     for (Unit currentUnit : units) {
-      if(currentUnit.hasMoved() && false && currentUnit.getHasUnitShot() == false) //Changed back to && since we don't have a end turn button yet. -Andrew
+      if(currentUnit.hasMoved() == false && currentUnit.getHasUnitShot() == false) //Changed back to && since we don't have a end turn button yet. -Andrew
         return false;
     }
     
