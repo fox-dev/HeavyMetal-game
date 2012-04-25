@@ -51,7 +51,7 @@ public class Map {
   // Make map from data
   public Map(String srcName) {
 	  try{
-		  BufferedReader br = new BufferedReader(new FileReader("maps/" + srcName));
+		  BufferedReader br = new BufferedReader(new FileReader("maps/"+srcName));
 		  String bX = ""; // Imported map's X size
 		  String bY = ""; // Imported map's Y size
 		  String buffer; // String buffer
@@ -70,7 +70,8 @@ public class Map {
 		  // Fill the map with data from file
 		  for(int x = 0; x < Integer.parseInt(bX); x++){
 			for(int y = 0; y < Integer.parseInt(bY); y++){
-				mapArr[x][y] = (char)br.read();
+				mapArr[x][y] = Character.getNumericValue((char)br.read());
+				System.out.println(mapArr[x][y]);
 				}
 			}
 		br.close();
