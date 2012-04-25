@@ -8,6 +8,8 @@ package project;
  *  	getHP() =>          returns how much HP a unit has
  *   	setHP(int HP) =>    sets the number of HP the unit has
  *   	getType() =>		returns unit's type
+ *      getDescription() => returns unit's description
+ *      getMRestriction() =>returns unit's move restriction
  *   	moved() =>          toggle the moved flag to TRUE
  *   	hasMoved() =>       returns the moved flag
  *   	getAttack() =>      returns how much attack the unit has
@@ -19,6 +21,14 @@ package project;
  * ID Types:
  * 0 = Ground
  * 1 = Air
+ * 2 = Water
+ * 255 = Undefined
+ * 
+ * Move Restrictions:
+ * 0 = None (Can move anywhere)
+ * 1 = Only Land (Can only move on land tiles)
+ * 2 = Only Water (Can only move on water tiles)
+ * 
  */
 
 
@@ -29,17 +39,24 @@ public class Unit {
  protected int locX;
  protected int locY;
  protected int type; // ID's a unit as an air, ground, etc
+ protected String description; // A short description (Like "Tank" or "Bomber")
+ protected int restriction; // Restricts a unit to certain tiles
  protected boolean moved = false;
  protected boolean hasUnitShot = false;   //Dan: ensures that unit can only shoot once
  
  public Unit(){
    HP = numMoves = type = attack = locX = locY;
+   type = 255; // Undefined
+   restriction = 0; // No restriction
+   description = "Undefined";
  }
  
- public Unit(int setHP, int setNumMoves, int Utype, int ATK, int locationX, int locationY){
+ public Unit(int setHP, int setNumMoves, int Utype, String desc, int restrict, int ATK, int locationX, int locationY){
    HP = setHP;
    numMoves = setNumMoves;
    type = Utype;
+   description = desc;
+   restriction = restrict;
    attack = ATK;
    locX = locationX;
    locY = locationY;   
@@ -55,6 +72,12 @@ public class Unit {
  }
  public int getType() {
 	 return type;
+ }
+ public String getDescription() {
+	 return description;
+ }
+ public int getMRestriction() {
+	 return restriction;
  }
  public void moved() {
    moved = true;
@@ -101,4 +124,3 @@ public class Unit {
    setLocationY(y);
  }
 }
-
