@@ -53,11 +53,13 @@ public class GamePanel extends JPanel implements Runnable{
 					System.out.println("Turn is over. Switching");
 					player1.unitsReset();
 					testinput.switchPlayerStatuses();
+					System.out.println("Player 2's turn.");
 				}
 				if(player2.checkTurnOver() == true){
 					System.out.println("Turn is over. Switching");
 					player2.unitsReset();
 					testinput.switchPlayerStatuses();
+					System.out.println("Player 1's turn.");
 				}
 			}
 			
