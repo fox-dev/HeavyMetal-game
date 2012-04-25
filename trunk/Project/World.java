@@ -55,5 +55,8 @@ public class World {
 			}
 		}
 	}
-	
+	// Get map
+	public Map getMap() {
+		return map;
+	}
 }
