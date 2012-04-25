@@ -3,17 +3,16 @@
  *  Professor: Yang, David
  *  Class: CS4310 Software Engineering I
  *  Assignment Name: Project for class
- *  Description: CONTAINS ONLY 4 PUBLIC METHODS plus a constructor 
+ *  Description: CONTAINS ONLY 3 PUBLIC METHODS plus a constructor 
  *    all others are private helpers(you won't need them)
  *    - MADE PUBLIC public boolean moveLegal(Unit u, int destX, int destY)
  *      -has direct correlation to int[][] moveArrayDisplay
  *      -if moveLegal(...) is called it will update/change moveArrayDisplay
  *    - public boolean fire(Unit src, Unit tgt) 
- *    - public boolean fire(Unit src, int x, int y)
  *      -returns true if "fire" is done and updates appropriate data
  *        to include cleaning up dead units with Player.removeDeadUnits()
  *      -returns false if "fire" is NOT valid and makes no changes
- *      -2 above methods check if a fire action is legal by:
+ *      -above methods check if a fire action is legal by:
  *        - if one of the units don't exist
  *        - if one of the units are dead
  *        - if the unit attack has already attacked it can't
@@ -34,15 +33,22 @@
 */
 package project;
 
+import project.Map;
+import project.Player;
+import project.Unit;
+import project.UnitGround;
+
 public class Actions {
   Player p1, p2;
   Map mapRef;
+  int[][] moveArrayDisplay; //used in public boolean moveLegal(Unit u, int destX, int destY)
+  
+  public static final int CANT_MOVE_HERE0 = 0;  
+  public static final int LEGAL_MOVE_HERE= 1;
+  public static final int A_UNIT_IS_HERE = 2;  
   private static final int[][] moveArray = {  {-1, 1, 0,  0},
                                                {0, 0, 1, -1} };
-  //Figure out when turn is over by checking player information  ??? done here???
-  //Calls information on units in the Player passed in  ???
-  //Update everything else ??? What else to update???
-  
+
   public Actions(Player p1, Player p2, Map mapRef) {
     this.p1 = p1;
     this.p2 = p2;
@@ -63,9 +69,7 @@ public class Actions {
     }
     return false;
   }
-  public boolean fire(Unit src, int x, int y){//method overload for convenience
-    return fire(src, p1.getUnitAt(x, y));
-  }
+  
   private boolean fireLegal(Unit src, Unit tgt){
     //units don't exist
     if(src == null || tgt == null)
@@ -99,18 +103,9 @@ public class Actions {
     return false;
   }
   
-//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXEDIT AREA START
-  //package class variable for displaying map of moves
-  //this moveArrayDisplay is used to verify a move rather than the
-  //queue class which will be removed
-  public static final int CANT_MOVE_HERE0 = 0;  
-  public static final int LEGAL_MOVE_HERE= 1;
-  public static final int A_UNIT_IS_HERE = 2;
-  //if moveArrayDisplay[i][j] == CANT_MOVE_HERE0 then unit CANNOT move to that location (TERRAIN)
+  //if moveArrayDisplay[i][j] == CANT_MOVE_HERE0 then unit CANNOT move to that location (RANGE)
   //if moveArrayDisplay[i][j] == LEGAL_MOVE_HERE then unit CAN move to that location
   //if moveArrayDisplay[i][j] == A_UNIT_IS_HERE then unit CANNOT move to that location (OTHER UNIT)
-  
-  int[][] moveArrayDisplay;
   public boolean moveLegal(Unit u, int destX, int destY){   
     //create an array the size of mapRef.  Fills with CANT_MOVE_HERE0 into all fields by default
     moveArrayDisplay = new int[mapRef.getX()][mapRef.getY()];
@@ -130,42 +125,40 @@ public class Actions {
     
     //Call recursive function to CONTINUE building the moveArrayDisplay
     if(!u.hasMoved()){ //if unit has not moved then continue to build moveArrayDisplay
-      moveArrayDisplay[u.getLocationX()][u.getLocationY()] = LEGAL_MOVE_HERE;  //TEMPORARY to allow recursion!!!! 
-      moveArrayBuildRecursive(u, u.getLocationX(), u.getLocationY(), u.getMoves(),
-                          destX, destY, moveArrayDisplay);    
+      //TEMPORARY to allow recursion!!!!
+      moveArrayDisplay[u.getLocationX()][u.getLocationY()] = LEGAL_MOVE_HERE;   
+      moveArrayBuildRecursive(u, u.getLocationX(), u.getLocationY(),
+                                u.getMoves(), moveArrayDisplay);    
     }
     
     //make at the end, unit actual location a A_UNIT_IS_HERE
-    //  this will take care of the case "unit cannot move ontop of itself" from moveArrayBuildRecursive(...)
+    //  this will take care of the case "unit cannot move ontop of itself"
     moveArrayDisplay[u.getLocationX()][u.getLocationY()] = A_UNIT_IS_HERE;
     
-    //if (destX ,destY) is LEGAL_MOVE_HERE on moveArrayDisplay then return true. else then false
+    //if (destX ,destY) is LEGAL_MOVE_HERE on moveArrayDisplay then return true
     if(moveArrayDisplay[destX][destY] == LEGAL_MOVE_HERE)
       return true;
     else
       return false;
   }
   
-  private void moveArrayBuildRecursive(Unit u, int currX, int currY, int movesRemaining,
-                                    int destX, int destY, int[][] mvArr){
+  private void moveArrayBuildRecursive(Unit u, int currX, int currY, 
+                                        int movesRemaining, int[][] mvArr){
     //XXXXX breaks from recursive "branch" if unit cannot be on currX and currY
     //      makes no change to mvArr if breaking from recursive "branch".
     //      UNIT is allowed to move back on itself....ie move left one, then
     //        move right one.  This will be "checked" for in private boolean moveLegal(...)
-    //        as the original unit location will be changed to a CANT_MOVE_HERE0 so that in the end
+    //        as the original unit location will be changed to a A_UNIT_IS_HERE so that in the end
     //        the unit cannot move back onto itself.  This method is only for CONTINUING to making
     //        the moveArrayDisplay.
     //      MUST NOT BE CALLED ELSEWHERE because of the dependency on
     //        public boolean moveLegal(...)
     
-    //unit cannot move ontop of ANY OTHER unit.
-    if(mvArr[currX][currY] == A_UNIT_IS_HERE)
+    if(mvArr[currX][currY] == A_UNIT_IS_HERE)  //unit cannot move ontop of ANY OTHER unit.
       return;
-    //unit cannot move off of map
-    if( !isXY_onMap(currX, currY) )
+    if( !isXY_onMap(currX, currY) )  //unit cannot move off of map
       return; 
-    //final destination cannot be on water if ground unit
-    if( isGroundOnWater(u,currX,currY) )
+    if( isGroundOnWater(u,currX,currY) )  //final destination cannot be on water if ground unit
       return;
     
     //XXXXX currX, currY is a valid location or a "LEGAL_MOVE_HERE"
@@ -179,12 +172,10 @@ public class Actions {
         //make a move ( cycles for each i, left, right, up, down )
         xTemp = currX + moveArray[0][i];
         yTemp = currY + moveArray[1][i];
-        moveArrayBuildRecursive(u, xTemp, yTemp, movesRemaining - 1, destX, destY, mvArr);
+        moveArrayBuildRecursive(u, xTemp, yTemp, movesRemaining - 1, mvArr);
       }
     }
   }
-  
-  
   
   //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXEDIT AREA END
   private boolean isXY_onMap(int x, int y){
@@ -199,85 +190,3 @@ public class Actions {
     return false;
   }
 }
-/*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
- * Helper classes for Actions.moveLegal(Unit u, int x, int y) 
- * 
- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
-class QueueMove{
-  private MoveEl head, tail;
-  public QueueMove() {
-    head = tail = null;
-  }
-  public void enqueue(MoveEl el){
-    if(el == null)
-      return;
-    if(head == null)
-      tail = el;
-    el.next = head;
-    head = el; 
-  }
-  public MoveEl dequeue(){  //needs refinement
-    if(isEmpty())
-      return null;
-    MoveEl temp;
-    if(head == tail){
-      temp = head;
-      head = tail = null;
-    }
-    else{
-      temp = tail;
-      MoveEl tempT = head;
-      while(tempT.next != tail)
-        tempT = tempT.next;
-      tail = tempT;
-      tail.next = null;
-    }
-    return temp;
-  }
-  public boolean isEmpty(){
-    if(head == null)
-      return true;
-    return false;
-  }
-  public String toString(){
-    String s = "enqueue here->";
-    MoveEl temp = head;
-    while(temp != null){
-      s += temp.toString() + "--";
-      temp = temp.next;
-    }
-    s += "<-dequeue here";
-    return s;
-  }
-}
-
-class MoveEl {
-  public final int numMovesLeft;
-  public final int x;
-  public final int y;
-  public MoveEl next;
-  
-  private MoveEl(){
-    this(0, 0, 0, null);
-  }
-  
-  public MoveEl( int n, int locL_R, int locU_D, MoveEl next) {
-    numMovesLeft = n;
-    x = locL_R;
-    y = locU_D; 
-    this.next = next;
-  }
-  public String toString(){
-    return "" + numMovesLeft + "[" + x + "]" + "[" + y + "]";
-  }
-}
-
-
-
-
-
-
-
-
-
-
