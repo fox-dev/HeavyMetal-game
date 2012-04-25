@@ -1,10 +1,14 @@
 package project;
 
 public class Main {
+	/*
+	 * Setup for console game
+	 * 
 	// Create players and map and input
 	static Map map = new Map();
 	static Player player1 = new Player(1);
 	static Player player2 = new Player(2);
+	*/
 
 	/*
 	 * Main game loop 
@@ -15,6 +19,12 @@ public class Main {
 	 */
 
 	public static void main(String args[]){
+		
+		FrameFunctions game = new FrameFunctions();
+		
+		/*
+		 * Console Game
+		 * 
 		String NL = System.getProperty("line.separator");
 		boolean gameDone = false;
 		Input input = new Input(player1, player2);
@@ -106,6 +116,7 @@ public class Main {
 				gameDone = true;
 			}
 		}
+		*/
 	}
 
 }
