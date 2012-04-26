@@ -2,21 +2,6 @@ package project;
 
 /* Unit.java
  * An interface for all units //Changed to a super class to all units DAN
- * 
- * A rundown of the functions:
- *		getMoves() =>       returns number of moves the unit has
- *  	getHP() =>          returns how much HP a unit has
- *   	setHP(int HP) =>    sets the number of HP the unit has
- *   	getType() =>		returns unit's type
- *      getDescription() => returns unit's description
- *      getMRestriction() =>returns unit's move restriction
- *   	moved() =>          toggle the moved flag to TRUE
- *   	hasMoved() =>       returns the moved flag
- *   	getAttack() =>      returns how much attack the unit has
- *   	setLocationX =>     move the unit to a specific X location
- *   	setLocationY =>     move the unit to a specific Y location
- *   	getLocationX =>     return the unit's X location
- *   	getLocationY =>     return the unit's Y location
  *   
  * ID Types:
  * 0 = Ground
@@ -41,6 +26,7 @@ public class Unit {
  protected int type; // ID's a unit as an air, ground, etc
  protected String description; // A short description (Like "Tank" or "Bomber")
  protected int restriction; // Restricts a unit to certain tiles
+ protected boolean isSelected = false; // Is the unit seleceted?
  protected boolean moved = false;
  protected boolean hasUnitShot = false;   //Dan: ensures that unit can only shoot once
  
@@ -122,5 +108,14 @@ public class Unit {
  public void setXY(int x, int y){ //added by DAN for convenience
    setLocationX(x);
    setLocationY(y);
+ }
+ public boolean isSelected() {
+	 return isSelected;
+ }
+ public void unSelect() {
+	 isSelected = false;
+ }
+ public void select() {
+	 isSelected = true;
  }
 }
