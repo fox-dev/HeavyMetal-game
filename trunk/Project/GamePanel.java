@@ -32,7 +32,7 @@ public class GamePanel extends JPanel implements Runnable{
 		player2 = new Player(2);
 		world = new World();
 		unitDisplay = new UnitDisplay(player1);
-		drawing = new Drawing(player1, player2, world, unitDisplay);
+		drawing = new Drawing(player1, player2, world, unitDisplay, testactions);
 		
 		testactions = new Actions(player1,player2, world.getMap()); //Added -Andrew
 		testinput = new Input(player1,player2,testactions); //Added -Andrew
