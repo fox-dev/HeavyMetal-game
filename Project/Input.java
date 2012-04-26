@@ -7,6 +7,7 @@ public class Input {
 	private Player activePlayer, waitingPlayer;
 	private Actions checkActions;
 	private int pressedX,pressedY;
+	private int mouseX, mouseY;
 	private Unit selectedUnit;
 	
 	public Input(Player ap, Player wp, Actions a){
@@ -15,9 +16,15 @@ public class Input {
 		checkActions = a;
 	}
 	
+	public void mouseMoved(MouseEvent e){
+		
+		mouseX = e.getX() / World.TILE_SIZE;
+		mouseY = e.getY() / World.TILE_SIZE;	
+	}
+	
 	public void mousePressed(MouseEvent e){
-			pressedX = e.getX() / World.TILE_SIZE;
-			pressedY = e.getY() / World.TILE_SIZE;			
+		pressedX = e.getX() / World.TILE_SIZE;
+		pressedY = e.getY() / World.TILE_SIZE;			
 	}
 	
 	public void directInput(MouseEvent e){
@@ -32,7 +39,6 @@ public class Input {
 			}
 		}
 		
-			
 		else if(activePlayer.unitSelected() && selectedUnit != null){
 			if(pressedX == selectedUnit.getLocationX() && pressedY == selectedUnit.getLocationY()){
 				System.out.println("Unit Unselected");
@@ -63,7 +69,7 @@ public class Input {
 		
 	}
 	
-	//function for switching the activePlayer with the waitingPlayer, used when activePlayer turn ends.
+		//function for switching the activePlayer with the waitingPlayer, used when activePlayer turn ends.
 		public void switchPlayerStatuses(){
 			Player temp = activePlayer;
 			activePlayer = waitingPlayer;
@@ -72,6 +78,35 @@ public class Input {
 			selectedUnit = null;
 		
 		}
+		
+		
+		//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+		//          GET FUNCTIONS
+		//Get function for the location mouseX
+		public int getMouseXX(){
+			return mouseX;
+		}
+		
+		//Get function for the location mouseY
+		public int getMouseY(){
+			return mouseY;
+		}
+		
+		//Get function for mouse pressed X location
+		public int getPressedX(){
+			return pressedX;
+		}
+		
+		//Get function for mouse pressed Y location
+		public int getPressedY(){
+			return pressedY;
+		}
+		
+		//Get function for selected unit
+		public Unit getSelectedUnit(){
+			return selectedUnit;
+		}
+		//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 	
 	
 
