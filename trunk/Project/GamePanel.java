@@ -47,7 +47,6 @@ public class GamePanel extends JPanel implements Runnable{
 		addMouseListener(new MouseAdapter() {
 			
 			public void mousePressed(MouseEvent e) { //Added -Andrew
-				//Replace with input input.mousePressed(e);
 				testinput.directInput(e);
 				if(player1.checkTurnOver() == true){
 					System.out.println("Turn is over. Switching");
@@ -77,8 +76,7 @@ public class GamePanel extends JPanel implements Runnable{
 		addMouseMotionListener(new MouseAdapter() {
 			
 			public void mouseMoved(MouseEvent e) {
-				//input.mouseMoved(e);
-				e.consume();
+				testinput.mouseMoved(e); //keeps track of the cursor location on the screen. -Andrew
 			}
 			//Added the following just incase we want to use them later
 			public void mouseDragged(MouseEvent e) {
