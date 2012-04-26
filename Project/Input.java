@@ -81,9 +81,10 @@ public class Input {
 		
 		
 		//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-		//          GET FUNCTIONS
+		//           GET FUNCTIONS
+		//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 		//Get function for the location mouseX
-		public int getMouseXX(){
+		public int getMouseX(){
 			return mouseX;
 		}
 		
