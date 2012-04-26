@@ -26,14 +26,15 @@ public class UnitAir extends Unit {
 	private static final String UNIT_DESCRIPTION = "Bomber"; // A name for generic Air units
 	private static final int MOVE_RESTRICTION = 0; // Can move anywhere
 	private static final int ATK_DEFAULT = 1;
+	private static final int ATK_RANGE = 1;
 	private static final int SPAWN_LOC_X = 0;
 	private static final int SPAWN_LOC_Y = 0;
 	
 	public UnitAir() {
-	  super(HP_DEFAULT,MOVES_DEFAULT,UNIT_TYPE,UNIT_DESCRIPTION,MOVE_RESTRICTION,ATK_DEFAULT,SPAWN_LOC_X,SPAWN_LOC_Y);
+	  super(HP_DEFAULT,MOVES_DEFAULT,UNIT_TYPE,UNIT_DESCRIPTION,MOVE_RESTRICTION,ATK_DEFAULT,ATK_RANGE,SPAWN_LOC_X,SPAWN_LOC_Y);
 	}
 	
-	public UnitAir(int setHP, int setNumMoves, int Utype, String desc, int restrict, int ATK, int locationX, int locationY) {
-		super(setHP, setNumMoves, Utype, desc, restrict, ATK, locationX, locationY);
+	public UnitAir(int setHP, int setNumMoves, int Utype, String desc, int restrict, int ATK, int range, int locationX, int locationY) {
+		super(setHP, setNumMoves, Utype, desc, restrict, ATK, range, locationX, locationY);
 	}
 }

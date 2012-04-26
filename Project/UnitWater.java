@@ -25,14 +25,15 @@ public class UnitWater extends Unit {
   private static final String UNIT_DESCRIPTION = "Warship"; // A name for generic Water units
   private static final int MOVE_RESTRICTION = 2; // Only moves on water
   private static final int ATK_DEFAULT = 2;
+  private static final int ATTACK_RANGE = 2;
   private static final int SPAWN_LOC_X = 0;
   private static final int SPAWN_LOC_Y = 0;
   
 	public UnitWater() {
-		  super(HP_DEFAULT,MOVES_DEFAULT,UNIT_TYPE,UNIT_DESCRIPTION,MOVE_RESTRICTION,ATK_DEFAULT,SPAWN_LOC_X,SPAWN_LOC_Y);
+		  super(HP_DEFAULT,MOVES_DEFAULT,UNIT_TYPE,UNIT_DESCRIPTION,MOVE_RESTRICTION,ATK_DEFAULT,ATTACK_RANGE,SPAWN_LOC_X,SPAWN_LOC_Y);
 	}
 	
-	public UnitWater(int setHP, int setNumMoves, int Utype, String desc, int restrict, int ATK, int locationX, int locationY) {
-		super(setHP, setNumMoves, Utype, desc, restrict, ATK, locationX, locationY);
+	public UnitWater(int setHP, int setNumMoves, int Utype, String desc, int restrict, int ATK, int range, int locationX, int locationY) {
+		super(setHP, setNumMoves, Utype, desc, restrict, ATK, range, locationX, locationY);
 	}
 }
