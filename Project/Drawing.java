@@ -8,7 +8,7 @@ import javax.swing.ImageIcon;
 public class Drawing {
 
 	private Player player1, player2;
-	private Image ground1, ground2, air1, air2, current, TILE_GRASS;
+	private Image ground1, ground2, air1, air2, current, ground1selected, ground2selected, air1selected, air2selected;
 	private World world;
 	private UnitDisplay unitDisplay; 
 	
@@ -20,8 +20,12 @@ public class Drawing {
 		this.player2 = player2;
 		ground1 = new ImageIcon("images/tank.png").getImage();
 		ground2 = new ImageIcon("images/tank2.png").getImage();
+		ground1selected = new ImageIcon("images/tankselected.png").getImage();
+		ground2selected = new ImageIcon("images/tank2selected.png").getImage();
 		air1 = new ImageIcon("images/airplane.png").getImage();
 		air2 = new ImageIcon("images/airplane2.png").getImage();
+		air1selected = new ImageIcon("images/airplaneselected.png").getImage();
+		air2selected = new ImageIcon("images/airplane2selected.png").getImage();
 	}
 	
 	public void drawAll(Graphics g) {
@@ -34,10 +38,18 @@ public class Drawing {
 	public void drawPlayer1(Graphics g) {
 		for (int i = 0; i < player1.checkNumUnits(); i++) {
 			if(player1.getUnit(i).getType() == 0) {
-				current = ground1;
+				if(player1.getUnit(i).isSelected()) {
+					current = ground1selected;
+				}
+				else
+					current = ground1;
 			}
 			else if (player1.getUnit(i).getType() == 1) {
-				current = air1;
+				if(player1.getUnit(i).isSelected()) {
+					current = air1selected;
+				}
+				else
+					current = air1;
 			}
 			g.drawImage(current, player1.getUnit(i).getLocationX()
 					* World.TILE_SIZE, player1.getUnit(i).getLocationY()
@@ -49,10 +61,18 @@ public class Drawing {
 	public void drawPlayer2(Graphics g) {
 		for (int i = 0; i < player2.checkNumUnits(); i++) {
 			if(player2.getUnit(i).getType() == 0) {
-				current = ground2;
+				if(player2.getUnit(i).isSelected()) {
+					current = ground2selected;
+				}
+				else
+					current = ground2;
 			}
 			else if (player2.getUnit(i).getType() == 1) {
-				current = air2;
+				if(player2.getUnit(i).isSelected()) {
+					current = air2selected;
+				}
+				else
+					current = air2;
 			}
 			g.drawImage(current, player2.getUnit(i).getLocationX()
 					* World.TILE_SIZE, player2.getUnit(i).getLocationY()

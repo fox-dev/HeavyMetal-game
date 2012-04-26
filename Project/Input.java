@@ -35,6 +35,7 @@ public class Input {
 			if(activePlayer.getUnitAt(pressedX, pressedY) != null && activePlayer.getUnitAt(pressedX, pressedY).hasMoved() == false && activePlayer.unitSelected() == false){
 				System.out.println("You selected a unit");
 				selectedUnit = activePlayer.getUnitAt(pressedX, pressedY);
+				selectedUnit.select();
 				activePlayer.setSelectedTrue();
 			}
 		}
@@ -42,6 +43,7 @@ public class Input {
 		else if(activePlayer.unitSelected() && selectedUnit != null){
 			if(pressedX == selectedUnit.getLocationX() && pressedY == selectedUnit.getLocationY()){
 				System.out.println("Unit Unselected");
+				selectedUnit.unSelect();
 				selectedUnit = null;
 				activePlayer.setSelectedFalse();
 			}
@@ -49,6 +51,7 @@ public class Input {
 
 		if(selectedUnit != null && checkActions.moveLegal(selectedUnit, pressedX, pressedY) == true && waitingPlayer.getUnitAt(pressedX, pressedY) == null){
 			System.out.println("Move coordinates accepted.");
+			selectedUnit.unSelect();
 			checkActions.moveUnit(selectedUnit, pressedX, pressedY);
 			activePlayer.setSelectedFalse();
 			selectedUnit = null;
@@ -57,6 +60,7 @@ public class Input {
 			System.out.println("Attacking that Unit.");
 			checkActions.fire(selectedUnit, waitingPlayer.getUnitAt(pressedX, pressedY));
 			activePlayer.setSelectedFalse();
+			selectedUnit.unSelect();
 			selectedUnit = null;
 			waitingPlayer.removeDeadUnits();
 			activePlayer.removeDeadUnits();
