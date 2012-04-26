@@ -24,6 +24,7 @@ public class Unit {
  protected int locX;
  protected int locY;
  protected int type; // ID's a unit as an air, ground, etc
+ protected int range; // The unit's attack range
  protected String description; // A short description (Like "Tank" or "Bomber")
  protected int restriction; // Restricts a unit to certain tiles
  protected boolean isSelected = false; // Is the unit seleceted?
@@ -31,19 +32,20 @@ public class Unit {
  protected boolean hasUnitShot = false;   //Dan: ensures that unit can only shoot once
  
  public Unit(){
-   HP = numMoves = type = attack = locX = locY;
+   HP = numMoves = type = attack = range = locX = locY;
    type = 255; // Undefined
    restriction = 0; // No restriction
    description = "Undefined";
  }
  
- public Unit(int setHP, int setNumMoves, int Utype, String desc, int restrict, int ATK, int locationX, int locationY){
+ public Unit(int setHP, int setNumMoves, int Utype, String desc, int restrict, int ATK, int attackRange, int locationX, int locationY){
    HP = setHP;
    numMoves = setNumMoves;
    type = Utype;
    description = desc;
    restriction = restrict;
    attack = ATK;
+   range = attackRange;
    locX = locationX;
    locY = locationY;   
  }
@@ -85,6 +87,9 @@ public class Unit {
  }
  public int getAttack() {
    return attack;
+ }
+ public int getRange() {
+	 return range;
  }
  public void setLocationX(int x) {
    locX = x;
