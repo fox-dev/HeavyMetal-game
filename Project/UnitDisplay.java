@@ -6,13 +6,14 @@ package project;
 //Not sure how to stall the comment section of the program yet. Or if it's just how
 //the console runs
 
-//Still need to Display if the current Player is Player 1 or 2
+
+//The first round of the game results in having a null display instead of a player1 display
 //Still need to put the text into an upper panel, while having the lower panel display health
 //Will take a while to figure that out
+//Or perhaps having a lower panel is sufficient for now.
 
-//DisplayHP only displays Player 1's first unit's HP.
-//Even after trying to put in if statements to select Player 2's units, it will still display 
-//Player 1. After the first unit is dead, DisplayHP will print Player 1's second unit HP.
+//DisplayHP only displays Player 1's first unit's HP. **Figured out why. Will fix later*
+
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -21,6 +22,7 @@ public class UnitDisplay {
 
 	private Player player;
 	private static String text;
+	private static String textPlayer;
 
 	public UnitDisplay(Player player) {
 		this.player = player;
@@ -30,15 +32,26 @@ public class UnitDisplay {
 		this.player = player;
 	}
 
+	//set text from Input.projectfile
+	public static void setText(String text1) {
+		text = text1;
+	}
+	
 	//get text string/print it out when called
 	public static String getText() {
 		System.out.println(text);
 		return text;
 	}
-
-	//set text from Input.projectfile
-	public static void setText(String text1) {
-		text = text1;
+	
+	//set current player text
+	public static void setPlayer(String text2){
+		textPlayer = text2;
+	}
+	
+	//get current player text
+	public static String getPlayer(){
+		System.out.println(textPlayer);
+		return textPlayer;
 	}
 	
 	//getUnitsHP
@@ -68,12 +81,14 @@ public class UnitDisplay {
 				GamePanel.MHEIGHT - 20);
 		g.setColor(Color.RED);
 		
+		//Displays current player
+		
 		//Displays Text
 		if(getText() != null && isUnit(getUnitHP()))
-			g.drawString(getText(), 25,
+			g.drawString(getPlayer() + " " + getText(), 25,
 					GamePanel.GHEIGHT - 75);
-		else
-			g.drawString("No Selected Unit", 25, GamePanel.GHEIGHT - 75);
+		else //Greeting
+			g.drawString("Welcome. Click a Unit to Play. Player 1 will start", 25, GamePanel.GHEIGHT - 75);
 		
 		
 		//Displays HP of Units
