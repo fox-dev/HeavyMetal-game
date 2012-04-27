@@ -1,6 +1,9 @@
 package project;
 
 import javax.swing.JPanel;
+
+import project.UnitDisplay;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -49,16 +52,16 @@ public class GamePanel extends JPanel implements Runnable{
 			public void mousePressed(MouseEvent e) { //Added -Andrew
 				testinput.directInput(e);
 				if(player1.checkTurnOver() == true){
-					System.out.println("Turn is over. Switching");
+					UnitDisplay.setText("Players have switched. Awaiting Unit Selection...");
 					player1.unitsReset();
 					testinput.switchPlayerStatuses();
-					System.out.println("Player 2's turn.");
+					UnitDisplay.setPlayer("Player 2: ");
 				}
 				if(player2.checkTurnOver() == true){
-					System.out.println("Turn is over. Switching");
+					UnitDisplay.setText("Players have switched. Awaiting Unit Selection...");
 					player2.unitsReset();
 					testinput.switchPlayerStatuses();
-					System.out.println("Player 1's turn.");
+					UnitDisplay.setPlayer("Player 1: ");
 				}
 			}
 			
