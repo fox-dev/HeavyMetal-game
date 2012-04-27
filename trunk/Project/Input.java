@@ -2,6 +2,8 @@ package project;
 
 //GUI Update Version ~ Add Comments later
 import java.awt.event.MouseEvent;
+
+import project.UnitDisplay;
 public class Input {
 	
 	private Player activePlayer, waitingPlayer;
@@ -27,13 +29,15 @@ public class Input {
 		pressedY = e.getY() / World.TILE_SIZE;			
 	}
 	
+	
+	//Sidra's Update: Added a path to send texts to UnitDisplay.settext("text"); April 26, 2012.
 	public void directInput(MouseEvent e){
 		
 		mousePressed(e);
 		try{
 		if(!activePlayer.unitSelected()){
 			if(activePlayer.getUnitAt(pressedX, pressedY) != null && activePlayer.getUnitAt(pressedX, pressedY).hasMoved() == false && activePlayer.unitSelected() == false){
-				System.out.println("You selected a unit");
+				UnitDisplay.setText("You selected a unit");
 				selectedUnit = activePlayer.getUnitAt(pressedX, pressedY);
 				selectedUnit.select();
 				activePlayer.setSelectedTrue();
@@ -42,7 +46,7 @@ public class Input {
 		
 		else if(activePlayer.unitSelected() && selectedUnit != null){
 			if(pressedX == selectedUnit.getLocationX() && pressedY == selectedUnit.getLocationY()){
-				System.out.println("Unit Unselected");
+				UnitDisplay.setText("Unit Unselected");
 				selectedUnit.unSelect();
 				selectedUnit = null;
 				activePlayer.setSelectedFalse();
@@ -50,14 +54,14 @@ public class Input {
 		}
 
 		if(selectedUnit != null && checkActions.moveLegal(selectedUnit, pressedX, pressedY) == true && waitingPlayer.getUnitAt(pressedX, pressedY) == null){
-			System.out.println("Move coordinates accepted.");
+			UnitDisplay.setText("Move coordinates accepted.");
 			selectedUnit.unSelect();
 			checkActions.moveUnit(selectedUnit, pressedX, pressedY);
 			activePlayer.setSelectedFalse();
 			selectedUnit = null;
 		}
 		if(selectedUnit != null && waitingPlayer.getUnitAt(pressedX, pressedY) != null && selectedUnit.getHasUnitShot() == false && checkActions.fireLegal(selectedUnit, waitingPlayer.getUnitAt(pressedX,pressedY))){ //needs to check if an Attack is valid (range, etc)
-			System.out.println("Attacking that Unit.");
+			UnitDisplay.setText("Attacking that Unit.");
 			checkActions.fire(selectedUnit, waitingPlayer.getUnitAt(pressedX, pressedY));
 			activePlayer.setSelectedFalse();
 			selectedUnit.unSelect();
@@ -67,7 +71,7 @@ public class Input {
 		}
 		
 		}catch(NullPointerException npe){
-			System.out.println("There is nothing there");
+			UnitDisplay.setText("There is nothing there");
 		}
 		
 		
