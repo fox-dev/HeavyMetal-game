@@ -71,32 +71,36 @@ public class UnitDisplay {
 			return true;
 	}
 	
+
 	//draws panel
 	public void draw(Graphics g) {
-		g.setColor(Color.BLACK);
+		g.setColor(Color.GRAY);
 		g.fillRect(0, GamePanel.GHEIGHT - 100, GamePanel.GWIDTH,
 				GamePanel.MHEIGHT);
-		g.setColor(Color.WHITE);
+		g.setColor(Color.DARK_GRAY);
+		g.fillRect(5, GamePanel.GHEIGHT - 95, GamePanel.GWIDTH - 15,
+				GamePanel.MHEIGHT - 10);
+		g.setColor(Color.BLACK);
 		g.fillRect(10, GamePanel.GHEIGHT - 90, GamePanel.GWIDTH - 25,
 				GamePanel.MHEIGHT - 20);
-		g.setColor(Color.RED);
+		g.setColor(Color.GREEN);
 		
 		//Displays current player
 		
 		//Displays Text
 		if(getText() != null && isUnit(getUnitHP()))
-			g.drawString(getPlayer() + " " + getText(), 25,
+			g.drawString(" > " + getPlayer() + " " + getText(), 25,
 					GamePanel.GHEIGHT - 75);
 		else //Greeting
-			g.drawString("Welcome. Click a Unit to Play. Player 1 will start", 25, GamePanel.GHEIGHT - 75);
+			g.drawString(" > " + "Welcome. Click a Unit to Play. Player 1 will start", 25, GamePanel.GHEIGHT - 75);
 		
 		
 		//Displays HP of Units
 		if (isUnit(getUnitHP()))
-			g.drawString("Selected Unit HP:" + getUnitHP(), 25,
+			g.drawString(" > " +"Selected Unit HP:" + getUnitHP(), 25,
 					GamePanel.GHEIGHT - 45);
 		else
-			g.drawString("No Selected Unit", 25, GamePanel.GHEIGHT - 45);
+			g.drawString(" > " + "Select a unit to Display HP", 25, GamePanel.GHEIGHT - 45);
 	}
 	
 }
