@@ -156,10 +156,10 @@ public class Actions {
     //      MUST NOT BE CALLED ELSEWHERE because of the dependency on
     //        public boolean moveLegal(...)
     
-    if(mvArr[currX][currY] == A_UNIT_IS_HERE)  //unit cannot move ontop of ANY OTHER unit.
-      return;
     if( !isXY_onMap(currX, currY) )  //unit cannot move off of map
       return; 
+    if(mvArr[currX][currY] == A_UNIT_IS_HERE)  //unit cannot move ontop of ANY OTHER unit.
+      return;
     if( isGroundOnWater(u,currX,currY) )  //final destination cannot be on water if ground unit
       return;
     
