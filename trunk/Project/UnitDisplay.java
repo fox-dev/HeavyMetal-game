@@ -50,8 +50,16 @@ public class UnitDisplay {
 	
 	//get current player text
 	public static String getPlayer(){
-		System.out.println(textPlayer);
-		return textPlayer;
+		
+		if(textPlayer == null){
+			textPlayer = "Player 1";
+			System.out.println(textPlayer);
+			return textPlayer;
+		}
+		else {
+			System.out.println(textPlayer);
+			return textPlayer;
+		}
 	}
 	
 	//getUnitsHP
