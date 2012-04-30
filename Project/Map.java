@@ -79,7 +79,7 @@ public class Map {
 				// Read through the file
 				while ((buffer = br.readLine()) != null) {
 					// If DIMENSIONS tag is found
-					if (buffer.startsWith("# DIMENSIONS #")) {
+					if (buffer.startsWith("[DIMENSIONS]") && (buffer.length() == 12)) {
 						buffer = br.readLine();
 						// Get XSIZE and YSIZE. There are no checks because map should be valid
 						for (int x = buffer.indexOf("XSIZE=")+6; x < buffer.length(); x++)
@@ -91,7 +91,7 @@ public class Map {
 						y = Integer.parseInt(dY);
 					}
 					// If MAP DATA is found
-					else if (buffer.startsWith("# MAP DATA #"))
+					else if (buffer.startsWith("[MAP DATA]") && (buffer.length() == 10))
 						break; // Go to next step
 					// Skip comments
 					else if (buffer.startsWith("#"))
@@ -139,7 +139,7 @@ public class Map {
 			 * When it finds the DIMENSIONS tag, it will check if XSIZE= and YSIZE= exist within the tag
 			 */
 			while ((buffer = br.readLine()) != null) {
-				if (buffer.startsWith("# DIMENSIONS #")) {
+				if (buffer.startsWith("[DIMENSIONS]") && (buffer.length() == 12)) {
 					if (dimensionsFound)
 						return false; // There can only be one # DIMENSIONS # in a map file
 					dimensionsFound = true; // Found dimensions data
@@ -170,7 +170,7 @@ public class Map {
 					else
 						return false; // There is no YSIZE within DIMENSIONS
 				}
-				else if (buffer.startsWith("# MAP DATA #")) {
+				else if (buffer.startsWith("[MAP DATA]") && (buffer.length() == 10)) {
 					if (!dimensionsFound)
 						return false; // Map data must be placed AFTER dimensions or else we can't find the expected number of digits
 					if (mapDataFound)
@@ -219,7 +219,7 @@ public class Map {
 			bw.newLine();
 			bw.write("##############");
 			bw.newLine();
-			bw.write("# DIMENSIONS #"); // Write dimensions tag
+			bw.write("[DIMENSIONS]"); // Write dimensions tag
 			bw.newLine();
 			// Write X and Y sizes
 			bw.write("XSIZE=" + x);
@@ -228,7 +228,7 @@ public class Map {
 			bw.newLine();
 			bw.write("############");
 			bw.newLine();
-			bw.write("# MAP DATA #"); // Write map data tag
+			bw.write("[MAP DATA]"); // Write map data tag
 			bw.newLine();
 			// Write the contents of the array
 			for(int i = 0; i < x; i++) {
