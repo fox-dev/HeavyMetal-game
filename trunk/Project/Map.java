@@ -8,7 +8,8 @@ import java.io.*;
  * 
  * Constructors:
  * 	Default: Makes a 20x20 2D array
- * 	Map(int A,int B): Makes a A*B 2D array
+ * 	Map(int A,int B): Makes an A*B 2D array with default water chances
+ *  Map(int A,int B, double L, double R): Makes an A*B 2D array with L leftChance and R rightChance for addWater()
  * 	Map(String mapName): Imports a map from a data file with the given name. The class will look
  * 						 in the /maps/ folder for a map with the given name. If none is found, a
  * 						 20x20 array is created instead.
@@ -25,6 +26,12 @@ import java.io.*;
  * 	isMapValid(String mapName): Checks if a map with the given name is valid. Returns true if
  * 								the map is valid, returns false otherwise.
  *  copyMap(Map m): Creates a new map from a previous one. Used for testing and troubleshooting
+ *  addWater(double L, double R): An algorithm that adds water to a map. The algorithm will pick
+ *  							  a random point (source point) on the map and make a river 
+ *  							  going up and then down from that source.
+ *  							  LeftChance = What percentage (from 0% til leftChance) of water will generate to the left?
+ *  							  RightChance = What percentage (from rightChance til 100%) of water will generate to the right?\
+ *  							  Default leftChance = .25 and rightChance = .75
  *  
  *  !! MAP LEGEND !!
  *  1 = Normal Land
@@ -44,16 +51,31 @@ public class Map {
 	public Map() {
 		this(DEFAULT_SIZE_X, DEFAULT_SIZE_Y);
 	}
-	// Map(int I, int J) will make a IxJ map
+	// Map(int I, int J) will make an IxJ map
 	public Map(int xSize, int ySize) {
 		// Set the sizes of the map and make the array
 		x = xSize;
 		y = ySize;
 		mapArr = new int[x][y];
-		// Fill the array with 1's (land tiles)
+		// Fill the array with ground tiles
 		for (int i = 0; i < x; i++)
 			for (int j = 0; j < y; j++)
 				mapArr[i][j] = 1;
+		// Now add water to the map
+		addWater(.25,.75);
+	}
+	// Map(int I, int J, double L, double R) will make an IxJ map and will pass L and R into addWater()
+	public Map(int xSize, int ySize, double left, double right) {
+		// Set the sizes of map and make the array
+		x = xSize;
+		y = ySize;
+		mapArr = new int[x][y];
+		// Fill the array with ground tiles
+		for (int i = 0; i < x; i++)
+			for (int j = 0; j < y; j++)
+				mapArr[i][j] = 1;
+		// Add water to the map
+		addWater(left,right);
 	}
 	
 	// Map(String name) will import a map from a data file
@@ -231,18 +253,135 @@ public class Map {
 			bw.write("[MAP DATA]"); // Write map data tag
 			bw.newLine();
 			// Write the contents of the array
+			// Will print out any digit even if it's not being used in the map
 			for(int i = 0; i < x; i++) {
 				for (int j = 0; j < y; j++) {
-					if (mapArr[i][j] == 1)
-						bw.write("1");
-					else if (mapArr[i][j] == 2) {
-						bw.write("2");
+					switch(mapArr[i][j]) {
+					case 1:
+						bw.write("1"); break;
+					case 2:
+						bw.write("2"); break;
+					case 3:
+						bw.write("3"); break;
+					case 4:
+						bw.write("4"); break;
+					case 5:
+						bw.write("5"); break;
+					case 6:
+						bw.write("6"); break;
+					case 7:
+						bw.write("7"); break;
+					case 8:
+						bw.write("8"); break;
+					case 9:
+						bw.write("9"); break;
+					case 0:
+						bw.write("0"); break;
+					default:
+						bw.write("1"); break;
 					}
 				}
 			}
 			bw.close(); // Close the stream
 		}catch(IOException e) {
 			; // Put something to catch the exception
+		}
+	}
+	private void addWater(double left, double right) {
+		// Dimensions of map array
+		// booleans to check if loops are done
+		boolean doneUp = false;
+		boolean doneDown = false;
+		// Get a random point on the map to start
+		double leftChance = left; // Algorithm will make a tile to the left if random # < leftChance
+		double rightChance = right; // Algorithm will make a tile to the right if random # > rightChance
+		int startX = (int)(Math.random() * x);
+		int startY = (int)(Math.random() * y);
+		double randNum; // Random number
+		int tempX = startX; // Temporary X used in loops
+		int tempY = startY; // Temporary Y used in loops
+		System.out.println("Starting X = " + startX + "\nStarting Y = " + startY);
+		mapArr[startY][startX] = 2; // Make the starting coordinates a water tile
+		// Now make water starting from the starting coordinates going up
+		while (!doneUp) {
+			// At beginning of loop, a random percentage is calculated
+			// < 25% = move left
+			// 25-75% = move up
+			// >75% = move right
+			System.out.println("Start of doneUp!");
+			randNum = Math.random();
+			if (randNum < leftChance) {
+				tempX--; // Move tempX to the left
+				if (tempX < 0) { // If tempX is out of bounds
+					tempX++; // reset tempX
+				}
+				else { // Else add water to the left
+					mapArr[tempY][tempX] = 2;
+					System.out.println("(" + tempX + "," + tempY + ") is now water!");
+				}
+			}
+			else if (randNum >= leftChance && randNum <= rightChance) {
+				tempY--; // Move tempY up
+				if (tempY < 0) { // If tempY is out of bounds
+					doneUp = true; // Then we have reached the top
+					 // Break out of the loop
+				}
+				else { // Else add water 
+					mapArr[tempY][tempX] = 2;
+					System.out.println("(" + tempX + "," + tempY + ") is now water!");
+				}
+			}
+			else {
+				tempX++; // Move tempX to the right
+				if (tempX >= (x)) { // If tempX is out of bounds
+					tempX--; // Reset tempX
+				}
+				else { // Else add water to the right
+					mapArr[tempY][tempX] = 2;
+					System.out.println("(" + tempX + "," + tempY + ") is now water!");
+				}
+			}
+		}
+		tempX = startX; // Reset the
+		tempY = startY; // temp ints
+		while (!doneDown) {
+			// Similar to doneUp loop, a random percentage is calculated
+			// < 25% = move left
+			// 25-75% = move down
+			// >75% = move right
+			System.out.println("Start of doneDown!");
+			randNum = Math.random();
+			if (randNum < leftChance) {
+				tempX--; // Move tempX to the left
+				if (tempX < 0) { // If tempX is out of bounds
+					tempX++; // Reset tempX
+				}
+				else { // Else add water to the left
+					mapArr[tempY][tempX] = 2;
+					System.out.println("(" + tempX + "," + tempY + ") is now water!");
+				}
+			}
+			else if (randNum >= leftChance && randNum < rightChance) {
+				tempY++; // Move tempY down
+				if (tempY >= (y)) { // If tempY is out of bounds
+					doneDown = true; // Then we have reached the top
+					 // Break out of the loop
+				}
+				else { // Else add water 
+					mapArr[tempY][tempX] = 2;
+					System.out.println("(" + tempX + "," + tempY + ") is now water!");
+				}
+			}
+			else {
+				tempX++; // Move tempX to the right
+				if (tempX >= (x)) { // If tempX is out of bounds
+					tempX--; // Reset tempX
+				}
+				else { // Else add water to the right
+					mapArr[tempY][tempX] = 2;
+					System.out.println("(" + tempX + "," + tempY + ") is now water!");
+				}
+			}
 		}
 	}
 	private void copyMap(Map target){
@@ -266,5 +405,10 @@ public class Map {
 	
 	public int getArr(int x, int y) {
 		return mapArr[x][y];
+	}
+	
+	// Set methods //
+	public void setArr(int x, int y, int tileVal) {
+		mapArr[x][y] = tileVal;
 	}
 }
