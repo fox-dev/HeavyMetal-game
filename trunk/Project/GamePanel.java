@@ -36,10 +36,10 @@ public class GamePanel extends JPanel implements Runnable{
 		world = new World();
 		unitDisplay = new UnitDisplay(player1, player2);
     testactions = new Actions(player1,player2, world.getMap()); //Added -Andrew   // reordered -Dan Apr27, 2012
-		drawing = new Drawing(player1, player2, world, unitDisplay, testactions);
 		
 
 		testinput = new Input(player1,player2,testactions); //Added -Andrew
+		drawing = new Drawing(player1, player2, world, unitDisplay, testactions, testinput);
 		
 		//Replace with input select = new Select(player1, player2, world, 1, 2);
 		this.setPreferredSize(d);

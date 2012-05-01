@@ -1,5 +1,6 @@
 package project;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 
@@ -12,14 +13,18 @@ public class Drawing {
 	private Image ground1, ground2, air1, air2, current, ground1selected, ground2selected, air1selected, air2selected;
 	private Image moveable;
 	private World world;
+	private Input input;
 	private Actions actions;
 	private UnitDisplay unitDisplay; 
 	
+	private int currentx, currenty;
 	private int[][] moves;
 	
 	
-	public Drawing(Player player1, Player player2, World world, UnitDisplay unitDisplay, Actions actions) {
+	public Drawing(Player player1, Player player2, World world, UnitDisplay unitDisplay, Actions actions
+			, Input input) {
 		//Load classes being used
+		this.input = input;
 		this.unitDisplay = unitDisplay;
 		this.world = world;
 		this.player1 = player1;
@@ -43,6 +48,7 @@ public class Drawing {
 		world.draw(g);
 		drawPlayer1(g);
 		drawPlayer2(g);
+		drawcurrentRect(g);
 	}
 
 	//Draws player 1
@@ -115,5 +121,12 @@ public class Drawing {
 			}
 		}
 		
+	}
+	
+	public void drawcurrentRect(Graphics g) {
+		if(player1.unitSelected() || player2.unitSelected()) {
+			g.setColor(Color.BLACK);
+			g.drawRect(input.getMouseX() * 30, input.getMouseY() * 30, 30, 30);
+		}
 	}
 }
