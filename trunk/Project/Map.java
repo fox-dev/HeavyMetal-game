@@ -300,7 +300,6 @@ public class Map {
 		double randNum; // Random number
 		int tempX = startX; // Temporary X used in loops
 		int tempY = startY; // Temporary Y used in loops
-		System.out.println("Starting X = " + startX + "\nStarting Y = " + startY);
 		mapArr[startY][startX] = 2; // Make the starting coordinates a water tile
 		// Now make water starting from the starting coordinates going up
 		while (!doneUp) {
@@ -308,7 +307,6 @@ public class Map {
 			// < 25% = move left
 			// 25-75% = move up
 			// >75% = move right
-			System.out.println("Start of doneUp!");
 			randNum = Math.random();
 			if (randNum < leftChance) {
 				tempX--; // Move tempX to the left
@@ -317,7 +315,6 @@ public class Map {
 				}
 				else { // Else add water to the left
 					mapArr[tempY][tempX] = 2;
-					System.out.println("(" + tempX + "," + tempY + ") is now water!");
 				}
 			}
 			else if (randNum >= leftChance && randNum <= rightChance) {
@@ -328,7 +325,6 @@ public class Map {
 				}
 				else { // Else add water 
 					mapArr[tempY][tempX] = 2;
-					System.out.println("(" + tempX + "," + tempY + ") is now water!");
 				}
 			}
 			else {
@@ -338,7 +334,6 @@ public class Map {
 				}
 				else { // Else add water to the right
 					mapArr[tempY][tempX] = 2;
-					System.out.println("(" + tempX + "," + tempY + ") is now water!");
 				}
 			}
 		}
@@ -349,7 +344,6 @@ public class Map {
 			// < 25% = move left
 			// 25-75% = move down
 			// >75% = move right
-			System.out.println("Start of doneDown!");
 			randNum = Math.random();
 			if (randNum < leftChance) {
 				tempX--; // Move tempX to the left
@@ -358,7 +352,6 @@ public class Map {
 				}
 				else { // Else add water to the left
 					mapArr[tempY][tempX] = 2;
-					System.out.println("(" + tempX + "," + tempY + ") is now water!");
 				}
 			}
 			else if (randNum >= leftChance && randNum < rightChance) {
@@ -369,7 +362,6 @@ public class Map {
 				}
 				else { // Else add water 
 					mapArr[tempY][tempX] = 2;
-					System.out.println("(" + tempX + "," + tempY + ") is now water!");
 				}
 			}
 			else {
@@ -379,7 +371,6 @@ public class Map {
 				}
 				else { // Else add water to the right
 					mapArr[tempY][tempX] = 2;
-					System.out.println("(" + tempX + "," + tempY + ") is now water!");
 				}
 			}
 		}
