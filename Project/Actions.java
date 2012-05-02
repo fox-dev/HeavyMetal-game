@@ -187,7 +187,7 @@ public class Actions {
   }
   private boolean isGroundOnWater(Unit u, int x, int y){
     //if ( a ground unit and its on water )
-    if((u instanceof UnitGround) && mapRef.getArr(x, y) == 2) //possible syntax/symmatic error instanceof
+    if((u instanceof UnitGround) && mapRef.getArr(y, x) == 2) //-Andrew, fixes displaying of all possible moves. Switched X and Y //possible syntax/symmatic error instanceof
       return true;     //2 is water according to Map.java (change to a static final WATER in map
     return false;
   }
