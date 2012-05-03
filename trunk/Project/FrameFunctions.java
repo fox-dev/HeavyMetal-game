@@ -28,6 +28,7 @@ public class FrameFunctions {
 	public void startGame(){
 		GamePanel gp = new GamePanel();
 		this.addGame(gp);
+		this.removeTitle(ts);
 	}
 	
 	//Add Title panel call
