@@ -1,8 +1,6 @@
 package project;
 
-//GUI Update Version ~ Add Comments later
 import java.awt.event.MouseEvent;
-import project.UnitDisplay;
 
 
 /*Standard input class switched to GUI form.  
@@ -14,6 +12,7 @@ public class Input {
 	private Actions checkActions; //actions class for checking legal moves/attacks
 	private int pressedX,pressedY; //the mouse click locations
 	private int mouseX, mouseY; //the mouse locations
+	private int realX, realY; //represent pixel locations of the mouseClick
 	private Unit selectedUnit; //the selected unit
 	
 	public Input(Player ap, Player wp, Actions a){
@@ -32,15 +31,22 @@ public class Input {
 	//listener for the mouse that tracks where the user last clicked.
 	public void mousePressed(MouseEvent e){
 		pressedX = e.getX() / World.TILE_SIZE;
-		pressedY = e.getY() / World.TILE_SIZE;			
+		pressedY = e.getY() / World.TILE_SIZE;		
+		realX = e.getX();
+		realY = e.getY();
 	}
 	
 	
 	//Sidra's Update: Added a path to send texts to UnitDisplay.settext("text"); April 26, 2012.
 	public void directInput(MouseEvent e){
-		
 		mousePressed(e);
 		try{
+		
+		//If the mouse click is within range of the End Turn button, end the player's turn
+		if(realX >= UnitDisplay.ENDBUTTONX  && realY >= UnitDisplay.ENDBUTTONY && realX <= UnitDisplay.ENDBUTTONX + UnitDisplay.ENDBUTTONWIDTH && realY <= UnitDisplay.ENDBUTTONY + UnitDisplay.ENDBUTTONHEIGHT ){
+			activePlayer.forceTurnOver();
+		}
+		
 		//Initial selected United, select a unit if the player hasn't selected one yet.
 		if(!activePlayer.unitSelected()){ 
 			//If the clicked area has a friendly unit there, and that unit has not yet --MOVED--, and the user has not yet selected a unit, select that unit.
@@ -109,6 +115,16 @@ public class Input {
 		//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 		//           GET FUNCTIONS
 		//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+		//Get function for the pixel location of the mouseclick X
+		public int getRealX(){
+			return realX;
+		}
+		
+		//Get function for the pixel location of the mouseclick Y
+		public int getRealY(){
+			return realY;
+		}
+		
 		//Get function for the location mouseX
 		public int getMouseX(){
 			return mouseX;
@@ -133,6 +149,7 @@ public class Input {
 		public Unit getSelectedUnit(){
 			return selectedUnit;
 		}
+		
 		//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 	
 	
