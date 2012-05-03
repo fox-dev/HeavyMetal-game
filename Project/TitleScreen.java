@@ -27,6 +27,7 @@ public class TitleScreen extends JPanel {
 		ff.startGame(); //Adds the gamepanel to the frame, and starts the game.
 	}
 
+
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
 		// Generated using JFormDesigner Evaluation license - Andrew Abriam
@@ -34,17 +35,6 @@ public class TitleScreen extends JPanel {
 		startButton = new JButton();
 		title = new JLabel();
 		background = new JLabel();
-
-		//======== this ========
-
-		// JFormDesigner evaluation mark
-		setBorder(new javax.swing.border.CompoundBorder(
-			new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder(0, 0, 0, 0),
-				"JFormDesigner Evaluation", javax.swing.border.TitledBorder.CENTER,
-				javax.swing.border.TitledBorder.BOTTOM, new java.awt.Font("Dialog", java.awt.Font.BOLD, 12),
-				java.awt.Color.red), getBorder())); addPropertyChangeListener(new java.beans.PropertyChangeListener(){public void propertyChange(java.beans.PropertyChangeEvent e){if("border".equals(e.getPropertyName()))throw new RuntimeException();}});
-
-		setLayout(null);
 
 		//---- exitButton ----
 		exitButton.setText("Exit");
@@ -72,7 +62,7 @@ public class TitleScreen extends JPanel {
 
 		//---- title ----
 		title.setText("HEAVY METAL");
-		title.setFont(new Font("Agency FB", title.getFont().getStyle() | Font.BOLD, title.getFont().getSize() + 72));
+		title.setFont(new Font("Arial", Font.BOLD, 80));
 		title.setHorizontalAlignment(SwingConstants.CENTER);
 		title.setForeground(Color.white);
 		title.setBackground(new Color(51, 51, 51));
