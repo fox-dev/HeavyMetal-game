@@ -13,17 +13,26 @@ package project;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
 
 public class UnitDisplay {
-
+	
 	private Player player1;
 	private Player player2;
 	private static String text;
 	private static String textPlayer;
+	private Image endButton;
+	//STatic variables for the location and width of the end turn button to be used by input to end the
+	//turn
+	public static final int ENDBUTTONX = GamePanel.GWIDTH - 82
+			, ENDBUTTONY = GamePanel.GHEIGHT - 85, ENDBUTTONWIDTH = 60, ENDBUTTONHEIGHT = 40;
 
 	public UnitDisplay(Player player1, Player player2) {
 		this.player1 = player1;
 		this.player2 = player2;
+		endButton = new ImageIcon("images/endbutton.png").getImage();
 	}
 
 	public void setPlayer(Player player, Player player2) {
@@ -109,6 +118,8 @@ public class UnitDisplay {
 		g.setColor(Color.BLACK);
 		g.fillRect(10, GamePanel.GHEIGHT - 90, GamePanel.GWIDTH - 25,
 				GamePanel.MHEIGHT - 20);
+		//Drawing the image for the end turn button
+		g.drawImage(endButton, ENDBUTTONX, ENDBUTTONY, null);
 		g.setColor(Color.GREEN);
 		
 		//Displays current player
