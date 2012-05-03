@@ -2,15 +2,19 @@ package project;
 
 //GUI Update Version ~ Add Comments later
 import java.awt.event.MouseEvent;
-
 import project.UnitDisplay;
+
+
+/*Standard input class switched to GUI form.  
+ * Read Comments for code explanations below.
+ */
 public class Input {
 	
 	private Player activePlayer, waitingPlayer;
-	private Actions checkActions;
-	private int pressedX,pressedY;
-	private int mouseX, mouseY;
-	private Unit selectedUnit;
+	private Actions checkActions; //actions class for checking legal moves/attacks
+	private int pressedX,pressedY; //the mouse click locations
+	private int mouseX, mouseY; //the mouse locations
+	private Unit selectedUnit; //the selected unit
 	
 	public Input(Player ap, Player wp, Actions a){
 		activePlayer = ap;
@@ -18,12 +22,14 @@ public class Input {
 		checkActions = a;
 	}
 	
+	//listener for the mouse that tracks the cursor's current location on the screen.
 	public void mouseMoved(MouseEvent e){
 		
 		mouseX = e.getX() / World.TILE_SIZE;
 		mouseY = e.getY() / World.TILE_SIZE;	
 	}
 	
+	//listener for the mouse that tracks where the user last clicked.
 	public void mousePressed(MouseEvent e){
 		pressedX = e.getX() / World.TILE_SIZE;
 		pressedY = e.getY() / World.TILE_SIZE;			
@@ -35,16 +41,25 @@ public class Input {
 		
 		mousePressed(e);
 		try{
-		if(!activePlayer.unitSelected()){
+		//Initial selected United, select a unit if the player hasn't selected one yet.
+		if(!activePlayer.unitSelected()){ 
+			//If the clicked area has a friendly unit there, and that unit has not yet --MOVED--, and the user has not yet selected a unit, select that unit.
 			if(activePlayer.getUnitAt(pressedX, pressedY) != null && activePlayer.getUnitAt(pressedX, pressedY).hasMoved() == false && activePlayer.unitSelected() == false){
 				UnitDisplay.setText("You selected a unit");
 				selectedUnit = activePlayer.getUnitAt(pressedX, pressedY);
 				selectedUnit.select();
 				activePlayer.setSelectedTrue();
 			}
+			//If the clicked area has a friend unit there, and that unit has not yet --FIRED--, and the user has not yet selected a unit, select that unit.
+			if(activePlayer.getUnitAt(pressedX, pressedY) != null && activePlayer.getUnitAt(pressedX, pressedY).getHasUnitShot() == false && activePlayer.unitSelected() == false){ //Check later when End Turn button is added.
+				UnitDisplay.setText("You selected a unit");
+				selectedUnit = activePlayer.getUnitAt(pressedX, pressedY);
+				selectedUnit.select();
+				activePlayer.setSelectedTrue();
+			}
 		}
-		
-		else if(activePlayer.unitSelected() && selectedUnit != null){
+		//If the user clicks the selected unit again, unselect.
+		else if(activePlayer.unitSelected() && selectedUnit != null){  
 			if(pressedX == selectedUnit.getLocationX() && pressedY == selectedUnit.getLocationY()){
 				UnitDisplay.setText("Unit Unselected");
 				selectedUnit.unSelect();
@@ -52,7 +67,9 @@ public class Input {
 				activePlayer.setSelectedFalse();
 			}
 		}
+		
 
+		//If the user has a unit selected, and the place they want to move to is a legal move, and there is no enemy unit there, move to that location.
 		if(selectedUnit != null && checkActions.moveLegal(selectedUnit, pressedX, pressedY) == true && waitingPlayer.getUnitAt(pressedX, pressedY) == null){
 			UnitDisplay.setText("Move coordinates accepted.");
 			selectedUnit.unSelect();
@@ -60,6 +77,7 @@ public class Input {
 			activePlayer.setSelectedFalse();
 			selectedUnit = null;
 		}
+		//If the user has a unit selected, and the user clicks a spot where an enemy unit is, and the unit the player has selected has not yet fired, check if the unit can fire, then fire.
 		if(selectedUnit != null && waitingPlayer.getUnitAt(pressedX, pressedY) != null && selectedUnit.getHasUnitShot() == false && checkActions.fireLegal(selectedUnit, waitingPlayer.getUnitAt(pressedX,pressedY))){ //needs to check if an Attack is valid (range, etc)
 			UnitDisplay.setText("Attacking that Unit.");
 			checkActions.fire(selectedUnit, waitingPlayer.getUnitAt(pressedX, pressedY));
