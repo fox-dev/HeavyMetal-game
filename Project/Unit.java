@@ -1,5 +1,7 @@
 package project;
 
+import project.Unit;
+
 /* Unit.java
  * An interface for all units //Changed to a super class to all units DAN
  *   
@@ -122,5 +124,13 @@ public class Unit {
  }
  public void select() {
 	 isSelected = true;
+ }
+ public boolean isTargetInRange(Unit u){  //added by Dan 2012May3
+   int x = this.getLocationX() - u.getLocationX();
+   int y = this.getLocationY() - u.getLocationY();
+   int distance = (int)(Math.sqrt(x*x+y*y));
+   if(distance <= range)
+     return true;
+   return false;
  }
 }
