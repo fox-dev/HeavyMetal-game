@@ -35,6 +35,8 @@ package project;
  *    * public boolean unitCanBeHere(Unit u, int x, int y)
  *        -returns true if a unit can be on map[y][x]
  *        -based on Map.GROUND / Map.WATER / Unit.restrictions
+ *    * public void respawn(Player p, int quadrant)
+ *        -respawns a player's living units to a quandrant I, II, III, IV or random
 */
 
 public class Actions {
@@ -231,11 +233,11 @@ public class Actions {
   	int mX = mapRef.getX() - 1 ;
   	int mY = mapRef.getY() - 1;;
   	             //{xMin, xMax, yMin, yMax}
-  	int[][] qD = { { 0, mX, 0, mY },    //Q2 { mX/2, mX, mY/2, mY}
-  	               { mX/2, mX, 0, mY/2},     //Q3 { mX/2, mX, 0, mY/2}
-  	               { 0, mX/2, 0, mY/2} ,        //Random distrib
-                   { 0, mX/2, mY/2, mY},   //Q1 { 0, mX/2, mY/2, mY}
-                   { mX/2, mX, mY/2, mY}}; //Q4  { 0, mX/2, 0, mY/2}
+    int[][] qD = {  { 0, mX, 0, mY },       //all Quadrants
+                    { mX/2, mX, 0, mY/2},   //Q1
+                    { 0, mX/2, 0, mY/2},    //Q2
+                    { 0, mX/2, mY/2, mY},   //Q3
+                    { mX/2, mX, mY/2, mY}}; //Q4
   	int xMin = qD[quadrant][0];
   	int xMax = qD[quadrant][1];
   	int yMin = qD[quadrant][2];
