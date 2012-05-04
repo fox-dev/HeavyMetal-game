@@ -82,12 +82,8 @@ public class Actions {
     //src has already shot
     if(src.getHasUnitShot())
       return false;
-    //check range, may be changed later if range is changed
-    //attack is able to be done in adjacent squares to include diagonal
-    double x = (double)Math.abs(src.getLocationX() - tgt.getLocationX());
-    double y = (double)Math.abs(src.getLocationY() - tgt.getLocationY());
-    int distance = (int)(Math.sqrt(x*x+y*y));
-    if(distance > 1)
+    //check range, updated Dan 2012 May 3
+    if(!src.isTargetInRange(tgt))
       return false;
     //all is good, fire away
     return true;
