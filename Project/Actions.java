@@ -1,5 +1,11 @@
 package project;
 
+import project.ActionsRules;
+import project.Map;
+import project.Player;
+import project.Unit;
+import project.UnitGround;
+
 /** Program Name: Actions.java
  *  Name: Dan Q. Nguyen
  *  Professor: Yang, David
@@ -43,6 +49,7 @@ public class Actions {
   Player p1, p2;
   Map mapRef;
   int[][] moveArrayDisplay; //used in public boolean moveLegal(Unit u, int destX, int destY)
+  private ActionsRules actionsRules;
   
   public static final int CANT_MOVE_HERE0 = 0;  
   public static final int LEGAL_MOVE_HERE= 1;
@@ -54,6 +61,7 @@ public class Actions {
     this.p1 = p1;
     this.p2 = p2;
     this.mapRef = mapRef;
+    actionsRules = new ActionsRules();
   }
 
   public int[][] makeNewMovementDisplay(Unit u){
@@ -72,6 +80,8 @@ public class Actions {
     if(fireLegal(src, tgt)){
       tgt.setHP(tgt.getHP() - src.getAttack());
       src.setHasUnitShot(true);
+      if(actionsRules.returnFire_On)
+        actionsRules.returnFire(tgt, src);
       p1.removeDeadUnits();
       p2.removeDeadUnits();
       return true;
@@ -113,7 +123,7 @@ public class Actions {
   //if moveArrayDisplay[i][j] == A_UNIT_IS_HERE then unit CANNOT move to that location (OTHER UNIT)
   public boolean moveLegal(Unit u, int destX, int destY){   
     //create an array the size of mapRef.  Fills with CANT_MOVE_HERE0 into all fields by default
-  	// only uses mapRef for the size of the map.  Not coordinates of water/ground
+    // only uses mapRef for the size of the map.  Not coordinates of water/ground
     moveArrayDisplay = new int[mapRef.getX()][mapRef.getY()];  
     
     //update moveArrayDisplay to have all units(p1 and p2) with A_UNIT_IS_HERE on moveArrayDisplay
@@ -166,8 +176,8 @@ public class Actions {
     if(mvArr[currX][currY] == A_UNIT_IS_HERE)  //unit cannot move ontop of ANY OTHER unit.
       return;
     if( !unitCanBeHere(u, currX, currY) ) //if groundUnit cannot move Map.WATER, 
-    	return;                             //if waterUnit cannot move to Map.GROUND
-    	
+      return;                             //if waterUnit cannot move to Map.GROUND
+      
     //XXXXX currX, currY is a valid location or a "LEGAL_MOVE_HERE"
     int xTemp, yTemp;
     mvArr[currX][currY] = LEGAL_MOVE_HERE;
@@ -190,12 +200,12 @@ public class Actions {
       int mapYXtype = mapRef.getArr(y, x); //accounts for SWITCHED X Y
       // LAND_ONLY units can only move onto the GROUND
       if( uRestriction == Unit.LAND_ONLY && mapYXtype != Map.GROUND)
-      	return false;
+        return false;
       // WATER_ONLY units can only move onto WATER
       if( uRestriction == Unit.WATER_ONLY && mapYXtype != Map.WATER)
-      	return false;    
+        return false;    
     }
-  	return true;
+    return true;
   }
   //added so that a Player's unit(alive ones) can be respawned
   //accounts for units not being on water if land and vise versa
@@ -216,53 +226,53 @@ public class Actions {
   public void respawn(Player p, int quadrant){
     if(quadrant < 0 || quadrant > 4)
       quadrant = 0;
-  	//move all player 's units off of map
-  	int i = 0;
-  	Unit u = p.getUnit(i);
-  	while(u != null){
-  		u.setXY(-1, -1);
-  		u = p.getUnit(++i);
-  	}
-  	
-  	//seed random
-  	java.util.Random r = new java.util.Random( System.currentTimeMillis());
-  	
-  	//find min/max XY
-  	i = 0;
-  	u = p.getUnit(i);
-  	int mX = mapRef.getX() - 1 ;
-  	int mY = mapRef.getY() - 1;;
-  	             //{xMin, xMax, yMin, yMax}
-    int[][] qD = {  { 0, mX, 0, mY },       //all Quadrants
-                    { mX/2, mX, 0, mY/2},   //Q1
-                    { 0, mX/2, 0, mY/2},    //Q2
-                    { 0, mX/2, mY/2, mY},   //Q3
-                    { mX/2, mX, mY/2, mY}}; //Q4
-  	int xMin = qD[quadrant][0];
-  	int xMax = qD[quadrant][1];
-  	int yMin = qD[quadrant][2];
-  	int yMax = qD[quadrant][3];
-  	
+    //move all player 's units off of map
+    int i = 0;
+    Unit u = p.getUnit(i);
+    while(u != null){
+      u.setXY(-1, -1);
+      u = p.getUnit(++i);
+    }
+    
+    //seed random
+    java.util.Random r = new java.util.Random( System.currentTimeMillis());
+    
+    //find min/max XY
+    i = 0;
+    u = p.getUnit(i);
+    int mX = mapRef.getX() - 1 ;
+    int mY = mapRef.getY() - 1;;
+                 //{xMin, xMax, yMin, yMax}
+    int[][] qD = { { 0, mX, 0, mY },       //all Quadrants
+                   { mX/2, mX, 0, mY/2},   //Q1
+                   { 0, mX/2, 0, mY/2},    //Q2
+                   { 0, mX/2, mY/2, mY},   //Q3
+                   { mX/2, mX, mY/2, mY}}; //Q4
+    int xMin = qD[quadrant][0];
+    int xMax = qD[quadrant][1];
+    int yMin = qD[quadrant][2];
+    int yMax = qD[quadrant][3];
+    
     //spawn players based upon quandrant location
     //no spawn on opposing player, water units on water and land units on land
-  	i = 0;
-  	u = p.getUnit(i);
-  	int tempX = 0, tempY = 0;
-  	boolean goodSpot;
-  	while(u != null){  	  
-  	  goodSpot = false;
-  	  while(!goodSpot){
-  	    tempX = (r.nextInt(xMax-xMin) + xMin) % xMax;
-  	    tempY = (r.nextInt(yMax-yMin) + yMin) % yMax;
-  	    //terrain check
-  	    if( unitCanBeHere(u, tempX, tempY) &&    //terrain check
-  	        p1.getUnitAt(tempX,tempY) == null && //other units checks
-  	        p2.getUnitAt(tempX,tempY) == null )
-  	      goodSpot = true;
-  	  }
-  	  u.setXY(tempX, tempY);
-  		u = p.getUnit(++i);
-  	}
+    i = 0;
+    u = p.getUnit(i);
+    int tempX = 0, tempY = 0;
+    boolean goodSpot;
+    while(u != null){     
+      goodSpot = false;
+      while(!goodSpot){
+        tempX = (r.nextInt(xMax-xMin) + xMin) % xMax;
+        tempY = (r.nextInt(yMax-yMin) + yMin) % yMax;
+        //terrain check
+        if( unitCanBeHere(u, tempX, tempY) &&    //terrain check
+            p1.getUnitAt(tempX,tempY) == null && //other units checks
+            p2.getUnitAt(tempX,tempY) == null )
+          goodSpot = true;
+      }
+      u.setXY(tempX, tempY);
+      u = p.getUnit(++i);
+    }
   }
   
   private boolean isXY_onMap(int x, int y){
