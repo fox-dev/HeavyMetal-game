@@ -111,7 +111,6 @@ public class Drawing {
 	public void drawMoves(Unit unit, Graphics g) {
 		
 		System.out.println(unit.getHP());
-		UnitDisplay.setHP(unit.getHP()); //Added by Sidra. Send HP info to UnitDisplay
 		
 		
 		moves = actions.makeNewMovementDisplay(unit);
