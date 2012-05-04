@@ -24,7 +24,7 @@ public class UnitAir extends Unit {
 	private static final int MOVES_DEFAULT = 4;
 	private static final int UNIT_TYPE = 1; // Air type
 	private static final String UNIT_DESCRIPTION = "Bomber"; // A name for generic Air units
-	private static final int MOVE_RESTRICTION = 0; // Can move anywhere
+	private static final int MOVE_RESTRICTION = Unit.NONE; // Can move anywhere
 	private static final int ATK_DEFAULT = 1;
 	private static final int ATK_RANGE = 1;
 	private static final int SPAWN_LOC_X = 0;
