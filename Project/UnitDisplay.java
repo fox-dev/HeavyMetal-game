@@ -9,11 +9,12 @@ import javax.swing.ImageIcon;
 
 public class UnitDisplay {
 	
-	private Player player1;
-	private Player player2;
+	private Player player1, player2;
+	private Image endButton;
 	private static String text;
 	private static String textPlayer;
-	private Image endButton;
+	private static int hp;
+	
 	//STatic variables for the location and width of the end turn button to be used by input to end the
 	//turn
 	public static final int ENDBUTTONX = GamePanel.GWIDTH - 82
@@ -21,13 +22,14 @@ public class UnitDisplay {
 
 	public UnitDisplay(Player player1, Player player2) {
 		this.player1 = player1;
-		this.player2 = player2;
+		this.player2 = player2;;
 		endButton = new ImageIcon("images/endbutton.png").getImage();
 	}
 
-	public void setPlayer(Player player, Player player2) {
-		this.player2 = player;
+	public void setPlayer(Player player1, Player player2) {
+		this.player1 = player1;
 		this.player2 = player2;
+		
 	}
 
 	//set text from Input.projectfile
@@ -48,7 +50,6 @@ public class UnitDisplay {
 	
 	//get current player text
 	public static String getPlayer(){
-		
 		if(textPlayer == null){
 			textPlayer = "Player 1: ";
 			System.out.println(textPlayer);
@@ -60,28 +61,19 @@ public class UnitDisplay {
 		}
 	}
 	
-	//getUnitsHP
-	//getUnitsHP
-		public String getUnitHP() {
-			
-			if (Player.unitSelected() == true){
-				Unit selectedUnit = player1.getUnit(0);
-				if(selectedUnit == null)
-					return Integer.toString(0);
-				return Integer.toString(selectedUnit.getHP());
-			}
-			else
-				return null;
-		}
-		
-		public boolean isUnit(String s) {
-			if (s == null)
-				return false;
-			else
-				return true;
-		}
+	//set HP
+	public static void setHP(int HP1){
+		hp = HP1;
+	}
 	
-
+	//get HP
+	public int getSelect(){
+		return hp;
+		
+	}
+	
+	//setsUnitSelected
+	
 	//draws panel
 	public void draw(Graphics g) {
 		g.setColor(Color.GRAY);
@@ -96,9 +88,6 @@ public class UnitDisplay {
 		//Drawing the image for the end turn button
 		g.drawImage(endButton, ENDBUTTONX, ENDBUTTONY, null);
 		g.setColor(Color.GREEN);
-		
-		//Displays current player
-		
 	
 		//Displays Text
 		if(getText() != null)
@@ -109,10 +98,27 @@ public class UnitDisplay {
 				
 				
 		//Displays HP of Units
-				
-		if(isUnit(getUnitHP()) == true)
-			g.drawString(" > " + "Unit HP: " + getUnitHP(), 15,
+		if(Player.unitSelected() != false)
+			g.drawString(" > " + "Unit HP: " + getSelect(), 15,
+					GamePanel.GHEIGHT - 50);
+		else
+			g.drawString(" ", 15,
 					GamePanel.GHEIGHT - 50);
 	}
 	
 }
+
+
+/*
+public void setSelect(int x, int y) {
+if(Player.unitSelected() == true){
+	if(player1.getUnitAt(x, y) != null) {
+		selected = player1.getUnitAt(x, y);
+	}
+	else if(player2.getUnitAt(x, y) != null) {
+		selected = player1.getUnitAt(x, y);
+	}
+}
+else
+	selected = null;
+}*/
