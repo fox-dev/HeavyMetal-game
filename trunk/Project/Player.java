@@ -24,7 +24,7 @@ public class Player {
   private int playNo; // Francisco Edit
   
   // Boolean so that a player can only have 1 selected unit at a time -Andrew
-  private boolean selected;
+  private static boolean selected;
   private int selectedUnitNumber = -1;
 
   //Constructor, creates units, sets their location
@@ -136,7 +136,7 @@ public class Player {
   }
   
 	// Checks to see if a unit is selected, only 1 unit selection at a time -Andrew
-	public boolean unitSelected() {
+	public static boolean unitSelected() {
 		return selected;
 	}
 	// Set true selected -Andrew

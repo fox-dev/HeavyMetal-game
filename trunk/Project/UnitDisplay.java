@@ -1,15 +1,5 @@
 package project;
-//This program will post up extra panels onto the game board.
-//Currently displays texts: moves/attacks/player 1 and 2's health for each unit
-//Problem: The console will fall into a loop, printing the previous command,
-//because display will be updating ever few seconds.
-//Not sure how to stall the comment section of the program yet. Or if it's just how
-//the console runs
-
-//Displaying both Player's Hp makes things easier. However, when either Air unit is dead,
-//The HP for the land units switches to the Air unit. Making Air display the land unit's HP,
-//instead of 0
-
+//This program will display texts: moves/attacks/player 1 and 2's health for each unit
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -71,40 +61,25 @@ public class UnitDisplay {
 	}
 	
 	//getUnitsHP
-	public String getUnitHP1_0() {
-			Unit selectedUnit = player1.getUnit(0);
-			if(selectedUnit == null)
-				return Integer.toString(0);
-			return Integer.toString(selectedUnit.getHP());
-	}
-	
-	public String getUnitHP1_1() {
-		Unit selectedUnit = player1.getUnit(1);
-		if(selectedUnit == null)
-			return Integer.toString(0);
-		return Integer.toString(selectedUnit.getHP());
-	}
-	
-	public String getUnitHP2_0() {
-		Unit selectedUnit = player2.getUnit(0);
-		if(selectedUnit == null)
-			return Integer.toString(0);
-		return Integer.toString(selectedUnit.getHP());
-	}
-	
-	public String getUnitHP2_1() {
-		Unit selectedUnit = player2.getUnit(1);
-		if(selectedUnit == null)
-			return Integer.toString(0);
-		return Integer.toString(selectedUnit.getHP());
-	}
-	
-	public boolean isUnit(String s) {
-		if (s == null)
-			return false;
-		else
-			return true;
-	}
+	//getUnitsHP
+		public String getUnitHP() {
+			
+			if (Player.unitSelected() == true){
+				Unit selectedUnit = player1.getUnit(0);
+				if(selectedUnit == null)
+					return Integer.toString(0);
+				return Integer.toString(selectedUnit.getHP());
+			}
+			else
+				return null;
+		}
+		
+		public boolean isUnit(String s) {
+			if (s == null)
+				return false;
+			else
+				return true;
+		}
 	
 
 	//draws panel
@@ -124,27 +99,20 @@ public class UnitDisplay {
 		
 		//Displays current player
 		
+	
 		//Displays Text
 		if(getText() != null)
-			g.drawString(" > " + getPlayer() + " " + getText(), 135,
+			g.drawString(" > " + getPlayer() + " " + getText(), 15,
 					GamePanel.GHEIGHT - 75);
 		else //Greeting
-			g.drawString(" > " + "Welcome. Click a Unit to Play. Player 1 will start", 135, GamePanel.GHEIGHT - 75);
-		
-		
+			g.drawString(" > " + "Welcome. Click a Unit to Play. Player 1 will start", 15, GamePanel.GHEIGHT - 75);
+				
+				
 		//Displays HP of Units
-	
-		g.drawString(" > " + "Player 1 Units:", 45,
-					GamePanel.GHEIGHT - 60);
-		
-		g.drawString("Air: "+ getUnitHP1_0() + "    Land: " + getUnitHP1_1(), 45,
-			GamePanel.GHEIGHT - 45);
-		
-		g.drawString(" > " + "Player 2 Units:", 415,
-				GamePanel.GHEIGHT - 60);
-		
-		g.drawString("Air: " + getUnitHP2_0() + "    Land: " + getUnitHP2_1(), 415,
-				GamePanel.GHEIGHT - 45);
+				
+		if(isUnit(getUnitHP()) == true)
+			g.drawString(" > " + "Unit HP: " + getUnitHP(), 15,
+					GamePanel.GHEIGHT - 50);
 	}
 	
 }
