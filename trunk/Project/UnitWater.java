@@ -23,7 +23,7 @@ public class UnitWater extends Unit {
   private static final int MOVES_DEFAULT = 2;
   private static final int UNIT_TYPE = 2; // Water type
   private static final String UNIT_DESCRIPTION = "Warship"; // A name for generic Water units
-  private static final int MOVE_RESTRICTION = 2; // Only moves on water
+  private static final int MOVE_RESTRICTION = Unit.WATER_ONLY; // Only moves on water
   private static final int ATK_DEFAULT = 2;
   private static final int ATTACK_RANGE = 2;
   private static final int SPAWN_LOC_X = 0;

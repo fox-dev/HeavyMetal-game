@@ -24,7 +24,7 @@ public class UnitGround extends Unit {
   private static final int MOVES_DEFAULT = 2;
   private static final int UNIT_TYPE = 0; // Ground type
   private static final String UNIT_DESCRIPTION = "Tank"; // A name for generic ground units
-  private static final int MOVE_RESTRICTION = 1; // Only moves on land
+  private static final int MOVE_RESTRICTION = Unit.LAND_ONLY; // Only moves on land
   private static final int ATK_DEFAULT = 2;
   private static final int ATTACK_RANGE = 2;
   private static final int SPAWN_LOC_X = 0;
