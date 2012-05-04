@@ -39,6 +39,8 @@ import java.io.*;
  */
 
 public class Map {
+	public static final int GROUND = 1; //added Dan, "MACRO" used in Actions
+	public static final int WATER = 2; //added Dan, "MACRO" used in Actions
 	private static final int DEFAULT_SIZE_X = 20;
 	private static final int DEFAULT_SIZE_Y = 20;
 	private int[][] mapArr; // 2D Map array
@@ -60,7 +62,7 @@ public class Map {
 		// Fill the array with ground tiles
 		for (int i = 0; i < x; i++)
 			for (int j = 0; j < y; j++)
-				mapArr[i][j] = 1;
+				mapArr[i][j] = GROUND;
 		// Now add water to the map
 		addWater(.25,.75);
 	}
@@ -73,7 +75,7 @@ public class Map {
 		// Fill the array with ground tiles
 		for (int i = 0; i < x; i++)
 			for (int j = 0; j < y; j++)
-				mapArr[i][j] = 1;
+				mapArr[i][j] = GROUND;
 		// Add water to the map
 		addWater(left,right);
 	}
@@ -89,7 +91,7 @@ public class Map {
 			// Fill the array with 1's (land tiles)
 			for (int i = 0; i < x; i++)
 				for (int j = 0; j < y; j++)
-					mapArr[i][j] = 1;
+					mapArr[i][j] = GROUND;
 		}
 		else
 			// Import the map
@@ -300,7 +302,7 @@ public class Map {
 		double randNum; // Random number
 		int tempX = startX; // Temporary X used in loops
 		int tempY = startY; // Temporary Y used in loops
-		mapArr[startY][startX] = 2; // Make the starting coordinates a water tile
+		mapArr[startY][startX] = WATER; // Make the starting coordinates a water tile
 		// Now make water starting from the starting coordinates going up
 		while (!doneUp) {
 			// At beginning of loop, a random percentage is calculated
@@ -314,7 +316,7 @@ public class Map {
 					tempX++; // reset tempX
 				}
 				else { // Else add water to the left
-					mapArr[tempY][tempX] = 2;
+					mapArr[tempY][tempX] = WATER;
 				}
 			}
 			else if (randNum >= leftChance && randNum <= rightChance) {
@@ -324,7 +326,7 @@ public class Map {
 					 // Break out of the loop
 				}
 				else { // Else add water 
-					mapArr[tempY][tempX] = 2;
+					mapArr[tempY][tempX] = WATER;
 				}
 			}
 			else {
@@ -333,7 +335,7 @@ public class Map {
 					tempX--; // Reset tempX
 				}
 				else { // Else add water to the right
-					mapArr[tempY][tempX] = 2;
+					mapArr[tempY][tempX] = WATER;
 				}
 			}
 		}
@@ -351,7 +353,7 @@ public class Map {
 					tempX++; // Reset tempX
 				}
 				else { // Else add water to the left
-					mapArr[tempY][tempX] = 2;
+					mapArr[tempY][tempX] = WATER;
 				}
 			}
 			else if (randNum >= leftChance && randNum < rightChance) {
@@ -361,7 +363,7 @@ public class Map {
 					 // Break out of the loop
 				}
 				else { // Else add water 
-					mapArr[tempY][tempX] = 2;
+					mapArr[tempY][tempX] = WATER;
 				}
 			}
 			else {
@@ -370,7 +372,7 @@ public class Map {
 					tempX--; // Reset tempX
 				}
 				else { // Else add water to the right
-					mapArr[tempY][tempX] = 2;
+					mapArr[tempY][tempX] = WATER;
 				}
 			}
 		}
