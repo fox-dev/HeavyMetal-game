@@ -32,6 +32,10 @@ public class Unit {
  protected boolean isSelected = false; // Is the unit seleceted?
  protected boolean moved = false;
  protected boolean hasUnitShot = false;   //Dan: ensures that unit can only shoot once
+ //move restrictions macro to be used in inherited units and Actions
+ public static final int NONE = 0;
+ public static final int LAND_ONLY = 1;
+ public static final int WATER_ONLY = 2;
  
  public Unit(){
    HP = numMoves = type = attack = range = locX = locY;
