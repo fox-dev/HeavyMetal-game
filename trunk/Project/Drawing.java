@@ -6,6 +6,8 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
+import project.UnitDisplay;
+
 public class Drawing {
 
 	//Variables and classes
@@ -109,6 +111,7 @@ public class Drawing {
 	public void drawMoves(Unit unit, Graphics g) {
 		
 		System.out.println(unit.getHP());
+		UnitDisplay.setHP(unit.getHP()); //Added by Sidra. Send HP info to UnitDisplay
 		
 		
 		moves = actions.makeNewMovementDisplay(unit);
