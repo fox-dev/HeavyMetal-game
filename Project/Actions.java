@@ -1,5 +1,10 @@
 package project;
 
+import project.Map;
+import project.Player;
+import project.Unit;
+import project.UnitGround;
+
 /** Program Name: Actions.java
  *  Name: Dan Q. Nguyen
  *  Professor: Yang, David
@@ -156,9 +161,18 @@ public class Actions {
       return; 
     if(mvArr[currX][currY] == A_UNIT_IS_HERE)  //unit cannot move ontop of ANY OTHER unit.
       return;
-    if( isGroundOnWater(u,currX,currY) )  //final destination cannot be on water if ground unit
-      return;
-    
+
+    int uRestriction = u.getMRestriction();
+    if( uRestriction != 0){ //skip these if it is has no movement restrictions or Unit.NONE
+      int mapYXtype = mapRef.getArr(currY, currX); //accounts for SWITCHED X Y
+      // LAND_ONLY units can only move onto the GROUND
+      if( uRestriction == Unit.LAND_ONLY && mapYXtype != Map.GROUND)
+      	return;
+      // WATER_ONLY units can only move onto WATER
+      if( uRestriction == Unit.WATER_ONLY && mapYXtype != Map.WATER)
+      	return;    
+    }
+    	
     //XXXXX currX, currY is a valid location or a "LEGAL_MOVE_HERE"
     int xTemp, yTemp;
     mvArr[currX][currY] = LEGAL_MOVE_HERE;
@@ -175,7 +189,6 @@ public class Actions {
     }
   }
   
-  //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXEDIT AREA END
   private boolean isXY_onMap(int x, int y){
     if( x<0 || y<0 || x>mapRef.getX()-1 || y > mapRef.getY()-1 )
       return false;
