@@ -10,21 +10,20 @@ import javax.swing.ImageIcon;
 public class UnitDisplay {
 	
 	private Player player1, player2;
-	private Image endButton;
-	private static String text;
-	private static String textPlayer;
-	private static String hp;
-	private static String type;
+	private Image endButton, bullet;
+	private static String text, textPlayer, hp, type;
+	private static int attack;
 	
-	//STatic variables for the location and width of the end turn button to be used by input to end the
+	//Static variables for the location and width of the end turn button to be used by input to end the
 	//turn
-	public static final int ENDBUTTONX = GamePanel.GWIDTH - 82
-			, ENDBUTTONY = GamePanel.GHEIGHT - 85, ENDBUTTONWIDTH = 60, ENDBUTTONHEIGHT = 40;
+	public static final int ENDBUTTONX = GamePanel.GWIDTH - 72
+			, ENDBUTTONY = GamePanel.GHEIGHT - 77, ENDBUTTONWIDTH = 60, ENDBUTTONHEIGHT = 40;
 
 	public UnitDisplay(Player player1, Player player2) {
 		this.player1 = player1;
 		this.player2 = player2;
-		endButton = new ImageIcon("images/endbutton.png").getImage();
+		endButton = new ImageIcon("images/button.png").getImage();
+		bullet = new ImageIcon("images/bullet.png").getImage();
 	}
 
 	public void setPlayer(Player player1, Player player2) {
@@ -73,6 +72,32 @@ public class UnitDisplay {
 		else
 			g.drawString(" > Unit Type: -- ", 110,
 					GamePanel.GHEIGHT - 50);
+		
+		//Displays Attack Power of Unit
+		/*if(Player.unitSelected() != false)
+			g.drawString(drawAttack(), 225,
+					GamePanel.GHEIGHT - 50);
+		else
+			g.drawString(" > Attack Power: -- ", 225,
+					GamePanel.GHEIGHT - 50);
+		*/
+		
+		//Displays Attack
+		for(int i = 0; i < attack; i++){
+			if(Player.unitSelected() != false){
+				if(drawAttack() == 1)
+					g.drawImage(bullet, 325,
+							GamePanel.GHEIGHT - 75, null);
+				else if(drawAttack() == 2){
+					g.drawImage(bullet, 325,
+							GamePanel.GHEIGHT - 75, null);
+					g.drawImage(bullet, 340,
+							GamePanel.GHEIGHT - 75, null);
+				}
+			}
+		}
+	
+			
 	}
 
 	//set text from Input
@@ -113,6 +138,7 @@ public class UnitDisplay {
 				if(player1.getUnit(i).isSelected()) {
 					setHP(player1.getUnit(i));
 					setType(player1.getUnit(i));
+					setAttack(player1.getUnit(i));
 				}
 			}
 			else if (player1.getUnit(i).getType() == 1) {
@@ -120,6 +146,7 @@ public class UnitDisplay {
 				if(player1.getUnit(i).isSelected()) {						
 					setHP(player1.getUnit(i));
 					setType(player1.getUnit(i));
+					setAttack(player1.getUnit(i));
 				}
 			}
 		}
@@ -130,6 +157,7 @@ public class UnitDisplay {
 				if(player2.getUnit(i).isSelected()) {
 					setHP(player2.getUnit(i));
 					setType(player2.getUnit(i));
+					setAttack(player2.getUnit(i));
 				}
 			}
 			else if (player2.getUnit(i).getType() == 1) {
@@ -137,6 +165,7 @@ public class UnitDisplay {
 				if(player2.getUnit(i).isSelected()) {
 					setHP(player2.getUnit(i));
 					setType(player2.getUnit(i));
+					setAttack(player2.getUnit(i));
 				}
 			}
 		}
@@ -155,13 +184,24 @@ public class UnitDisplay {
 	//Sets Unit's Type
 	public void setType(Unit unit){
 		if(unit.getType() == 0)
-			type = "Ground Unit";
+			type = "Ground";
 		else
-			type = "Air Unit";
+			type = "Air";
 	}
 	
 	//Gets Unit's Type
 	public String drawType(){
 		return type;
 	}
+	
+	//Sets Unit's Attack
+	public void setAttack(Unit unit){
+		attack = unit.getAttack();
+	}
+	
+	//Gets Unit's Attack
+	public int drawAttack(){
+		return attack;
+	}
+	
 }
