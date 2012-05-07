@@ -115,8 +115,8 @@ public class Drawing {
 		
 		moves = actions.makeNewMovementDisplay(unit);
 		
-		for(int i = 0; i < 20; i++) {
-			for(int j = 0; j < 20; j++) {
+		for(int i = 0; i < world.getMap().getX(); i++) {
+			for(int j = 0; j < world.getMap().getY(); j++) {
 				if(moves[i][j] == 1) {
 					g.drawImage(moveable, i * 30, j * 30, null);
 				}

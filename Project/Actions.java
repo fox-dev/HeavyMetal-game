@@ -136,6 +136,9 @@ public class Actions {
   //if moveArrayDisplay[i][j] == LEGAL_MOVE_HERE then unit CAN move to that location
   //if moveArrayDisplay[i][j] == A_UNIT_IS_HERE then unit CANNOT move to that location (OTHER UNIT)
   public boolean moveLegal(Unit u, int destX, int destY){   
+	  // If a click is outside of the map, ignore it
+	  if (destX < 0 || destX > (mapRef.getX() - 1) || (destY < 0 || destY > (mapRef.getY() - 1)))
+		  return false;
     //create an array the size of mapRef.  Fills with CANT_MOVE_HERE0 into all fields by default
     // only uses mapRef for the size of the map.  Not coordinates of water/ground
     moveArrayDisplay = new int[mapRef.getX()][mapRef.getY()];  
@@ -223,7 +226,7 @@ public class Actions {
   public boolean unitCanBeHere(Unit u, int x, int y){
     int uRestriction = u.getMRestriction();
     if( uRestriction != 0){ //skip these if it is has no movement restrictions or Unit.NONE
-      int mapYXtype = mapRef.getArr(y, x); //accounts for SWITCHED X Y
+      int mapYXtype = mapRef.getArr(x, y); //accounts for SWITCHED X Y
       // LAND_ONLY units can only move onto the GROUND
       if( uRestriction == Unit.LAND_ONLY && mapYXtype != Map.GROUND)
         return false;
@@ -323,7 +326,7 @@ public class Actions {
   }
   private boolean isGroundOnWater(Unit u, int x, int y){
     //if ( a ground unit and its on water )
-    if((u instanceof UnitGround) && mapRef.getArr(y, x) == 2) //-Andrew, fixes displaying of all possible moves. Switched X and Y //possible syntax/symmatic error instanceof
+    if((u instanceof UnitGround) && mapRef.getArr(x, y) == 2) //-Andrew, fixes displaying of all possible moves. Switched X and Y //possible syntax/symmatic error instanceof
       return true;     //2 is water according to Map.java (change to a static final WATER in map
     return false;
   }
