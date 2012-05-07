@@ -18,6 +18,7 @@ public class Player {
   // How many units that have been moved during the turn
 
   private ArrayList<Unit> units = new ArrayList<Unit>();
+  private ArrayList<Unit> deadunits = new ArrayList<Unit>();
 
   private UnitAir air;
   private UnitGround ground;
@@ -67,10 +68,19 @@ public class Player {
     for (int i = 0; i < units.size(); i++) {
       Unit tempUnit = units.get(i);
       if(tempUnit.getHP() <= 0) {
+    	deadunits.add(tempUnit);
         units.remove(i);
         i--;
       }
     }
+  }
+  
+  public Unit unitToExplode() {
+	  if(deadunits.size() > 0) {
+		  return deadunits.get(1);
+	  }
+	  else
+		  return null;
   }
   
   //Checks to see if the player's turn is over
