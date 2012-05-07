@@ -43,7 +43,7 @@ public class Input {
 		try{
 		
 		//If the mouse click is within range of the End Turn button, end the player's turn
-		if(realX >= UnitDisplay.ENDBUTTONX  && realY >= UnitDisplay.ENDBUTTONY && realX <= UnitDisplay.ENDBUTTONX + UnitDisplay.ENDBUTTONWIDTH && realY <= UnitDisplay.ENDBUTTONY + UnitDisplay.ENDBUTTONHEIGHT ){
+		if((activePlayer.unitSelected() == false) && realX >= UnitDisplay.ENDBUTTONX  && realY >= UnitDisplay.ENDBUTTONY && realX <= UnitDisplay.ENDBUTTONX + UnitDisplay.ENDBUTTONWIDTH && realY <= UnitDisplay.ENDBUTTONY + UnitDisplay.ENDBUTTONHEIGHT ){
 			activePlayer.forceTurnOver();
 		}
 		
