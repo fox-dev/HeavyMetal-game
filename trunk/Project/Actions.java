@@ -50,6 +50,7 @@ public class Actions {
   Map mapRef;
   int[][] moveArrayDisplay; //used in public boolean moveLegal(Unit u, int destX, int destY)
   private ActionsRules actionsRules;
+  private String msg;
   
   public static final int CANT_MOVE_HERE0 = 0;  
   public static final int LEGAL_MOVE_HERE= 1;
@@ -62,6 +63,7 @@ public class Actions {
     this.p2 = p2;
     this.mapRef = mapRef;
     actionsRules = new ActionsRules();
+    msg = null;
   }
 
   public int[][] makeNewMovementDisplay(Unit u){
@@ -80,7 +82,7 @@ public class Actions {
     if(fireLegal(src, tgt)){
       tgt.setHP(tgt.getHP() - src.getAttack());
       src.setHasUnitShot(true);
-      if(actionsRules.returnFire_On)
+      if(actionsRules.returnFire_On == true)
         actionsRules.returnFire(tgt, src);
       p1.removeDeadUnits();
       p2.removeDeadUnits();
@@ -90,19 +92,31 @@ public class Actions {
   }
   
  public boolean fireLegal(Unit src, Unit tgt){ //made public -Andrew
-    //units don't exist
-    if(src == null || tgt == null)
+    if(src == null || tgt == null){
+      msg = "Your or your opposing unit don't exist"; // units don't exist
+      return false; 
+    }
+    if(src.getHP() <= 0 || tgt.getHP() <= 0){    //one of the units are dead
+      msg = "You or your unit is already dead";
       return false;
-    //one of the units are dead
-    if(src.getHP() <= 0 || tgt.getHP() <= 0)
+    }
+    if(src.getHasUnitShot()){
+      msg = "Your " + src.getDescription() + " has already shot"; //src has already shot
       return false;
-    //src has already shot
-    if(src.getHasUnitShot())
-      return false;
+    }
     //check range, updated Dan 2012 May 3
-    if(!src.isTargetInRange(tgt))
+    if(!src.isTargetInRange(tgt)){
+      msg = "Enemy " + tgt.getDescription() + " is not in range of your " + src.getDescription();
       return false;
+    }
+    //if friendly fire is OFF check if other unit is a friendly  //CASE NEVER TAKEN INTO CONSIDERATION due to logic in Input.java.  May change
+    if(actionsRules.friendlyFire_On == false)
+      if(actionsRules.friendlyUnits(this, src,tgt)){
+        msg = "Cannot fire at friendly targets";
+        return false;
+      }
     //all is good, fire away
+    msg = null;
     return true;
   }
   
@@ -153,10 +167,22 @@ public class Actions {
     moveArrayDisplay[u.getLocationX()][u.getLocationY()] = A_UNIT_IS_HERE;
     
     //if (destX ,destY) is LEGAL_MOVE_HERE on moveArrayDisplay then return true
-    if(moveArrayDisplay[destX][destY] == LEGAL_MOVE_HERE)
+    int spot = moveArrayDisplay[destX][destY]; 
+    if(spot == LEGAL_MOVE_HERE){
+      msg = null;
       return true;
-    else
-      return false;
+    }
+    //Generate msg message to say why move could not be made
+    msg = "" + u.getDescription() + " ";
+    if(spot == A_UNIT_IS_HERE)
+      msg += "cannot move atop another unit";     
+    else{ //(spot == CANT_MOVE_HERE0){
+      if(!unitCanBeHere(u, destX, destY))
+        msg += "cannot move on that terrain";
+      else
+        msg +="cannot move that far";
+    }
+    return false;
   }
   
   private void moveArrayBuildRecursive(Unit u, int currX, int currY, 
@@ -273,6 +299,21 @@ public class Actions {
       u.setXY(tempX, tempY);
       u = p.getUnit(++i);
     }
+  }
+  //returns the player of a unit
+  public Player playerOfUnit(Unit u){
+    if(u == null)
+      return null;
+    Player unitPlayer = null;
+    //find src units player#
+    if(p1.isThisMyUnit(u))
+      unitPlayer = p1;
+    else if(p2.isThisMyUnit(u))
+      unitPlayer = p2;
+    return unitPlayer;  
+  }
+  public String getMsg(){
+    return msg;
   }
   
   private boolean isXY_onMap(int x, int y){
