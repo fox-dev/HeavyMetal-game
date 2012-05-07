@@ -1,7 +1,11 @@
 package project;
 
+import project.Actions;
+import project.Player;
+import project.Unit;
+
 class ActionsRules {
-   boolean friendlyFire_On;
+   boolean friendlyFire_On = false;
    boolean returnFire_On = false; //disable until fully tested
    double returnFirePercent = 0.5;
    boolean buffDefense_On;
@@ -15,6 +19,14 @@ class ActionsRules {
        return;
      int returnAttack = (int)(src.getAttack() * returnFirePercent);
      tgt.setHP(tgt.getHP() - returnAttack);
-     
+   }
+   boolean friendlyUnits( Actions a, Unit src, Unit tgt ){
+     if(src == null || tgt == null)
+       throw new NullPointerException();
+     Player srcPlayer = a.playerOfUnit(src);
+     if(srcPlayer == null)
+       return false; //unit is not apart of either p1 or p2
+     //check of srcPlayer has a "tgt" unit
+     return srcPlayer.isThisMyUnit(tgt);
    }
 }
