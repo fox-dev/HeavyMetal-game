@@ -345,8 +345,8 @@ public class Actions {
       yMin = mapRef.getY()-1;
     
     //trim edges of "shot box" based on range
-    for(int i = xMin; i < xMax; i++){
-      for(int j = yMin; j < yMax; j++){
+    for(int i = xMin; i <= xMax; i++){
+      for(int j = yMin; j <= yMax; j++){
         if( u.isXYinRange(i,j) )
           rangeArr[i][j] = 1;
       }   
