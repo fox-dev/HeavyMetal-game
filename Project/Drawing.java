@@ -49,10 +49,10 @@ public class Drawing {
 	public void drawAll(Graphics g) {
 		unitDisplay.draw(g);
 		world.draw(g);
+		drawExplosion(g);
 		drawPlayer1(g);
 		drawPlayer2(g);
 		drawcurrentRect(g);
-		drawExplosion(g);
 	}
 
 	//Draws player 1
@@ -141,7 +141,6 @@ public class Drawing {
 			System.out.println("Exploding at" + explodingUnit.getLocationX() + " and " + explodingUnit.getLocationY());
 			g.drawImage(explosion, explodingUnit.getLocationX() * World.TILE_SIZE, 
 					explodingUnit.getLocationY() * World.TILE_SIZE, null);
-			player1.removeExplodingUnit();
 		}
 	}
 }
