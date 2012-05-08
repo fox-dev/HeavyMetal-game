@@ -59,6 +59,7 @@ public class Drawing {
 		drawPlayer1(g);
 		drawPlayer2(g);
 		drawcurrentRect(g);
+		drawDisplayBox(g);
 	}
 
 	//Draws player 1
@@ -130,13 +131,38 @@ public class Drawing {
 		
 	}
 	
+	//Drawing a rectangle around the current square with the mouse hovered over.
 	public void drawcurrentRect(Graphics g) {
 		if(player1.unitSelected() || player2.unitSelected()) {
 			g.setColor(Color.BLACK);
-			g.drawRect(input.getMouseX() * 30, input.getMouseY() * 30, 30, 30);
+			g.drawRect(input.getMouseX() * World.TILE_SIZE, input.getMouseY() * World.TILE_SIZE
+					, World.TILE_SIZE, World.TILE_SIZE);
 		}
 	}
 	
+	//Basic drawing of display for current health of unit.  Currently only draws a white 
+	//rounded rectangle to the top left of the unit.  Needs to draw depending on where the unit is
+	//and needs to actually display some information.
+	public void drawDisplayBox(Graphics g) {
+		for(int i  = 0; i < player1.checkNumUnits(); i++) {
+			if(input.getMouseX() == player1.getUnit(i).getLocationX()
+					&& input.getMouseY() == player1.getUnit(i).getLocationY()) {
+				g.setColor(Color.WHITE);
+				g.fillRoundRect((player1.getUnit(i).getLocationX() * 30) - 125,
+						(player1.getUnit(i).getLocationY() * 30) - 50, 150, 50, 40, 40);
+			}
+		}
+		for(int i  = 0; i < player2.checkNumUnits(); i++) {
+			if(input.getMouseX() == player2.getUnit(i).getLocationX()
+					&& input.getMouseY() == player2.getUnit(i).getLocationY()) {
+				g.setColor(Color.WHITE);
+				g.fillRoundRect((player2.getUnit(i).getLocationX() * 30) - 125,
+						(player2.getUnit(i).getLocationY() * 30) - 50, 150, 50, 40, 40);
+			}
+		}
+	}
+	
+	//Drawing the explosion when a unit dies
 	public void drawExplosion(Graphics g) {
 		if(player1.deadUnitsSize() > 0) {
 			if(player1.deadUnitsSize() > numExplosions1) {
