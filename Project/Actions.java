@@ -1,5 +1,11 @@
 package project;
 
+import project.ActionsRules;
+import project.Map;
+import project.Player;
+import project.Unit;
+import project.UnitGround;
+
 /** Program Name: Actions.java
  *  Name: Dan Q. Nguyen
  *  Professor: Yang, David
@@ -38,8 +44,6 @@ package project;
  *    * public void respawn(Player p, int quadrant)
  *        -respawns a player's living units to a quandrant I, II, III, IV or random
 */
-// UnitDisplay.java ln 40 54,  58 commented out temporarily
-// Drawing.java ln 112 commented out temp
 public class Actions {
   Player p1, p2;
   Map mapRef;
@@ -86,7 +90,7 @@ public class Actions {
     return false;
   }
   
- public boolean fireLegal(Unit src, Unit tgt){ //made public -Andrew
+  public boolean fireLegal(Unit src, Unit tgt){ //made public -Andrew
     if(src == null || tgt == null){
       msg = "Your or your opposing unit don't exist"; // units don't exist
       return false; 
@@ -135,7 +139,7 @@ public class Actions {
     if (destX < 0 || destX > (mapRef.getX() - 1) || (destY < 0 || destY > (mapRef.getY() - 1)))
       return false;    
     //create an array the size of mapRef.  Fills with CANT_MOVE_HERE0 into all fields by default
-  	// only uses mapRef for the size of the map.  Not coordinates of water/ground
+    // only uses mapRef for the size of the map.  Not coordinates of water/ground
     moveArrayDisplay = new int[mapRef.getX()][mapRef.getY()];  
     
     //update moveArrayDisplay to have all units(p1 and p2) with A_UNIT_IS_HERE on moveArrayDisplay
@@ -200,8 +204,8 @@ public class Actions {
     if(mvArr[currX][currY] == A_UNIT_IS_HERE)  //unit cannot move ontop of ANY OTHER unit.
       return;
     if( !unitCanBeHere(u, currX, currY) ) //if groundUnit cannot move Map.WATER, 
-    	return;                             //if waterUnit cannot move to Map.GROUND
-    	
+      return;                             //if waterUnit cannot move to Map.GROUND
+      
     //XXXXX currX, currY is a valid location or a "LEGAL_MOVE_HERE"
     int xTemp, yTemp;
     mvArr[currX][currY] = LEGAL_MOVE_HERE;
@@ -228,9 +232,9 @@ public class Actions {
           return false;
       // WATER_ONLY units can only move onto WATER
       if( uRestriction == Unit.WATER_ONLY && mapXYtype != Map.WATER)
-      	return false;    
+        return false;    
     }
-  	return true;
+    return true;
   }
   //added so that a Player's unit(alive ones) can be respawned
   //accounts for units not being on water if land and vise versa
@@ -251,75 +255,159 @@ public class Actions {
   public void respawn(Player p, int quadrant){
     if(quadrant < 0 || quadrant > 4)
       quadrant = 0;
-  	//move all player 's units off of map
-  	int i = 0;
-  	Unit u = p.getUnit(i);
-  	while(u != null){
-  		u.setXY(-1, -1);
-  		u = p.getUnit(++i);
-  	}
-  	
-  	//seed random
-  	java.util.Random r = new java.util.Random( System.currentTimeMillis());
-  	
-  	//find min/max XY
-  	i = 0;
-  	u = p.getUnit(i);
-  	int mX = mapRef.getX() - 1 ;
-  	int mY = mapRef.getY() - 1;;
-  	             //{xMin, xMax, yMin, yMax}
-  	int[][] qD = { { 0, mX, 0, mY },       //all Quadrants
-  	               { mX/2, mX, 0, mY/2},   //Q1
-  	               { 0, mX/2, 0, mY/2},    //Q2
+    //move all player 's units off of map
+    int i = 0;
+    Unit u = p.getUnit(i);
+    while(u != null){
+      u.setXY(-1, -1);
+      u = p.getUnit(++i);
+    }
+    
+    //seed random
+    java.util.Random r = new java.util.Random( System.currentTimeMillis());
+    
+    //find min/max XY
+    i = 0;
+    u = p.getUnit(i);
+    int mX = mapRef.getX() - 1 ;
+    int mY = mapRef.getY() - 1;;
+                 //{xMin, xMax, yMin, yMax}
+    int[][] qD = { { 0, mX, 0, mY },       //all Quadrants
+                   { mX/2, mX, 0, mY/2},   //Q1
+                   { 0, mX/2, 0, mY/2},    //Q2
                    { 0, mX/2, mY/2, mY},   //Q3
                    { mX/2, mX, mY/2, mY}}; //Q4
-  	int xMin = qD[quadrant][0];
-  	int xMax = qD[quadrant][1];
-  	int yMin = qD[quadrant][2];
-  	int yMax = qD[quadrant][3];
-  	
-  	int xExpandMin = xMin;
-  	int xExpandMax = xMax;
-  	int yExpandMin = yMin;
-  	int yExpandMax = yMax;
-  	
+    int xMin = qD[quadrant][0];
+    int xMax = qD[quadrant][1];
+    int yMin = qD[quadrant][2];
+    int yMax = qD[quadrant][3];
+    
+    int xExpandMin = xMin;
+    int xExpandMax = xMax;
+    int yExpandMin = yMin;
+    int yExpandMax = yMax;
+    
     //spawn players based upon quandrant location
     //no spawn on opposing player, water units on water and land units on land or bridge
-  	i = 0;
-  	u = p.getUnit(i);
-  	int tempX = 0, tempY = 0, countQuit;
-  	boolean goodSpot;
-  	while(u != null){  	  
-  	  goodSpot = false;
-  	  countQuit = 0;
-  	  while(!goodSpot){
-  	    if(countQuit <= 0) { //setup initial bounds for the first 10 tires
-  	      xExpandMin = xMin;
-  	      xExpandMax = xMax;
-  	      yExpandMin = yMin;
-  	      yExpandMax = yMax;
-  	    }
-  	    tempX = (r.nextInt(xExpandMax-xExpandMin) + xExpandMin) % xExpandMax;
-  	    tempY = (r.nextInt(yExpandMax-yExpandMin) + yExpandMin) % yExpandMax;
-  	    //terrain check
-  	    if( unitCanBeHere(u, tempX, tempY) &&    //terrain check
-  	        p1.getUnitAt(tempX,tempY) == null && //other units checks
-  	        p2.getUnitAt(tempX,tempY) == null ){
-  	      goodSpot = true;
-  	    }
-  	    countQuit++;
-  	    if(countQuit > 10){ // tried to set unit 10 times, expand bounds to all quadrants
+    i = 0;
+    u = p.getUnit(i);
+    int tempX = 0, tempY = 0, countQuit;
+    boolean goodSpot;
+    while(u != null){     
+      goodSpot = false;
+      countQuit = 0;
+      while(!goodSpot){
+        if(countQuit <= 0) { //setup initial bounds for the first 10 tires
+          xExpandMin = xMin;
+          xExpandMax = xMax;
+          yExpandMin = yMin;
+          yExpandMax = yMax;
+        }
+        tempX = (r.nextInt(xExpandMax-xExpandMin) + xExpandMin) % xExpandMax;
+        tempY = (r.nextInt(yExpandMax-yExpandMin) + yExpandMin) % yExpandMax;
+        //terrain check
+        if( unitCanBeHere(u, tempX, tempY) &&    //terrain check
+            p1.getUnitAt(tempX,tempY) == null && //other units checks
+            p2.getUnitAt(tempX,tempY) == null ){
+          goodSpot = true;
+        }
+        countQuit++;
+        if(countQuit > 10){ // tried to set unit 10 times, expand bounds to all quadrants
           xExpandMin = 0;
           xExpandMax = mX ;
           yExpandMin = 0;
           yExpandMax = mY ;
-  	    }
-  	  }
-  	  u.setXY(tempX, tempY);
-  		u = p.getUnit(++i);
-  	}
+        }
+      }
+      u.setXY(tempX, tempY);
+      u = p.getUnit(++i);
+    }
   }
-  //returns the player of a unit
+  
+  public int[][] rangeArray(Unit u){
+    int[][] rangeArr = new int[mapRef.getX()][mapRef.getY()]; //fills 0
+    //find xMin, xMax, yMin, yMax to build "shot box" in order
+    //to decrease calls to u.isXYinRange(int, int)
+    int range = u.getRange();
+    int unitX = u.getLocationX();
+    int unitY = u.getLocationY();
+    int xMin = unitX - range;
+    if(xMin < 0)
+      xMin = 0;
+    int xMax = unitX + range;
+    if(xMax > mapRef.getX()-1)
+      xMax = mapRef.getX()-1;
+    int yMin = unitY - range;
+    if(yMin < 0)
+      yMin = 0;
+    int yMax = unitY + range;
+    if(yMin > mapRef.getY()-1)
+      yMin = mapRef.getY()-1;
+    
+    //trim edges of "shot box" based on range
+    for(int i = xMin; i < xMax; i++){
+      for(int j = yMin; j < yMax; j++){
+        if( u.isXYinRange(i,j) )
+          rangeArr[i][j] = 1;
+      }   
+    }
+    return rangeArr;
+  }
+  
+  //Gives a list of "ENEMY" units in range of Unit u
+  java.util.ArrayList<Unit> getEnemyUnitsInRange(Unit u){
+    if(u == null)
+      return null;
+    //find enemy player
+    Player uPlayer = playerOfUnit(u);
+    Player enemyPlayer;
+    if(uPlayer == p1)
+      enemyPlayer = p2;
+    else if(uPlayer == p2)
+      enemyPlayer = p1;
+    else
+      return null;
+    return getUnitsInRange(u, enemyPlayer);
+  }
+  //Gives a list of "FRIENDLY" units in range of Unit u
+  //List does not include Unit u
+  java.util.ArrayList<Unit> getFriendlyUnitsInRange(Unit u){
+    if(u == null)
+      return null;
+    Player uPlayer = playerOfUnit(u);
+    java.util.ArrayList<Unit> friendsInRange = getUnitsInRange(u, uPlayer);
+    //remove Unit u from list
+    for(int i = 0; i < friendsInRange.size(); i++)
+      if(friendsInRange.get(i) == u)
+        friendsInRange.remove(i);
+    return friendsInRange;
+  }
+  
+  //gathers any units of player and adds them to ArrayList if they
+  //they are in range of Unit u. 
+  private java.util.ArrayList<Unit> getUnitsInRange(Unit u, Player player){
+    java.util.ArrayList<Unit> unitsInRange = new java.util.ArrayList<Unit>();
+    //cycle through units of "player", if unit from player 
+    //is in range of u, adding to list
+    int i = 0;
+    Unit enemyUnit = player.getUnit(i);
+    while(enemyUnit != null){
+      if(u.isTargetInRange(enemyUnit))
+        unitsInRange.add(enemyUnit);
+      enemyUnit = player.getUnit(++i);
+    }
+    return unitsInRange;    
+  }
+  
+  //returns a Unit based on (x,y) irregardless of Player# or null
+  Unit getUnitAtXY(int x, int y){
+    Unit tempU = p1.getUnitAt(x, y);
+    if(tempU == null)
+      tempU = p2.getUnitAt(x, y);
+    return tempU;
+  }
+  
+  //returns the player of a unit, returns null if unit belongs to no Player
   public Player playerOfUnit(Unit u){
     if(u == null)
       return null;

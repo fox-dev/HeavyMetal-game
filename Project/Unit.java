@@ -137,4 +137,12 @@ public class Unit {
      return true;
    return false;
  }
+ public boolean isXYinRange(int xCoor, int yCoor){
+   int x = this.getLocationX() - xCoor;
+   int y = this.getLocationY() - yCoor;
+   int distance = (int)(Math.sqrt(x*x+y*y));
+   if(distance <= range)
+     return true;
+   return false; 
+ }
 }
