@@ -13,7 +13,7 @@ public class Drawing {
 	//Variables and classes
 	private Player player1, player2;
 	private Image ground1, ground2, air1, air2, current, ground1selected, ground2selected, air1selected, air2selected;
-	private Image moveable;
+	private Image moveable, explosion;
 	private World world;
 	private Input input;
 	private Actions actions;
@@ -42,6 +42,7 @@ public class Drawing {
 		air1selected = new ImageIcon("images/airplaneselected.png").getImage();
 		air2selected = new ImageIcon("images/airplane2selected.png").getImage();
 		moveable = new ImageIcon("images/moveable.png").getImage();
+		explosion = new ImageIcon("images/explosion.gif").getImage();
 	}
 	
 	//Cycles through the draw methods to draw everything.
@@ -51,6 +52,7 @@ public class Drawing {
 		drawPlayer1(g);
 		drawPlayer2(g);
 		drawcurrentRect(g);
+		drawExplosion(g);
 	}
 
 	//Draws player 1
@@ -129,6 +131,17 @@ public class Drawing {
 		if(player1.unitSelected() || player2.unitSelected()) {
 			g.setColor(Color.BLACK);
 			g.drawRect(input.getMouseX() * 30, input.getMouseY() * 30, 30, 30);
+		}
+	}
+	
+	public void drawExplosion(Graphics g) {
+		Unit explodingUnit = player1.unitToExplode();
+		if(explodingUnit != null) {
+			System.out.println("Exploding");
+			System.out.println("Exploding at" + explodingUnit.getLocationX() + " and " + explodingUnit.getLocationY());
+			g.drawImage(explosion, explodingUnit.getLocationX() * World.TILE_SIZE, 
+					explodingUnit.getLocationY() * World.TILE_SIZE, null);
+			player1.removeExplodingUnit();
 		}
 	}
 }
