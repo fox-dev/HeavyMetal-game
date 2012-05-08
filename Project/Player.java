@@ -77,10 +77,14 @@ public class Player {
   
   public Unit unitToExplode() {
 	  if(deadunits.size() > 0) {
-		  return deadunits.get(1);
+		  return deadunits.get(0);
 	  }
 	  else
 		  return null;
+  }
+  
+  public void removeExplodingUnit() {
+	  deadunits.remove(0);
   }
   
   //Checks to see if the player's turn is over
