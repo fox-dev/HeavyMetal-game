@@ -107,7 +107,7 @@ public class UnitDisplay {
 	
 	//get text string/print it out when called
 	public static String getText() {
-		System.out.println(text);
+		//System.out.println(text);
 		return text;
 	}
 	
@@ -120,11 +120,11 @@ public class UnitDisplay {
 	public static String getPlayer(){
 		if(textPlayer == null){
 			textPlayer = "Player 1: ";
-			System.out.println(textPlayer);
+	//		System.out.println(textPlayer);
 			return textPlayer;
 		}
 		else {
-			System.out.println(textPlayer);
+//		System.out.println(textPlayer);
 			return textPlayer;
 		}
 	}
