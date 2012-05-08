@@ -3,6 +3,7 @@ package project;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
@@ -20,7 +21,10 @@ public class Drawing {
 	private UnitDisplay unitDisplay; 
 	
 	private int currentx, currenty;
+	private int numExplosions1, numExplosions2;
 	private int[][] moves;
+	private ArrayList<Image> explosions1 = new ArrayList<Image>();
+	private ArrayList<Image> explosions2 = new ArrayList<Image>();
 	
 	
 	public Drawing(Player player1, Player player2, World world, UnitDisplay unitDisplay, Actions actions
@@ -43,6 +47,8 @@ public class Drawing {
 		air2selected = new ImageIcon("images/airplane2selected.png").getImage();
 		moveable = new ImageIcon("images/moveable.png").getImage();
 		explosion = new ImageIcon("images/explosion.gif").getImage();
+		
+		numExplosions1 = numExplosions2 = 0;
 	}
 	
 	//Cycles through the draw methods to draw everything.
@@ -132,12 +138,31 @@ public class Drawing {
 	}
 	
 	public void drawExplosion(Graphics g) {
-		Unit explodingUnit = player1.unitToExplode();
-		if(explodingUnit != null) {
-			System.out.println("Exploding");
-			System.out.println("Exploding at" + explodingUnit.getLocationX() + " and " + explodingUnit.getLocationY());
-			g.drawImage(explosion, explodingUnit.getLocationX() * World.TILE_SIZE, 
-					explodingUnit.getLocationY() * World.TILE_SIZE, null);
+		if(player1.deadUnitsSize() > 0) {
+			if(player1.deadUnitsSize() > numExplosions1) {
+				Image tempImage = new ImageIcon("images/explosion.gif").getImage();
+				explosions1.add(tempImage);
+				numExplosions1++;
+			}
+		}
+		if(player2.deadUnitsSize() > 0) {
+			if(player2.deadUnitsSize() > numExplosions2) {
+				Image tempImage = new ImageIcon("images/explosion.gif").getImage();
+				explosions2.add(tempImage);
+				numExplosions2++;
+			}
+		}
+		if(explosions1.size() > 0 && player1.deadUnitsSize() > 0) {
+			for(int i = 0; i < numExplosions1; i++) {
+				g.drawImage(explosions1.get(i), player1.getdeadunit(i).getLocationX() * World.TILE_SIZE, 
+						player1.getdeadunit(i).getLocationY() * World.TILE_SIZE, null);
+			}
+		}
+		if(explosions2.size() > 0 && player2.deadUnitsSize() > 0) {
+			for(int i = 0; i < numExplosions2; i++) {
+				g.drawImage(explosions2.get(i), player2.getdeadunit(i).getLocationX() * World.TILE_SIZE, 
+						player2.getdeadunit(i).getLocationY() * World.TILE_SIZE, null);
+			}
 		}
 	}
 }

@@ -75,12 +75,16 @@ public class Player {
     }
   }
   
-  public Unit unitToExplode() {
-	  if(deadunits.size() > 0) {
-		  return deadunits.get(0);
+  public int deadUnitsSize() {
+	  return deadunits.size();
+  }
+  
+  public Unit getdeadunit(int unitNum) {
+	  if(unitNum > deadunits.size() - 1) {
+		  return null;
 	  }
 	  else
-		  return null;
+		  return deadunits.get(unitNum);
   }
   
   public void removeExplodingUnit() {
