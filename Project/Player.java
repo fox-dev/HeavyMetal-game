@@ -3,15 +3,13 @@ package project;
 import java.util.ArrayList;
 
 public class Player {
-  //default coordinates
-  private static final int P1_AIR_X = 4;      // ( 4, 5)
-  private static final int P1_AIR_Y = 5;
-  private static final int P1_GROUND_X = 4;   // ( 4,10)
-  private static final int P1_GROUND_Y = 10;
-  private static final int P2_AIR_X = 11;     // (11, 5)
-  private static final int P2_AIR_Y = 5;
-  private static final int P2_GROUND_X = 12;  // (12, 5)
-  private static final int P2_GROUND_Y = 5;
+  //for public Player(int playerNum, int numAir, int numGround, int numWater)
+  private static final int P1_NUM_AIR = 1;
+  private static final int P1_NUM_GROUND = 1;
+  private static final int P1_NUM_WATER = 1;
+  private static final int P2_NUM_AIR = 1;
+  private static final int P2_NUM_GROUND = 1;
+  private static final int P2_NUM_WATER = 1;
   
   // Creates the units
   // Keep track of active units
@@ -19,45 +17,30 @@ public class Player {
 
   private ArrayList<Unit> units = new ArrayList<Unit>();
   private ArrayList<Unit> deadunits = new ArrayList<Unit>();
-
-  private UnitAir air;
-  private UnitGround ground;
   private int playNo; // Francisco Edit
   
   // Boolean so that a player can only have 1 selected unit at a time -Andrew
   private static boolean selected;
   private int selectedUnitNumber = -1;
 
-  //Constructor, creates units, sets their location
-  public Player(int playNum) {
-	selected = false;
-    
-    air = new UnitAir();
-    ground = new UnitGround();
-    
-    if(playNum == 1) {
-      air.setXY(P1_AIR_X, P1_AIR_Y);
-      ground.setXY(P1_GROUND_X, P1_GROUND_Y);
-      playNo = playNum; // Francisco Edit
-    }
-    if(playNum == 2) {
-      air.setXY(P2_AIR_X, P2_AIR_Y);
-      ground.setXY(P2_GROUND_X, P2_GROUND_Y);
-      playNo = playNum; // Francisco Edit
-    }
-    
-    units.add(air);
-    units.add(ground);
+  public Player(int playNum){
+    if(playNum == 1)
+      helpConstructor(playNum, P1_NUM_AIR, P1_NUM_GROUND, P1_NUM_WATER );
+    else //playNum == 2
+      helpConstructor(playNum, P2_NUM_AIR, P2_NUM_GROUND, P2_NUM_WATER );
   }
-  
-  //Added by DAN
-  public Player(int airX, int airY, int groundX, int groundY){
-    air = new UnitAir();
-    ground = new UnitGround();
-    air.setXY(airX, airY);
-    ground.setXY(groundX, groundY);
-    units.add(air);
-    units.add(ground);    
+  public Player(int playerNum, int numAir, int numGround, int numWater){
+    helpConstructor(playerNum, numAir, numGround, numWater);
+  }
+  private void helpConstructor(int playerNum, int numAir, int numGround, int numWater){
+    selected = false;
+    this.playNo = playerNum;
+    for(int i = 0; i < numAir; i++)
+      units.add(new UnitAir());
+    for(int i = 0; i < numGround; i++)
+      units.add(new UnitGround());
+    for(int i = 0; i < numWater; i++)
+      units.add(new UnitWater());
   }
   
   // Francisco Edit: Returns player number
