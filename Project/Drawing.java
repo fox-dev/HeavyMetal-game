@@ -112,9 +112,6 @@ public class Drawing {
 	
 	public void drawMoves(Unit unit, Graphics g) {
 		
-		System.out.println(unit.getHP());
-		
-		
 		moves = actions.makeNewMovementDisplay(unit);
 		
 		for(int i = 0; i < world.getMap().getX(); i++) {
