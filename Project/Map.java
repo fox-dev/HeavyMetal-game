@@ -1,6 +1,7 @@
 package project;
 
 import java.io.*;
+import java.util.ArrayList;
 
 /* Map.java
  * This class will make a 2D array and fill it with land tiles for now. I will add water
@@ -31,21 +32,34 @@ import java.io.*;
  *  							  a random point (source point) on the map and make a river 
  *  							  going up and then down from that source.
  *  							  LeftChance = What percentage (from 0% til leftChance) of water will generate to the left?
- *  							  RightChance = What percentage (from rightChance til 100%) of water will generate to the right?\
- *  							  Default leftChance = .25 and rightChance = .75
+ *  							  RightChance = What percentage (from rightChance til 100%) of water will generate to the right?
+ *  							  Default leftChance = .375 and rightChance = .625
+ *  addBridges(int numOfBridges): An algorithm that will pick (numOfBridges) random Y points and go sweep through the X axis and add
+ *  							bridges when it finds water
  *  
  *  !! MAP LEGEND !!
- *  1 = Normal Land
+ *  1 = Normal
  *  2 = Water
+ *  3 = Mountain
+ *  4 = Forest
+ *  5 = Bridges
  */
 
 public class Map {
 	public static final int GROUND = 1; // added Dan, "MACRO" used in Actions
 	public static final int WATER = 2; // added Dan, "MACRO" used in Actions
+	public static final int MOUNTAIN = 3; // Mountain macro thing
+	public static final int FOREST = 4; // Oh yeah, look at them trees
+	public static final int BRIDGE = 5; // Look at them bridges, supporting tanks and cool people
 	private static final int DEFAULT_SIZE_X = 20;
 	private static final int DEFAULT_SIZE_Y = 20;
-	private static final double DEFAULT_WATER_LEFT_CHANCE = .25;
-	private static final double DEFAULT_WATER_RIGHT_CHANCE = .75;
+	// ADD IN CHECK
+	// LEFT SHOULD BE LESS THAN RIGHT
+	private static final double DEFAULT_WATER_LEFT_CHANCE = .375;
+	private static final double DEFAULT_WATER_RIGHT_CHANCE = .625;
+	private static final int DEFAULT_BRIDGE_FROM_EDGE = 2;
+	private static final int DEFAULT_BRIDGE_MAX_LENGTH = 4;
+	private static final int DEFAULT_BRIDGE_MAX_NUMBER = 3; // Will try to generate at most this #
 	private int[][] mapArr; // 2D Map array
 	private int x; // The X dimension
 	private int y; // The Y dimension
@@ -68,7 +82,7 @@ public class Map {
 			for (int j = 0; j < x; j++)
 				mapArr[i][j] = GROUND;
 		// Now add water to the map
-		addWater(.25,.75);
+		addWater(DEFAULT_WATER_LEFT_CHANCE,DEFAULT_WATER_RIGHT_CHANCE);
 	}
 	
 	// Map (int X, int Y, boolean false) will make a X*Y with or without water (default chances)
@@ -124,7 +138,7 @@ public class Map {
 				// Read through the file
 				while ((buffer = br.readLine()) != null) {
 					// If DIMENSIONS is found
-					if (buffer.startsWith("[DIMENSIONS]") && (buffer.length() == 12)) {
+					if (buffer.startsWith("[DIMENSIONS]") & (buffer.length() == 12)) {
 						buffer = br.readLine();
 						// Get XSIZE and YSIZE. There are no checks because map should be valid
 						for (int x = buffer.indexOf("XSIZE=")+6; x < buffer.length(); x++)
@@ -137,7 +151,7 @@ public class Map {
 						y = Integer.parseInt(dY);
 					}
 					// If MAP DATA is found
-					else if (buffer.startsWith("[MAP DATA]") && (buffer.length() == 10))
+					else if (buffer.startsWith("[MAP DATA]") & (buffer.length() == 10))
 						break; // Go to next step
 					// If comment is found, skip it
 					else if (buffer.startsWith("#"))
@@ -184,7 +198,7 @@ public class Map {
 			// When it finds [MAP DATA] it will check if the data is the correct length and if the data only contains digits
 			while ((buffer = br.readLine()) != null) {
 				// If DIMENSIONS is found
-				if (buffer.startsWith("[DIMENSIONS]") && (buffer.length() == 12)) {
+				if (buffer.startsWith("[DIMENSIONS]") & (buffer.length() == 12)) {
 					// Check if DIMENSIONS was not found in the file already
 					if (dimensionsFound)
 						return false; // Only one DIMENSIONS can exist in a map
@@ -194,7 +208,7 @@ public class Map {
 					if (buffer.startsWith("XSIZE=")) {
 						for (int x = buffer.indexOf("XSIZE=")+6; x < buffer.length(); x++) {
 							// If the character has the ASCII values of a number
-							if (buffer.charAt(x) > 48 || buffer.charAt(x) < 57) {
+							if (buffer.charAt(x) > 48 | buffer.charAt(x) < 57) {
 								// dX will hold the numbers after XSIZE=
 								dX = dX + (Character.toString(buffer.charAt(x)));
 							}
@@ -210,7 +224,7 @@ public class Map {
 					if (buffer.startsWith("YSIZE=")) {
 						for (int y = buffer.indexOf("YSIZE=")+6; y < buffer.length(); y++) {
 							// If the character has the ASCII values of a number
-							if (buffer.charAt(y) > 48 || buffer.charAt(y) < 57) {
+							if (buffer.charAt(y) > 48 | buffer.charAt(y) < 57) {
 								// dY will hold the numbers after YSIZE=
 								dY = dY + (Character.toString(buffer.charAt(y)));
 							}
@@ -222,7 +236,7 @@ public class Map {
 					else
 						return false; // YSIZE was not found
 				}
-				else if (buffer.startsWith("[MAP DATA]") && (buffer.length() == 10)) {
+				else if (buffer.startsWith("[MAP DATA]") & (buffer.length() == 10)) {
 					// Check if MAP DATA was already found in file
 					if (mapDataFound)
 						return false; // There can only be one MAP DATA
@@ -241,7 +255,7 @@ public class Map {
 						return false; // Bad MAP DATA length
 					// Go through data and see if each character has the ASCII values of a number and nothing else
 					for (int i = 0; i < buffer.length(); i++)
-						if (buffer.charAt(i) < 48 || buffer.charAt(i) > 57)
+						if (buffer.charAt(i) < 48 | buffer.charAt(i) > 57)
 							return false;
 					// If everything is correct, the data is correct
 					arrCorrectData = true;
@@ -258,7 +272,7 @@ public class Map {
 			; // Will add something later
 		}
 		// If everything checks out, then the map file is correct otherwise it's a bad file
-		if (dimensionsFound && mapDataFound && correctX && correctY && arrCorrectLength && arrCorrectData)
+		if (dimensionsFound & mapDataFound & correctX & correctY & arrCorrectLength & arrCorrectData)
 				return true;
 		// Display why the map is invalid if needed //
 			return false;
@@ -333,6 +347,7 @@ public class Map {
 		// Get a random point on the map to start the river
 		int startX = (int)(Math.random() * x);
 		int startY = (int)(Math.random() * y);
+		// Randomized numbers
 		double rand; // Random number
 		// Temp X and Y to use in loops
 		int tempX = startX;
@@ -356,7 +371,7 @@ public class Map {
 					mapArr[tempY][tempX] = WATER; // Add water
 			}
 			// If it falls in between the left and right percentages, move up
-			else if (rand > left && rand < right) {
+			else if (rand > left & rand < right) {
 				tempY--; // Move tempY up
 				// Check if tempY is out of bounds
 				if (tempY < 0) 
@@ -396,7 +411,7 @@ public class Map {
 				else
 					mapArr[tempY][tempX] = WATER;
 			}
-			else if (rand > left && rand < right) {
+			else if (rand > left & rand < right) {
 				tempY++;
 				if (tempY >= y)
 					doneDown = true;
@@ -415,8 +430,112 @@ public class Map {
 					mapArr[tempY][tempX] = WATER;
 			}
 		}
+		addBridges();
 	}
-	
+	private void addBridges() {
+		// This method will randomly add DEFAULT_BRIDGE_MAX_NUMBER of bridges onto the map
+		// 
+		// Let's declare and initialize stuff
+		int mapY[] = new int[DEFAULT_BRIDGE_MAX_NUMBER]; // An array to hold what rows will have bridges
+		int riverWidth[] = new int[DEFAULT_BRIDGE_MAX_NUMBER]; // An array to hold widths of rivers
+		int leftX[] = new int[DEFAULT_BRIDGE_MAX_NUMBER]; // An array to hold the X-coordinates of the starting/left side of rivers
+		int rightX[] = new int[DEFAULT_BRIDGE_MAX_NUMBER]; // An array to hold the X-coordinates of the right side of rivers
+		ArrayList<Integer> Ylist = new ArrayList<Integer>(); // A list to hold Y's already looked at
+		boolean sweepDone = false; // Is true when the sweep loop is done
+		boolean invalidY = false; // True when a Y is invalid because of restraints, else false
+		int sweepIndex = 0; // Index of the loop
+		// Clear/Initalize the arrays and arraylist
+		for (int x = 0; x < DEFAULT_BRIDGE_MAX_NUMBER; x++) {
+			mapY[x] = -1;
+			riverWidth[x] = -1;
+			leftX[x] = -1;
+			rightX[x] = -1;
+			Ylist.clear();
+		}
+		// == SWEEP LOOP ==
+		// This is the main loop of the method and will make bridges
+		// Sweep will be done if DEFAULT_BRIDGES_NUMBER bridges or less are able
+		//  to be placed on the map. Sweep loop will check if a left edge or right
+		//  edge of a river is within DEFAULT_BRIDGE_FROM_EDGE tiles from the edges
+		//  of the map. Then sweep loop will check if the width of the river in the
+		//  row is less than or equal to DEFAULT_BRIDGE_MAX_LENGTH. If these two
+		//  conditions are false, the loop will place the current Y into Ylist and
+		//  generate a new random Y. If the size of Ylist = y (map's Y length)
+		//  then the loop will stop.
+		while (!sweepDone) {
+			// First let's check if Ylist = y
+			if (Ylist.size() == y)
+				break; // If Ylist is as long as y, then all possible y's have been looked at
+			// Let's generate a random Y
+			mapY[sweepIndex] = (int)(y * Math.random());
+			// Check if mapY is in Ylist
+			while (Ylist.contains(mapY[sweepIndex]))
+				// If so then keep on making new Y's
+				mapY[sweepIndex] = (int)(y * Math.random());
+			// Now let's sweep through the Y's row
+			// Set leftX and rightX to -1 since we're looking for the river's edges
+			leftX[sweepIndex] = -1;
+			rightX[sweepIndex] = -1;
+			for (int posX = 0; posX < x; posX++) {
+				// If a tile of water is found and startX has no value (-1), then startX = posX
+				if (mapArr[mapY[sweepIndex]][posX] == WATER & leftX[sweepIndex] == -1)
+					leftX[sweepIndex] = posX;
+				// If a tile of land is found and leftX has a value (already found water), the rightX = posX
+				if (mapArr[mapY[sweepIndex]][posX] == GROUND & leftX[sweepIndex] != -1 & rightX[sweepIndex] == -1)
+					rightX[sweepIndex] = posX;
+			}
+			// Let's find the width of this river
+			riverWidth[sweepIndex] = (rightX[sweepIndex] - leftX[sweepIndex]);
+			// If the width is > DEFAULT_BRIDGE_MAX_LENGTH then this Y cannot a bridge
+			if (riverWidth[sweepIndex] > DEFAULT_BRIDGE_MAX_LENGTH)
+				invalidY = true;
+			// Are these values within DEFAULT_BRIDGE_FROM_EDGE tiles from the edges?
+			if (leftX[sweepIndex] < DEFAULT_BRIDGE_FROM_EDGE)
+				invalidY = true;
+			// Uses (x-1) instead of x because mapArr goes from 0 - (X-1) instead of
+			//  0 - X
+			if (rightX[sweepIndex] > (x - DEFAULT_BRIDGE_FROM_EDGE))
+				invalidY = true;
+			// Let's check if any of these values are -1 for any reason
+			if (leftX[sweepIndex] == -1 || rightX[sweepIndex] == -1)
+				invalidY = true;
+			// Check for invalid Y
+			if (invalidY) {
+				// Redo the sweep with another Y value
+				Ylist.add(mapY[sweepIndex]); // If Y is invalid, add it to Ylist
+				invalidY = false; // Reset invalidY boolean
+				// Reset the current index's values
+				mapY[sweepIndex] = -1;
+				riverWidth[sweepIndex] = -1;
+				leftX[sweepIndex] = -1;
+				rightX[sweepIndex] = -1;
+			}
+			else {
+				// Redo the sweep but the current values are "saved" and sweepIndex is incremented
+				Ylist.add(mapY[sweepIndex]); // Add Y because a bridge exists on it
+				sweepIndex++; // Increment the index so a new row can be swept through
+				if (sweepIndex == DEFAULT_BRIDGE_MAX_NUMBER)
+					sweepDone = true;
+			}
+			for (int x = 0; x < Ylist.size(); x++)
+				System.out.print(Ylist.get(x) + " ");
+			System.out.println();
+		}
+		
+		// Now let's add those bridges
+		// Outer loop = sweepIndex
+		// Inner loop = X-coordinates of river/width of river
+		for (int i = 0; i < DEFAULT_BRIDGE_MAX_NUMBER; i++) {
+			for (int j = leftX[i]; j < rightX[i]; j++) {
+				// Break if invalid numbers are found
+				if (leftX[i] <= DEFAULT_BRIDGE_FROM_EDGE)
+					break;
+				if (rightX[i] >= (x - DEFAULT_BRIDGE_FROM_EDGE))
+					break;
+				mapArr[mapY[i]][j] = BRIDGE;
+			}
+		}
+	}
 	// copyMap(map Target) is a test function
 	private void copyMap(Map target) {
 		//MAKES NO CHECK FOR SIZE, HENCE MADE PRIVATE FOR "COPY" CONSTRUCTOR DAN

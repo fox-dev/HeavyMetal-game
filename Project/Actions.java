@@ -228,7 +228,7 @@ public class Actions {
       int mapXYtype = mapRef.getArr(x, y); 
       // LAND_ONLY units can only move onto the GROUND and BRIDGE<int 5>
       if( uRestriction == Unit.LAND_ONLY )
-        if( mapXYtype != Map.GROUND && mapXYtype != 5 ) //  CHANGE 5 TO Map.BRIDGE when Map.java updated
+        if( mapXYtype != Map.GROUND && mapXYtype != Map.BRIDGE ) // Changed it to Map.Bridge - Francisco
           return false;
       // WATER_ONLY units can only move onto WATER
       if( uRestriction == Unit.WATER_ONLY && mapXYtype != Map.WATER)
