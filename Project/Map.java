@@ -34,8 +34,9 @@ import java.util.ArrayList;
  *  							  LeftChance = What percentage (from 0% til leftChance) of water will generate to the left?
  *  							  RightChance = What percentage (from rightChance til 100%) of water will generate to the right?
  *  							  Default leftChance = .375 and rightChance = .625
- *  addBridges(int numOfBridges): An algorithm that will pick (numOfBridges) random Y points and go sweep through the X axis and add
- *  							bridges when it finds water
+ *  addBridges(): An algorithm that will pick DEFAULT_BRIDGE_NUMBER random Y points and go sweep through the X axis and add
+ *  							bridges when it finds water with a width less than DEFAULT_BRIDGE_MAX_LENGTH. No bridges will
+ *  							be built within DEFAULT_BRIDGE_FROM_EDGE tiles from the left and right edges.
  *  
  *  !! MAP LEGEND !!
  *  1 = Normal
@@ -436,22 +437,17 @@ public class Map {
 		// This method will randomly add DEFAULT_BRIDGE_MAX_NUMBER of bridges onto the map
 		// 
 		// Let's declare and initialize stuff
-		int mapY[] = new int[DEFAULT_BRIDGE_MAX_NUMBER]; // An array to hold what rows will have bridges
-		int riverWidth[] = new int[DEFAULT_BRIDGE_MAX_NUMBER]; // An array to hold widths of rivers
-		int leftX[] = new int[DEFAULT_BRIDGE_MAX_NUMBER]; // An array to hold the X-coordinates of the starting/left side of rivers
-		int rightX[] = new int[DEFAULT_BRIDGE_MAX_NUMBER]; // An array to hold the X-coordinates of the right side of rivers
+		// An arraylist will hold DEFAULT_BRIDGE_MAX_NUMBER of bridge details (mapY,leftX,rightX,riverWidth)
+		ArrayList<Integer> bridges = new ArrayList<Integer>(); // Using int[] caused some issues when the river was too close to the edges
 		ArrayList<Integer> Ylist = new ArrayList<Integer>(); // A list to hold Y's already looked at
+		// Temp storage ints
+		int mapY = -1; // Stores the Y-coordinate
+		int leftX = -1; // Stores the left edge of a river
+		int rightX = -1; // Stores the right edge of a river
+		int riverWidth = -1; // Stores the width of the river
 		boolean sweepDone = false; // Is true when the sweep loop is done
 		boolean invalidY = false; // True when a Y is invalid because of restraints, else false
 		int sweepIndex = 0; // Index of the loop
-		// Clear/Initalize the arrays and arraylist
-		for (int x = 0; x < DEFAULT_BRIDGE_MAX_NUMBER; x++) {
-			mapY[x] = -1;
-			riverWidth[x] = -1;
-			leftX[x] = -1;
-			rightX[x] = -1;
-			Ylist.clear();
-		}
 		// == SWEEP LOOP ==
 		// This is the main loop of the method and will make bridges
 		// Sweep will be done if DEFAULT_BRIDGES_NUMBER bridges or less are able
@@ -467,74 +463,98 @@ public class Map {
 			if (Ylist.size() == y)
 				break; // If Ylist is as long as y, then all possible y's have been looked at
 			// Let's generate a random Y
-			mapY[sweepIndex] = (int)(y * Math.random());
-			// Check if mapY is in Ylist
-			while (Ylist.contains(mapY[sweepIndex]))
-				// If so then keep on making new Y's
-				mapY[sweepIndex] = (int)(y * Math.random());
+			mapY = (int)(y * Math.random());
+			// If the list is not empty
+			if (!Ylist.isEmpty())
+				// Check if mapY is in Ylist
+				while (Ylist.contains(mapY))
+					// If so then keep on making new Y's
+					mapY = (int)(y * Math.random());
 			// Now let's sweep through the Y's row
 			// Set leftX and rightX to -1 since we're looking for the river's edges
-			leftX[sweepIndex] = -1;
-			rightX[sweepIndex] = -1;
+			leftX = -1;
+			rightX = -1;
 			for (int posX = 0; posX < x; posX++) {
 				// If a tile of water is found and startX has no value (-1), then startX = posX
-				if (mapArr[mapY[sweepIndex]][posX] == WATER & leftX[sweepIndex] == -1)
-					leftX[sweepIndex] = posX;
+				if (mapArr[mapY][posX] == WATER & leftX == -1)
+					leftX = posX;
 				// If a tile of land is found and leftX has a value (already found water), the rightX = posX
-				if (mapArr[mapY[sweepIndex]][posX] == GROUND & leftX[sweepIndex] != -1 & rightX[sweepIndex] == -1)
-					rightX[sweepIndex] = posX;
+				if (mapArr[mapY][posX] == GROUND & leftX != -1 & rightX == -1)
+					rightX = posX;
 			}
 			// Let's find the width of this river
-			riverWidth[sweepIndex] = (rightX[sweepIndex] - leftX[sweepIndex]);
+			riverWidth = (rightX - leftX);
 			// If the width is > DEFAULT_BRIDGE_MAX_LENGTH then this Y cannot a bridge
-			if (riverWidth[sweepIndex] > DEFAULT_BRIDGE_MAX_LENGTH)
+			if (riverWidth > DEFAULT_BRIDGE_MAX_LENGTH)
 				invalidY = true;
 			// Are these values within DEFAULT_BRIDGE_FROM_EDGE tiles from the edges?
-			if (leftX[sweepIndex] < DEFAULT_BRIDGE_FROM_EDGE)
+			if (leftX < DEFAULT_BRIDGE_FROM_EDGE)
 				invalidY = true;
 			// Uses (x-1) instead of x because mapArr goes from 0 - (X-1) instead of
 			//  0 - X
-			if (rightX[sweepIndex] > (x - DEFAULT_BRIDGE_FROM_EDGE))
+			if (rightX > (x - DEFAULT_BRIDGE_FROM_EDGE))
 				invalidY = true;
 			// Let's check if any of these values are -1 for any reason
-			if (leftX[sweepIndex] == -1 || rightX[sweepIndex] == -1)
+			if (leftX == -1 || rightX == -1)
 				invalidY = true;
 			// Check for invalid Y
 			if (invalidY) {
 				// Redo the sweep with another Y value
-				Ylist.add(mapY[sweepIndex]); // If Y is invalid, add it to Ylist
+				Ylist.add(mapY); // If Y is invalid, add it to Ylist
 				invalidY = false; // Reset invalidY boolean
 				// Reset the current index's values
-				mapY[sweepIndex] = -1;
-				riverWidth[sweepIndex] = -1;
-				leftX[sweepIndex] = -1;
-				rightX[sweepIndex] = -1;
+				mapY = -1;
+				riverWidth = -1;
+				leftX = -1;
+				rightX = -1;
 			}
 			else {
 				// Redo the sweep but the current values are "saved" and sweepIndex is incremented
-				Ylist.add(mapY[sweepIndex]); // Add Y because a bridge exists on it
-				sweepIndex++; // Increment the index so a new row can be swept through
-				if (sweepIndex == DEFAULT_BRIDGE_MAX_NUMBER)
+				Ylist.add(mapY); // Add Y because a bridge exists on it
+				// Add the current details into the details arraylist
+				bridges.add(mapY);
+				bridges.add(leftX);
+				bridges.add(rightX);
+				bridges.add(riverWidth);
+				// Reset the current index's values
+				mapY = -1;
+				leftX = -1;
+				rightX = -1;
+				riverWidth = -1;
+				// Check if bridges arraylist = 4 * DEFAULT_BRIDGE_MAX_NUMBER (we're inputting 4 elements at a time)
+				if (bridges.size() == (4 * DEFAULT_BRIDGE_MAX_NUMBER))
 					sweepDone = true;
 			}
 			for (int x = 0; x < Ylist.size(); x++)
 				System.out.print(Ylist.get(x) + " ");
 			System.out.println();
 		}
-		
+		System.out.println(bridges.size());
 		// Now let's add those bridges
-		// Outer loop = sweepIndex
-		// Inner loop = X-coordinates of river/width of river
-		for (int i = 0; i < DEFAULT_BRIDGE_MAX_NUMBER; i++) {
-			for (int j = leftX[i]; j < rightX[i]; j++) {
-				// Break if invalid numbers are found
-				if (leftX[i] <= DEFAULT_BRIDGE_FROM_EDGE)
-					break;
-				if (rightX[i] >= (x - DEFAULT_BRIDGE_FROM_EDGE))
-					break;
-				mapArr[mapY[i]][j] = BRIDGE;
+		// Loop gets data from arraylist and uses data to set details on map
+		for (int i = 0; i < bridges.size(); i++) {
+			mapY = bridges.get(i);
+			i++;
+			leftX = bridges.get(i);
+			i++;
+			rightX = bridges.get(i);
+			i++;
+			riverWidth = bridges.get(i);
+			System.out.println("mapY = " + mapY + "\nleftX = " + leftX + "\nrightX = " + rightX + "\nriverWidth = " + riverWidth);
+			while (leftX < rightX) {
+				mapArr[mapY][leftX] = BRIDGE;
+				System.out.println("SETTING (" + mapY + "," + leftX + ") TO BRIDGE!!");
+				leftX++;
 			}
 		}
+	}
+	// addMountain() method
+	private void addMountain() {
+		;
+	}
+	// addForest() method
+	private void addForest() {
+		;
 	}
 	// copyMap(map Target) is a test function
 	private void copyMap(Map target) {
