@@ -15,12 +15,13 @@ public class World {
 	public static final int MAP_DEM = 20;
 	private int x= 0, y = 0;
 	
-	private Image TILE_GRASS, TILE_WATER, TILE_BRIDGE;
-	
+	private Image TILE_GRASS, TILE_WATER, TILE_MOUNTAIN, TILE_FOREST, TILE_BRIDGE;
 	
 	public World() {
 		TILE_GRASS = new ImageIcon("images/grass.png").getImage();
 		TILE_WATER = new ImageIcon("images/water.png").getImage();
+		TILE_MOUNTAIN = new ImageIcon("images/mountain.png").getImage();
+		TILE_FOREST = new ImageIcon("images/forest.png").getImage();
 		TILE_BRIDGE = new ImageIcon("images/bridge.png").getImage();
 		// Map is now created before tiles and tileImg so we can get its dimensions
 		map = new Map();
@@ -44,6 +45,12 @@ public class World {
 				}
 				else if(map.getArr(i, j) == Map.WATER) {
 					tileImg[i][j] = TILE_WATER;
+				}
+				else if (map.getArr(i, j) == Map.MOUNTAIN) {
+					tileImg[i][j] = TILE_BRIDGE;
+				}
+				else if (map.getArr(i, j) == Map.FOREST) {
+					tileImg[i][j] = TILE_BRIDGE;
 				}
 				else if (map.getArr(i, j) == Map.BRIDGE) {
 					tileImg[i][j] = TILE_BRIDGE;
