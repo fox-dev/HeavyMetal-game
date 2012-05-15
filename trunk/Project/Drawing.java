@@ -14,13 +14,14 @@ public class Drawing {
 	//Variables and classes
 	private Player player1, player2;
 	private Image ground1, ground2, air1, air2, current, ground1selected, ground2selected, air1selected, air2selected;
-	private Image moveable, explosion;
+	private Image moveable, explosion, hpfull, hpempty;
 	private World world;
 	private Input input;
 	private Actions actions;
 	private UnitDisplay unitDisplay; 
 	
 	private int currentx, currenty;
+	private int health;
 	private int numExplosions1, numExplosions2;
 	private int[][] moves;
 	private ArrayList<Image> explosions1 = new ArrayList<Image>();
@@ -47,7 +48,9 @@ public class Drawing {
 		air2selected = new ImageIcon("images/airplane2selected.png").getImage();
 		moveable = new ImageIcon("images/moveable.png").getImage();
 		explosion = new ImageIcon("images/explosion.gif").getImage();
-		
+		hpfull = new ImageIcon("images/healthfull.png").getImage();
+		hpempty = new ImageIcon("images/healthempty.phg").getImage();
+		health = 0;
 		numExplosions1 = numExplosions2 = 0;
 	}
 	
@@ -148,16 +151,23 @@ public class Drawing {
 			if(input.getMouseX() == player1.getUnit(i).getLocationX()
 					&& input.getMouseY() == player1.getUnit(i).getLocationY()) {
 				g.setColor(Color.WHITE);
-				g.fillRoundRect((player1.getUnit(i).getLocationX() * 30) - 125,
-						(player1.getUnit(i).getLocationY() * 30) - 50, 150, 50, 40, 40);
+				g.fillRoundRect((player1.getUnit(i).getLocationX() * 30) - 100,
+						(player1.getUnit(i).getLocationY() * 30) - 50, 120, 40, 40, 40);
+				//health = (player1.getUnit(i).getHP() / player1.getUnit(i).fullHP) * 100;
+				g.setColor(Color.BLACK);
+				g.drawString("HP: " + player1.getUnit(i).getHP(), (player1.getUnit(i).getLocationX() * 30) - 55,
+						(player1.getUnit(i).getLocationY() * 30) - 25);
 			}
 		}
 		for(int i  = 0; i < player2.checkNumUnits(); i++) {
 			if(input.getMouseX() == player2.getUnit(i).getLocationX()
 					&& input.getMouseY() == player2.getUnit(i).getLocationY()) {
 				g.setColor(Color.WHITE);
-				g.fillRoundRect((player2.getUnit(i).getLocationX() * 30) - 125,
-						(player2.getUnit(i).getLocationY() * 30) - 50, 150, 50, 40, 40);
+				g.fillRoundRect((player2.getUnit(i).getLocationX() * 30) - 100,
+						(player2.getUnit(i).getLocationY() * 30) - 50, 120, 40, 40, 40);
+				g.setColor(Color.BLACK);
+				g.drawString("HP: " + player2.getUnit(i).getHP(), (player2.getUnit(i).getLocationX() * 30) - 55,
+						(player2.getUnit(i).getLocationY() * 30) - 25);
 			}
 		}
 	}
