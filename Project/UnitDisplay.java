@@ -12,7 +12,7 @@ public class UnitDisplay {
 	private Player player1, player2;
 	private Image endButton, bullet;
 	private static String text, textPlayer, hp, type;
-	private static int attack;
+	private static String attack;
 	
 	//Static variables for the location and width of the end turn button to be used by input to end the
 	//turn
@@ -52,7 +52,7 @@ public class UnitDisplay {
 			g.drawString(" > " + getPlayer() + " " + getText(), 15,
 					GamePanel.GHEIGHT - 75);
 		else //Greeting
-			g.drawString(" > " + "Welcome. Click a Unit to Play. Player 1 will start", 15, GamePanel.GHEIGHT - 75);
+			g.drawString(" > " + "Player 1 will start. Click a Unit to Play.", 15, GamePanel.GHEIGHT - 75);
 		
 		//Sets all Player1 and Player2 units for easier access to HP/UnitType
 		setUnits();
@@ -74,16 +74,16 @@ public class UnitDisplay {
 					GamePanel.GHEIGHT - 50);
 		
 		//Displays Attack Power of Unit
-		/*if(Player.unitSelected() != false)
-			g.drawString(drawAttack(), 225,
+		if(Player.unitSelected() != false)
+			g.drawString(" > Attack Power: " + drawAttack(), 225,
 					GamePanel.GHEIGHT - 50);
 		else
 			g.drawString(" > Attack Power: -- ", 225,
 					GamePanel.GHEIGHT - 50);
-		*/
+		
 		
 		//Displays Attack
-		for(int i = 0; i < attack; i++){
+		/*for(int i = 0; i < attack; i++){
 			if(Player.unitSelected() != false){
 				if(drawAttack() == 1)
 					g.drawImage(bullet, 325,
@@ -95,7 +95,7 @@ public class UnitDisplay {
 							GamePanel.GHEIGHT - 75, null);
 				}
 			}
-		}
+		}*/
 	
 			
 	}
@@ -193,11 +193,11 @@ public class UnitDisplay {
 	
 	//Sets Unit's Attack
 	public void setAttack(Unit unit){
-		attack = unit.getAttack();
+		attack = Integer.toString(unit.getAttack());
 	}
 	
 	//Gets Unit's Attack
-	public int drawAttack(){
+	public String drawAttack(){
 		return attack;
 	}
 	
