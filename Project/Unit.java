@@ -21,6 +21,7 @@ import project.Unit;
 
 public class Unit {
  protected int HP;
+ protected int fullHP;
  protected int numMoves;
  protected int attack;
  protected int locX;
@@ -46,6 +47,7 @@ public class Unit {
  
  public Unit(int setHP, int setNumMoves, int Utype, String desc, int restrict, int ATK, int attackRange, int locationX, int locationY){
    HP = setHP;
+   fullHP = setHP;
    numMoves = setNumMoves;
    type = Utype;
    description = desc;
