@@ -7,19 +7,24 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
+import project.Actions;
+import project.Input;
+import project.Player;
 import project.UnitDisplay;
+import project.World;
 
 public class Drawing {
 
 	//Variables and classes
 	private Player player1, player2;
 	private Image ground1, ground2, air1, air2, current, ground1selected, ground2selected, air1selected, air2selected;
-	private Image moveable, explosion, hpfull, hpempty;
+	//Added boats images -Sidra
+	private Image moveable, explosion, hpfull, hpempty, boat1, boat2, hover, hover2;
 	private World world;
 	private Input input;
 	private Actions actions;
 	private UnitDisplay unitDisplay; 
-	
+		
 	private int currentx, currenty;
 	private int health;
 	private int numExplosions1, numExplosions2;
@@ -50,6 +55,10 @@ public class Drawing {
 		explosion = new ImageIcon("images/explosion.gif").getImage();
 		hpfull = new ImageIcon("images/healthfull.png").getImage();
 		hpempty = new ImageIcon("images/healthempty.phg").getImage();
+		boat1 = new ImageIcon("images/boat.gif").getImage();
+		boat2 = new ImageIcon("images/boat2.gif").getImage();
+		hover = new ImageIcon("images/hover.png").getImage();
+		hover2 = new ImageIcon("images/hover2.png").getImage();
 		health = 0;
 		numExplosions1 = numExplosions2 = 0;
 	}
@@ -86,6 +95,15 @@ public class Drawing {
 				else
 					current = air1;
 			}
+			else if (player1.getUnit(i).getType() == 2){
+				//Draws Boat units -Sidra
+				if(player1.getUnit(i).isSelected()) {
+					current = boat1;
+					drawMoves(player1.getUnit(i), g);
+				}
+				else
+					current = boat1;
+			}
 			g.drawImage(current, player1.getUnit(i).getLocationX()
 					* World.TILE_SIZE, player1.getUnit(i).getLocationY()
 					* World.TILE_SIZE, null);
@@ -112,6 +130,15 @@ public class Drawing {
 				}
 				else
 					current = air2;
+			}
+			else if (player2.getUnit(i).getType() == 2){
+				//Draws Boat units -Sidra
+				if(player2.getUnit(i).isSelected()) {
+					current = boat2;
+					drawMoves(player2.getUnit(i), g);
+				}
+				else
+					current = boat2;
 			}
 			g.drawImage(current, player2.getUnit(i).getLocationX()
 					* World.TILE_SIZE, player2.getUnit(i).getLocationY()
