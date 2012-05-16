@@ -58,13 +58,13 @@ public class GamePanel extends JPanel implements Runnable{
 					UnitDisplay.setText("Players have switched. Awaiting Unit Selection...");
 					player1.unitsReset();
 					testinput.switchPlayerStatuses();
-					UnitDisplay.setPlayer("Player 2: ");
+					UnitDisplay.setPlayer(2);
 				}
 				if(player2.checkTurnOver() == true){
 					UnitDisplay.setText("Players have switched. Awaiting Unit Selection...");
 					player2.unitsReset();
 					testinput.switchPlayerStatuses();
-					UnitDisplay.setPlayer("Player 1: ");
+					UnitDisplay.setPlayer(1);
 				}
 			}
 			
