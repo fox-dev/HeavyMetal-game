@@ -4,6 +4,8 @@ import java.awt.*;
 
 import javax.swing.ImageIcon;
 
+import project.Map;
+
 public class World {
 	
 	//Create variables and classes
@@ -20,8 +22,8 @@ public class World {
 	public World() {
 		TILE_GRASS = new ImageIcon("images/new_grass.png").getImage();
 		TILE_WATER = new ImageIcon("images/water.png").getImage();
-		TILE_MOUNTAIN = new ImageIcon("images/mountain.png").getImage();
-		TILE_FOREST = new ImageIcon("images/forest.png").getImage();
+		TILE_MOUNTAIN = new ImageIcon("images/mountainRocks.png").getImage();
+		TILE_FOREST = new ImageIcon("images/treetop2.png").getImage();
 		TILE_BRIDGE = new ImageIcon("images/bridge.png").getImage();
 		// Map is now created before tiles and tileImg so we can get its dimensions
 		map = new Map();
@@ -47,10 +49,10 @@ public class World {
 					tileImg[i][j] = TILE_WATER;
 				}
 				else if (map.getArr(i, j) == Map.MOUNTAIN) {
-					tileImg[i][j] = TILE_BRIDGE;
+					tileImg[i][j] = TILE_MOUNTAIN;
 				}
 				else if (map.getArr(i, j) == Map.FOREST) {
-					tileImg[i][j] = TILE_BRIDGE;
+					tileImg[i][j] = TILE_FOREST;
 				}
 				else if (map.getArr(i, j) == Map.BRIDGE) {
 					tileImg[i][j] = TILE_BRIDGE;
