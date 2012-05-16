@@ -57,8 +57,8 @@ public class World {
 				else if (map.getArr(i, j) == Map.BRIDGE) {
 					tileImg[i][j] = TILE_BRIDGE;
 				}
-				else
-					;
+			//	else
+				//	;
 				
 				tiles[i][j] = new Rectangle(x, y, TILE_SIZE, TILE_SIZE);
 				
