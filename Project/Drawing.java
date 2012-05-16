@@ -178,23 +178,37 @@ public class Drawing {
 			if(input.getMouseX() == player1.getUnit(i).getLocationX()
 					&& input.getMouseY() == player1.getUnit(i).getLocationY()) {
 				g.setColor(Color.WHITE);
-				g.fillRoundRect((player1.getUnit(i).getLocationX() * 30) - 100,
-						(player1.getUnit(i).getLocationY() * 30) - 50, 120, 40, 40, 40);
+				//Positions of where box is drawn
+				int boxx =(player1.getUnit(i).getLocationX() * 30) - 100;
+				int boxy = (player1.getUnit(i).getLocationY() * 30) - 50;
+				if(boxx < 0) {
+					boxx += 100;
+				}
+				if(boxy < 0) {
+					boxy += 80;
+				}
+				g.fillRoundRect(boxx,boxy, 120, 40, 40, 40);
 				//health = (player1.getUnit(i).getHP() / player1.getUnit(i).fullHP) * 100;
 				g.setColor(Color.BLACK);
-				g.drawString("HP: " + player1.getUnit(i).getHP(), (player1.getUnit(i).getLocationX() * 30) - 55,
-						(player1.getUnit(i).getLocationY() * 30) - 25);
+				g.drawString("HP: " + player1.getUnit(i).getHP(), boxx + 45, boxy + 25);
 			}
 		}
 		for(int i  = 0; i < player2.checkNumUnits(); i++) {
 			if(input.getMouseX() == player2.getUnit(i).getLocationX()
 					&& input.getMouseY() == player2.getUnit(i).getLocationY()) {
 				g.setColor(Color.WHITE);
-				g.fillRoundRect((player2.getUnit(i).getLocationX() * 30) - 100,
-						(player2.getUnit(i).getLocationY() * 30) - 50, 120, 40, 40, 40);
+				//Positions of where the box is drawn
+				int boxx =(player2.getUnit(i).getLocationX() * 30) - 100;
+				int boxy = (player2.getUnit(i).getLocationY() * 30) - 50;
+				if(boxx < 0) {
+					boxx += 100;
+				}
+				if(boxy < 0) {
+					boxy += 80;
+				}
+				g.fillRoundRect(boxx, boxy, 120, 40, 40, 40);
 				g.setColor(Color.BLACK);
-				g.drawString("HP: " + player2.getUnit(i).getHP(), (player2.getUnit(i).getLocationX() * 30) - 55,
-						(player2.getUnit(i).getLocationY() * 30) - 25);
+				g.drawString("HP: " + player2.getUnit(i).getHP(), boxx + 45, boxy + 25);
 			}
 		}
 	}
