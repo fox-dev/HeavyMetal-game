@@ -9,7 +9,7 @@ class ActionsRules {
    boolean returnFire_On = false; //disable until fully tested
    double returnFirePercent = 0.5;
    boolean buffDefense_On;
-   boolean buffAttack_On;
+   boolean buff_On = true; //disable buffs here
    boolean replenish_HP_ON;
    boolean RandomEvents_On;
    void returnFire(Unit src, Unit tgt){

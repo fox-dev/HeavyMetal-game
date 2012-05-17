@@ -34,6 +34,8 @@ public class Unit {
  protected boolean moved = false;
  protected boolean hasUnitShot = false;   //Dan: ensures that unit can only shoot once
  //move restrictions macro to be used in inherited units and Actions
+ java.util.ArrayList<Buff> buffList;
+ 
  public static final int NONE = 0;
  public static final int LAND_ONLY = 1;
  public static final int WATER_ONLY = 2;
@@ -43,6 +45,7 @@ public class Unit {
    type = 255; // Undefined
    restriction = 0; // No restriction
    description = "Undefined";
+   buffList = new java.util.ArrayList<Buff>();
  }
  
  public Unit(int setHP, int setNumMoves, int Utype, String desc, int restrict, int ATK, int attackRange, int locationX, int locationY){
@@ -55,7 +58,8 @@ public class Unit {
    attack = ATK;
    range = attackRange;
    locX = locationX;
-   locY = locationY;   
+   locY = locationY;
+   buffList = new java.util.ArrayList<Buff>();
  }
  public int getMoves() {
    return numMoves;
@@ -146,5 +150,31 @@ public class Unit {
    if(distance <= range)
      return true;
    return false; 
+ }
+
+ public void setNumMoves(int numMoves) { this.numMoves = numMoves; }
+ public void setAtk(int atk) { this.attack = atk; }
+ public void setRange(int range) { this.range = range; }
+ public void addAndApplyBuff(Buff buff){
+   buff.setUnit(this);
+   buff.applyBuff();
+   if(buff.getBuffID() != Buff.HEAL)
+     buffList.add(buff);
+ }
+ public void cleanBuffList(){
+   Buff tempBuff;
+   for(int i = 0; i < buffList.size(); i++ )
+     if(buffList.get(i).isDurationOver() == true) {
+       tempBuff = buffList.remove(i);
+       tempBuff.removeBuff();
+     }
+ }
+ public void iAttacked(){
+   for(int i = 0; i < buffList.size(); i++ )
+     buffList.get(i).iAttacked();
+ }
+ public void iMoved(){
+   for(int i = 0; i < buffList.size(); i++ )
+     buffList.get(i).iMoved();
  }
 }

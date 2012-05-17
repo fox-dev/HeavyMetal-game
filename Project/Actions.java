@@ -43,13 +43,17 @@ import project.UnitGround;
  *        -based on Map.GROUND / Map.WATER / Unit.restrictions
  *    * public void respawn(Player p, int quadrant)
  *        -respawns a player's living units to a quandrant I, II, III, IV or random
+ *        
+ *        
+
 */
 public class Actions {
   Player p1, p2;
   Map mapRef;
   int[][] moveArrayDisplay; //used in public boolean moveLegal(Unit u, int destX, int destY)
-  private ActionsRules actionsRules;
+  ActionsRules actionsRules;
   private String msg;
+  int[][] buffArray;  //used to location and apply buffs to units
   
   public static final int CANT_MOVE_HERE0 = 0;  
   public static final int LEGAL_MOVE_HERE= 1;
@@ -61,7 +65,11 @@ public class Actions {
     this.p1 = p1;
     this.p2 = p2;
     this.mapRef = mapRef;
+    respawn(this.p1, 1);  //added May 16, 2012
+    respawn(this.p2, 4);  //added May 16, 2012
     actionsRules = new ActionsRules();
+    if(actionsRules.buff_On == true)
+      buffArray = makeBuffArr(this.mapRef);
     msg = null;
   }
 
@@ -83,6 +91,11 @@ public class Actions {
       src.setHasUnitShot(true);
       if(actionsRules.returnFire_On == true)
         actionsRules.returnFire(tgt, src);
+      if(actionsRules.buff_On == true){
+        //Remove buffs if their duration is expired
+        src.iAttacked();  //deals with Buff durations
+        src.cleanBuffList();  //removes Buff from units list and it's effects
+      }
       p1.removeDeadUnits();
       p2.removeDeadUnits();
       return true;
@@ -126,6 +139,31 @@ public class Actions {
       u.setLocationX(x);
       u.setLocationY(y);
       u.moved();
+      if( actionsRules.buff_On == true ){
+        //Check if unit is on a buff.  If on buff, add buff and remove from buffArray
+        int b = buffArray[x][y];
+        switch(b){
+          case Buff.ATTACK:
+            u.addAndApplyBuff(new BuffAttack());
+            buffArray[x][y] = 0;
+            break;
+          case Buff.HEAL:
+            u.addAndApplyBuff(new BuffHealHP()); 
+            buffArray[x][y] = 0;
+            break;
+          case Buff.NUM_MOVES:
+            u.addAndApplyBuff(new BuffNumMoves());
+            buffArray[x][y] = 0;
+            break;
+          case Buff.RANGE:
+            u.addAndApplyBuff(new BuffRange());
+            buffArray[x][y] = 0;
+            break;
+        }
+        
+        u.iMoved();  //deals with Buff durations
+        u.cleanBuffList();  //removes Buff from units list and it's effects
+      }
       return true;
     }
     return false;
@@ -422,6 +460,37 @@ public class Actions {
   public String getMsg(){
     return msg;
   }
+  
+  private int[][] makeBuffArr(Map m){
+    int xMax = m.getX();
+    int yMax = m.getY();
+    int[][] temp = new int[xMax][yMax];
+    Unit tempUnit;
+    for(int i = 0; p1.getUnit(i) != null; i++){
+      tempUnit = p1.getUnit(i);
+      temp[tempUnit.getLocationX()][tempUnit.getLocationY()] = A_UNIT_IS_HERE;
+    }
+    for(int i = 0; p2.getUnit(i) != null; i++){
+      tempUnit = p2.getUnit(i);
+      temp[tempUnit.getLocationX()][tempUnit.getLocationY()] = A_UNIT_IS_HERE;
+    }
+    
+    int tempX, tempY, j;
+    java.util.Random r = new java.util.Random( System.currentTimeMillis());
+    int i = 0;
+    while(i < Buff.MAX_NUM_BUFFS){
+      //get random location on map
+      tempX = r.nextInt(xMax); //note: values from 0 to xMax-1;
+      tempY = r.nextInt(yMax);
+      if(temp[tempX][tempY] != A_UNIT_IS_HERE){
+        //get random number between 100 - 103 || between Buff.ATTACK to Buff.RANGE
+        temp[tempX][tempY] = r.nextInt(4) + 100;
+        i++;
+      }
+    }
+    return temp;
+  }
+  public int[][] getBuffArray(){ return buffArray; }
   
   private boolean isXY_onMap(int x, int y){
     if( x<0 || y<0 || x>mapRef.getX()-1 || y > mapRef.getY()-1 )
