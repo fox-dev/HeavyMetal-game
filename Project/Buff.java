@@ -1,5 +1,7 @@
 package project;
 
+import project.Unit;
+
 public abstract class Buff {
   protected String description;
   protected int buffID;
@@ -26,16 +28,8 @@ public abstract class Buff {
   public abstract void applyBuff();
   public abstract void removeBuff();
   public int getBuffID() { return buffID; }
-  public void iAttacked() { 
-    durationAtk--;
-    if(durationAtk <= 0)
-      removeBuff();
-  }
-  public void iMoved() { 
-    durationMoves--;
-    if(durationMoves <= 0)
-      removeBuff();
-  }
+  public void iAttacked() { durationAtk--; }
+  public void iMoved() { durationMoves--; }
   public boolean isDurationOver() {
     if(durationMoves <= 0 || durationAtk <= 0)
       return true;
