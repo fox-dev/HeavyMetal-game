@@ -209,7 +209,6 @@ public class Actions {
     //Addtion to prevent a UnitWater to be on/under a bridge.
     //if a water unit, find all bridge locations, make them not a LEGAL_MOVE_HERE
     if(u instanceof UnitWater){
-      System.out.println("XXXXXXXXXXXXXXXXXXXXXXX");
       for(int i = 0; i < mapRef.getX(); i++){
         for(int j = 0; j < mapRef.getY(); j++){
           if(mapRef.getArr(i,  j) == Map.BRIDGE)
