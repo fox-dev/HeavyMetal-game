@@ -161,8 +161,8 @@ public class Actions {
             break;
         }
         
-        u.iMoved();  //deals with Buff durations
-        u.cleanBuffList();  //removes Buff from units list and it's effects
+        u.iMoved();  //deals with Buff durations//removes Buff from units list and it's effects
+        u.cleanBuffList();
       }
       return true;
     }
@@ -205,6 +205,18 @@ public class Actions {
     //make at the end, unit actual location a A_UNIT_IS_HERE
     //  this will take care of the case "unit cannot move ontop of itself"
     moveArrayDisplay[u.getLocationX()][u.getLocationY()] = A_UNIT_IS_HERE;
+    
+    //Addtion to prevent a UnitWater to be on/under a bridge.
+    //if a water unit, find all bridge locations, make them not a LEGAL_MOVE_HERE
+    if(u instanceof UnitWater){
+      System.out.println("XXXXXXXXXXXXXXXXXXXXXXX");
+      for(int i = 0; i < mapRef.getX(); i++){
+        for(int j = 0; j < mapRef.getY(); j++){
+          if(mapRef.getArr(i,  j) == Map.BRIDGE)
+            moveArrayDisplay[i][j] = CANT_MOVE_HERE0;
+        }
+      }
+    }
     
     //if (destX ,destY) is LEGAL_MOVE_HERE on moveArrayDisplay then return true
     int spot = moveArrayDisplay[destX][destY]; 
@@ -268,9 +280,12 @@ public class Actions {
       if( uRestriction == Unit.LAND_ONLY )
         if( mapXYtype != Map.GROUND && mapXYtype != Map.BRIDGE ) // Changed it to Map.Bridge - Francisco
           return false;
-      // WATER_ONLY units can only move onto WATER
-      if( uRestriction == Unit.WATER_ONLY && mapXYtype != Map.WATER)
-        return false;    
+      // WATER_ONLY units can only move onto WATER or a BRIDGE
+      //if( uRestriction == Unit.WATER_ONLY && mapXYtype != Map.WATER) //Changed to allow for water units to be under bridges
+      if(uRestriction == Unit.WATER_ONLY){
+        if( mapXYtype == Map.GROUND || mapXYtype == Map.FOREST || mapXYtype == Map.MOUNTAIN)
+          return false;
+      }
     }
     return true;
   }
