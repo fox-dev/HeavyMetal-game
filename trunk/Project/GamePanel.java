@@ -37,8 +37,8 @@ public class GamePanel extends JPanel implements Runnable{
 		unitDisplay = new UnitDisplay(player1, player2);
     testactions = new Actions(player1,player2, world.getMap()); //Added -Andrew   // reordered -Dan Apr27, 2012
 		
-    testactions.respawn(player1, 1); //added dan
-    testactions.respawn(player2, 4); //added dan
+    //testactions.respawn(player1, 1); //added dan  //moved to Actions.java May16, 2012
+    //testactions.respawn(player2, 4); //added dan  //moved to Actions.java May16, 2012
     
 		testinput = new Input(player1,player2,testactions); //Added -Andrew
 		drawing = new Drawing(player1, player2, world, unitDisplay, testactions, testinput);

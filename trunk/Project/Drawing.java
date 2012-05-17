@@ -20,6 +20,8 @@ public class Drawing {
 	private Image ground1, ground2, air1, air2, current, ground1selected, ground2selected, air1selected, air2selected;
 	//Added boats images -Sidra
 	private Image moveable, explosion, hpfull, hpempty, boat1, boat2, hover, hover2;
+	//Added buff Images - Dan
+	private Image buffAtk, buffNumMoves, buffHealHP, buffRange, buff;
 	private World world;
 	private Input input;
 	private Actions actions;
@@ -61,6 +63,12 @@ public class Drawing {
 		hover2 = new ImageIcon("images/hover2.png").getImage();
 		health = 0;
 		numExplosions1 = numExplosions2 = 0;
+		
+		//buffImages
+		buffAtk = new ImageIcon("images/buffAtk.gif").getImage();
+		buffNumMoves = new ImageIcon("images/buffNumMoves.png").getImage();
+		buffHealHP = new ImageIcon("images/buffHealHP.png").getImage();
+		buffRange = new ImageIcon("images/buffRange.png").getImage();
 	}
 	
 	//Cycles through the draw methods to draw everything.
@@ -70,10 +78,36 @@ public class Drawing {
 		drawExplosion(g);
 		drawPlayer1(g);
 		drawPlayer2(g);
+    drawBuff(g); //dan
 		drawcurrentRect(g);
 		drawDisplayBox(g);
 	}
 
+	public void drawBuff(Graphics g){
+	  if(actions.actionsRules.buff_On == true){
+  	  int [][] b = actions.getBuffArray();
+  	  int bValue;
+      for(int i = 0; i < world.getMap().getX(); i++) {
+        for(int j = 0; j < world.getMap().getY(); j++) {
+          bValue = b[i][j];
+          buff = null;
+          switch(bValue){
+            case Buff.ATTACK:
+              buff = buffAtk;  break;
+            case Buff.HEAL:
+              buff = buffHealHP;  break;
+            case Buff.NUM_MOVES:
+              buff = buffNumMoves;  break;
+            case Buff.RANGE:
+              buff = buffRange;  break;
+          }
+          if(buff != null)
+            g.drawImage(buff, i * World.TILE_SIZE + 10, j * World.TILE_SIZE +10 , null);
+        }
+      }
+	  }
+	}
+	
 	//Draws player 1
 	public void drawPlayer1(Graphics g) {
 		for (int i = 0; i < player1.checkNumUnits(); i++) {
