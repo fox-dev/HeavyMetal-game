@@ -18,7 +18,7 @@ public class UnitDisplay {
 	private Player player1, player2;
 	private Image endButton, back, p1, p2, p1No, p2No;
 	private Image health, ammo;
-	private static String text, hp, type;
+	private static String text, hp, type, point;
 	private static int playerNum;
 	private static String attack;
 	
@@ -117,6 +117,7 @@ public class UnitDisplay {
 						GamePanel.GHEIGHT - 50);
 			}
 			
+			
 			//Displays Attack
 			/*for(int i = 0; i < attack; i++){
 				if(Player.unitSelected() != false){
@@ -163,6 +164,7 @@ public class UnitDisplay {
 					setHP(player1.getUnit(i));
 					setType(player1.getUnit(i));
 					setAttack(player1.getUnit(i));
+					setPoint(player1.getUnit(i));
 				}
 			}
 			else if (player1.getUnit(i).getType() == 1) {
@@ -171,6 +173,16 @@ public class UnitDisplay {
 					setHP(player1.getUnit(i));
 					setType(player1.getUnit(i));
 					setAttack(player1.getUnit(i));
+					setPoint(player1.getUnit(i));
+				}
+			}
+			else if(player1.getUnit(i).getType() == 2) {
+				//Water
+				if(player1.getUnit(i).isSelected()) {						
+					setHP(player1.getUnit(i));
+					setType(player1.getUnit(i));
+					setAttack(player1.getUnit(i));
+					setPoint(player1.getUnit(i));
 				}
 			}
 		}
@@ -182,6 +194,7 @@ public class UnitDisplay {
 					setHP(player2.getUnit(i));
 					setType(player2.getUnit(i));
 					setAttack(player2.getUnit(i));
+					setPoint(player2.getUnit(i));
 				}
 			}
 			else if (player2.getUnit(i).getType() == 1) {
@@ -190,6 +203,16 @@ public class UnitDisplay {
 					setHP(player2.getUnit(i));
 					setType(player2.getUnit(i));
 					setAttack(player2.getUnit(i));
+					setPoint(player2.getUnit(i));
+				}
+			}
+			else if(player2.getUnit(i).getType() == 2) {
+				//Water
+				if(player2.getUnit(i).isSelected()) {						
+					setHP(player2.getUnit(i));
+					setType(player2.getUnit(i));
+					setAttack(player2.getUnit(i));
+					setPoint(player2.getUnit(i));
 				}
 			}
 		}
@@ -209,8 +232,12 @@ public class UnitDisplay {
 	public void setType(Unit unit){
 		if(unit.getType() == 0)
 			type = "Land";
-		else
+		else if (unit.getType() == 1)
 			type = "Air";
+		else if(unit.getType() == 2)
+			type = "Water";
+		else
+			type = "unknown";
 	}
 	
 	//Gets Unit's Type
@@ -226,6 +253,15 @@ public class UnitDisplay {
 	//Gets Unit's Attack
 	public String drawAttack(){
 		return attack;
+	}
+	
+	//Get and Set unit points; used it just to see if unit points work. They do!
+	public void setPoint(Unit unit){
+		point = Integer.toString(unit.getPoint());
+	}
+	
+	public String getPoint(){
+		return point;
 	}
 	
 }
