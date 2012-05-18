@@ -34,7 +34,7 @@ import java.util.ArrayList;
  *  							  LeftChance = What percentage (from 0% til leftChance) of water will generate to the left?
  *  							  RightChance = What percentage (from rightChance til 100%) of water will generate to the right?
  *  							  Default leftChance = .375 and rightChance = .625
- *  addBridges(): An algorithm that will pick DEFAULT_BRIDGE_NUMBER random Y points and go sweep through the X axis and add
+ *  addBridge(): An algorithm that will pick DEFAULT_BRIDGE_NUMBER random Y points and go sweep through the X axis and add
  *  							bridges when it finds water with a width less than DEFAULT_BRIDGE_MAX_LENGTH. No bridges will
  *  							be built within DEFAULT_BRIDGE_FROM_EDGE tiles from the left and right edges.
  *  
@@ -47,20 +47,32 @@ import java.util.ArrayList;
  */
 
 public class Map {
+	// Names for tiles
 	public static final int GROUND = 1; // added Dan, "MACRO" used in Actions
 	public static final int WATER = 2; // added Dan, "MACRO" used in Actions
 	public static final int MOUNTAIN = 3; // Mountain macro thing
 	public static final int FOREST = 4; // Oh yeah, look at them trees
 	public static final int BRIDGE = 5; // Look at them bridges, supporting tanks and cool people
+	// Default dimensions of a map
 	private static final int DEFAULT_SIZE_X = 20;
 	private static final int DEFAULT_SIZE_Y = 20;
-	// ADD IN CHECK
-	// LEFT SHOULD BE LESS THAN RIGHT
-	private static final double DEFAULT_WATER_LEFT_CHANCE = .375;
-	private static final double DEFAULT_WATER_RIGHT_CHANCE = .625;
-	private static final int DEFAULT_BRIDGE_FROM_EDGE = 2;
-	private static final int DEFAULT_BRIDGE_MAX_LENGTH = 4;
-	private static final int DEFAULT_BRIDGE_MAX_NUMBER = 3; // Will try to generate at most this #
+	// Water stuff
+	private static final double DEFAULT_WATER_LEFT_CHANCE = .375; // How much of a chance should water bend to the left?
+	private static final double DEFAULT_WATER_RIGHT_CHANCE = .625; // How much of a chance should water bend to the right?
+	// Mountain stuff
+	private static final double DEFAULT_MOUNTAIN_LEFT_CHANCE = .25; // The chance that a mountain will go left
+	private static final double DEFAULT_MOUNTAIN_RIGHT_CHANCE = .75; // The chance that a mountain will go right
+	private static final double DEFAULT_MOUNTAIN_REMOVE_CHANCE = .50; // The chance to remove not place a mountain tile
+	private static final boolean DEFAULT_MOUNTAIN_DRAW_BORDER = true; // Draw a mountain border around the map?
+	// Forest stuff
+	private static final int DEFAULT_FOREST_NUMBER = 4; // How many forests are we making?
+	private static final int DEFAULT_FOREST_WIDTH = 2; // How wide are the forests from origin? (total width = 2 * DEFAULT_FOREST_WIDTH)
+	private static final int DEFAULT_FOREST_HEIGHT = 2; // How high are the forests from origin? (total height = 2 * DEFAULT_FOREST_HEIGHT)
+	// Bridge stuff
+	private static final int DEFAULT_BRIDGE_FROM_EDGE = 2; // How close to the edge can a bridge be? (0 = bridge can end on edge, 1 = bridge needs at least 1 tile at end, and so on)
+	private static final int DEFAULT_BRIDGE_MAX_LENGTH = 4; // How long can a bridge be?
+	private static final int DEFAULT_BRIDGE_MAX_NUMBER = 3; // At most how many bridges will there be?
+	// Class private ints
 	private int[][] mapArr; // 2D Map array
 	private int x; // The X dimension
 	private int y; // The Y dimension
@@ -84,6 +96,8 @@ public class Map {
 				mapArr[i][j] = GROUND;
 		// Now add water to the map
 		addWater(DEFAULT_WATER_LEFT_CHANCE,DEFAULT_WATER_RIGHT_CHANCE);
+		addMountain();
+		addForest();
 	}
 	
 	// Map (int X, int Y, boolean false) will make a X*Y with or without water (default chances)
@@ -100,6 +114,8 @@ public class Map {
 		// Check boolean
 		if (water)
 			addWater(DEFAULT_WATER_LEFT_CHANCE,DEFAULT_WATER_RIGHT_CHANCE);
+		addMountain();
+		addForest();
 	}
 	
 	// Map(int I, int J, double L, double R) will make an IxJ map and will pass left and right into addWater()
@@ -114,6 +130,8 @@ public class Map {
 				mapArr[i][j] = GROUND;
 		// Add water to the map
 		addWater(left,right);
+		addMountain();
+		addForest();
 	}
 	
 	// Map(String mapName) will import a map from a data file
@@ -128,6 +146,8 @@ public class Map {
 				for (int j = 0; j < x; j++)
 					mapArr[i][j] = 1;
 			addWater(DEFAULT_WATER_LEFT_CHANCE,DEFAULT_WATER_RIGHT_CHANCE);
+			addMountain();
+			addForest();
 		}
 		else
 			// Import the map
@@ -431,9 +451,10 @@ public class Map {
 					mapArr[tempY][tempX] = WATER;
 			}
 		}
-		addBridges();
+		addBridge();
 	}
-	private void addBridges() {
+	
+	private void addBridge() {
 		// This method will randomly add DEFAULT_BRIDGE_MAX_NUMBER of bridges onto the map
 		// 
 		// Let's declare and initialize stuff
@@ -447,7 +468,6 @@ public class Map {
 		int riverWidth = -1; // Stores the width of the river
 		boolean sweepDone = false; // Is true when the sweep loop is done
 		boolean invalidY = false; // True when a Y is invalid because of restraints, else false
-		int sweepIndex = 0; // Index of the loop
 		// == SWEEP LOOP ==
 		// This is the main loop of the method and will make bridges
 		// Sweep will be done if DEFAULT_BRIDGES_NUMBER bridges or less are able
@@ -548,13 +568,139 @@ public class Map {
 			}
 		}
 	}
+	
 	// addMountain() method
+	// Will add mountains around the border of the map (for now) and will make a mountain range
+	//  going from the top towards the bottom of the map similar to water.
 	private void addMountain() {
-		;
+		// Some ints needed for this method
+		int tempY = 0; // Holds a Y coordinate
+		int tempX = 0; // Holds an X coordinate
+		double randNum = 0; // Holds random numbers used in the if statements later on
+		double randRem = 0; // Holds random numbers used in the removal chance if's
+		// If DEFAULT_MOUNTAIN_DRAW_BORDER is true, fill the borders of the map with mountains
+		if (DEFAULT_MOUNTAIN_DRAW_BORDER) {
+			for (int yPos = 0; yPos < y; yPos++) {
+				// If yPos is at the top or bottom of the map add along top/bottom edges
+				if (yPos == 0 || yPos == (y-1))
+					for(int xPos = 0; xPos < x; xPos++)
+						// Check if tile is water, if so don't touch it
+						if (mapArr[yPos][xPos] == WATER)
+							;
+						else
+							mapArr[yPos][xPos] = MOUNTAIN;
+				else {
+					// Add mountains at left and right edges only
+					// Skip water tiles too
+					if (mapArr[yPos][0] == WATER)
+						;
+					else
+						mapArr[yPos][0] = MOUNTAIN;
+					if (mapArr[yPos][x-1] == WATER)
+						;
+					else
+						mapArr[yPos][x-1] = MOUNTAIN;
+				}
+			}
+		}
+		// Once we're done filling the borders, let's make a mountain range
+		// Find a random X to start at while checking that it's not on the edges
+		while (tempX == 0 || tempX == (x-1))
+			tempX = 10;
+		// Now let's start going down from the top of the map
+		while (tempY < (y-1)) {
+			randNum = (Math.random());
+			randRem = (Math.random());
+			// If Math.random() is less than or equal to left chance
+			if (randNum <= DEFAULT_MOUNTAIN_LEFT_CHANCE) {
+				tempX--; // Move tempX to the left
+				// Check if tempX is out of bounds
+				if (tempX < 0)
+					tempX++; // Move tempX back
+				// Check if water exists there
+				else if (mapArr[tempY][tempX] == WATER)
+					; // Don't place mountains on water
+				// Now let's add a mountain tile IF Math.random() is not below DEFAULT_MOUNTAIN_REMOVE_CHANCE
+				else if (randRem <= DEFAULT_MOUNTAIN_REMOVE_CHANCE)
+					; // Don't place mountains here
+				else
+				// If everything checks out, let's add a mountain tile
+					mapArr[tempY][tempX] = MOUNTAIN;
+			}
+			// If Math.random() is in between left and right chance
+			if (randNum > DEFAULT_MOUNTAIN_LEFT_CHANCE & randNum < DEFAULT_MOUNTAIN_RIGHT_CHANCE) {
+				tempY++; // Move tempY down
+				// Let's check for water
+				if (mapArr[tempY][tempX] == WATER)
+					; // Don't add mountains
+				// If Math.random() is less than or equal to the removal chance
+				else if (randRem <= DEFAULT_MOUNTAIN_REMOVE_CHANCE)
+					; // Don't add mountains
+				// If everything checks out, let's add a mountain tile
+				else
+					mapArr[tempY][tempX] = MOUNTAIN;
+			}
+			// If Math.random() is greater than or equal to right chance
+			else if (randNum >= DEFAULT_MOUNTAIN_RIGHT_CHANCE) {
+				tempX++; // Move tempX to the right
+				// Check if tempX is out of bounds
+				if (tempX >= x)
+					tempX--; // Move tempX back
+				// Check if water exists there
+				else if (mapArr[tempY][tempX] == WATER)
+					; // Don't place mountains on water
+				// Now let's add a mountain tile IF Math.random() is not below DEFAULT_MOUNTAIN_REMOVE_CHANCE
+				else if (randRem <= DEFAULT_MOUNTAIN_REMOVE_CHANCE)
+					; // Don't place mountains here
+				else
+				// If everything checks out, let's add a mountain tile
+					mapArr[tempY][tempX] = MOUNTAIN;
+			}
+			System.out.println("TEMPX = " + tempX);
+		}
+		// Now everything should be done and we should have mountains
 	}
+	
 	// addForest() method
+	// This method will add rectangles of forests. The width and height of the
+	//  rectangles are defined in DEFAULT_FOREST_WIDTH and DEFAULT_FOREST_HEIGHT
+	//  respectively. The corners of the rectangles will be removed to make the
+	//  forests look "natural"
 	private void addForest() {
-		;
+		// Some ints needed for this method
+		int originX = (int)(Math.random() * x); // OriginX holds a random X that will specify the origin of the rectangle
+		int originY = (int)(Math.random() * y); // OriginY holds a random Y that specifies the origin of the rectangle
+		
+		// Let's add forests
+		for (int i = 0; i < DEFAULT_FOREST_NUMBER; i++) {
+			// Let's generate a random X and Y and check if they're on GROUND tiles
+			while (mapArr[originY][originX] != GROUND) {
+				originX = (int)(Math.random() * x);
+				originY = (int)(Math.random() * y);
+			}
+			// Now let's make a rectangle using originX and originY as the origin
+			// The top-left corner of the rectangle is found by moving originX to the left
+			//  DEFAULT_FOREST_WIDTH tiles and moving originY up by DEFAULT_FOREST_HEIGHT
+			//  tiles
+			// Let's first check if the rectangle will go out of bounds
+			while ((originX - DEFAULT_FOREST_WIDTH) < 0 || (originX + DEFAULT_FOREST_WIDTH) > x || (originY - DEFAULT_FOREST_HEIGHT) < 0 || (originY + DEFAULT_FOREST_HEIGHT) > y) {
+				// If so, make new origins
+				originX = (int)(Math.random() * x);
+				originY = (int)(Math.random() * y);
+			}
+			for (int posY = (originY - DEFAULT_FOREST_WIDTH); posY < (originY + DEFAULT_FOREST_WIDTH); posY++) {
+				for (int posX = (originX - DEFAULT_FOREST_WIDTH); posX < (originX + DEFAULT_FOREST_WIDTH); posX++) {
+					// skip over the corner tiles
+					if ((posX == originX - DEFAULT_FOREST_WIDTH & posY == originY - DEFAULT_FOREST_HEIGHT) || (posX == originX - DEFAULT_FOREST_WIDTH & posY == originY + DEFAULT_FOREST_HEIGHT) || (posX == originX + DEFAULT_FOREST_WIDTH & posY == originY - DEFAULT_FOREST_HEIGHT) || (posX == originX + DEFAULT_FOREST_WIDTH & posY == originY + DEFAULT_FOREST_HEIGHT))
+						;
+					// Check if the tile we're at is a ground tile AND if we're out of bounds
+					if (mapArr[posY][posX] == GROUND)
+						mapArr[posY][posX] = FOREST; // If so, let's add a forest tile
+					else
+						; // Else skip over it
+				}
+			}
+		}
 	}
 	// copyMap(map Target) is a test function
 	private void copyMap(Map target) {
