@@ -65,10 +65,10 @@ public class Drawing {
 		numExplosions1 = numExplosions2 = 0;
 		
 		//buffImages
-		buffAtk = new ImageIcon("images/buffAtk.gif").getImage();
-		buffNumMoves = new ImageIcon("images/buffNumMoves.png").getImage();
-		buffHealHP = new ImageIcon("images/buffHealHP.png").getImage();
-		buffRange = new ImageIcon("images/buffRange.png").getImage();
+		buffAtk = new ImageIcon("images/ammo.png").getImage();
+		buffNumMoves = new ImageIcon("images/moves.png").getImage();
+		buffHealHP = new ImageIcon("images/healthpot.png").getImage();
+		buffRange = new ImageIcon("images/range.png").getImage();
 	}
 	
 	//Cycles through the draw methods to draw everything.
@@ -102,7 +102,7 @@ public class Drawing {
               buff = buffRange;  break;
           }
           if(buff != null)
-            g.drawImage(buff, i * World.TILE_SIZE + 10, j * World.TILE_SIZE +10 , null);
+            g.drawImage(buff, i * World.TILE_SIZE, j * World.TILE_SIZE, null);
         }
       }
 	  }

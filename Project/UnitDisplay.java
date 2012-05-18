@@ -9,10 +9,15 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
+import project.GamePanel;
+import project.Player;
+import project.Unit;
+
 public class UnitDisplay {
 	
 	private Player player1, player2;
 	private Image endButton, back, p1, p2, p1No, p2No;
+	private Image health, ammo;
 	private static String text, hp, type;
 	private static int playerNum;
 	private static String attack;
@@ -31,7 +36,8 @@ public class UnitDisplay {
 		p1No = new ImageIcon("images/p1No.png").getImage();
 		p2 = new ImageIcon("images/player2.gif").getImage();
 		p2No = new ImageIcon("images/p2No.png").getImage();
-		
+		health = new ImageIcon("images/healthpot.png").getImage();
+		ammo = new ImageIcon("images/ammo.png").getImage();
 	}
 
 	public void setPlayer(Player player1, Player player2) {
@@ -48,73 +54,85 @@ public class UnitDisplay {
 		//Color of text is set to Green
 		g.setColor(Color.GREEN);
 	
-		//Sets Player Icon pictures. 
-		if(getPlayer() == 2){
-			//If player 2, set p1 icon to gray, and animate p2 icon 
-			g.drawImage(p1No,GamePanel.GHEIGHT - 690, GamePanel.GWIDTH + 5, null);
-			g.drawImage(p2,GamePanel.GHEIGHT - 690, GamePanel.GWIDTH + 30, null);
-		}
-		else{
-			//If player 1, set p2 to gray, animate p1.
-			//The first player is player1 by default
-			g.drawImage(p1,GamePanel.GHEIGHT - 690, GamePanel.GWIDTH + 5, null);
-			g.drawImage(p2No,GamePanel.GHEIGHT - 690, GamePanel.GWIDTH + 30, null);
-		}
-		
-		
-		//Displays Text
-		if(getText() != null)
-			g.drawString(" > " + getText(), 50,
-					GamePanel.GHEIGHT - 75);
-		else //Greeting
-			g.drawString(" > " + "Player 1 will start. Click a Unit to Play.", 50, GamePanel.GHEIGHT - 75);
-		
-		//Sets all Player1 and Player2 units for easier access to HP/UnitType/Attack Power
-		setUnits();
-		
-		//Displays HP of Units
-		if(Player.unitSelected() != false)
-			g.drawString(" > " + "Unit HP: " + drawHP(), 50,
-					GamePanel.GHEIGHT - 50);
-		else
-			g.drawString(" > Unit HP: -- ", 50,
-					GamePanel.GHEIGHT - 50);
-		
-		//Displays Type of Unit
-		if(Player.unitSelected() != false)
-			g.drawString(" > " + "Unit Type: " + drawType(), 150,
-					GamePanel.GHEIGHT - 50);
-		else
-			g.drawString(" > Unit Type: -- ", 150,
-					GamePanel.GHEIGHT - 50);
-		
-		//Displays Attack Power of Unit
-		if(Player.unitSelected() != false)
-			g.drawString(" > Attack Power: " + drawAttack(), 250,
-					GamePanel.GHEIGHT - 50);
-		else
-			g.drawString(" > Attack Power: -- ", 250,
-					GamePanel.GHEIGHT - 50);
-		
-		
-		//Displays Attack
-		/*for(int i = 0; i < attack; i++){
-			if(Player.unitSelected() != false){
-				if(drawAttack() == 1)
-					g.drawImage(bullet, 325,
-							GamePanel.GHEIGHT - 75, null);
-				else if(drawAttack() == 2){
-					g.drawImage(bullet, 325,
-							GamePanel.GHEIGHT - 75, null);
-					g.drawImage(bullet, 340,
-							GamePanel.GHEIGHT - 75, null);
-				}
-			}
-		}*/
+		printAll(g);
 	
-			
 	}
 
+	//Get all Images to print on Display
+	public void printAll(Graphics g){
+		//Sets Player Icon pictures. 
+			if(getPlayer() == 2){
+				//If player 2, set p1 icon to gray, and animate p2 icon 
+				g.drawImage(p1No,GamePanel.GHEIGHT - 690, GamePanel.GWIDTH + 5, null);
+				g.drawImage(p2,GamePanel.GHEIGHT - 690, GamePanel.GWIDTH + 30, null);
+			}
+			else{
+				//If player 1, set p2 to gray, animate p1.
+				//The first player is player1 by default
+				g.drawImage(p1,GamePanel.GHEIGHT - 690, GamePanel.GWIDTH + 5, null);
+				g.drawImage(p2No,GamePanel.GHEIGHT - 690, GamePanel.GWIDTH + 30, null);
+			}
+			
+			
+			//Displays Text
+			if(getText() != null)
+				g.drawString(" > " + getText(), 50,
+						GamePanel.GHEIGHT - 75);
+			else //Greeting
+				g.drawString(" > " + "Player 1 will start. Click a Unit to Play.", 50, GamePanel.GHEIGHT - 75);
+			
+			//Sets all Player1 and Player2 units for easier access to HP/UnitType/Attack Power
+			setUnits();
+			
+			//Displays HP of Units
+			if(Player.unitSelected() != false){
+				g.drawImage(health, GamePanel.GHEIGHT - 658, GamePanel.GWIDTH + 21, null);
+				g.drawString("HP: " + drawHP(), 65,
+						GamePanel.GHEIGHT - 50);
+			}
+			else{
+				g.drawImage(health, GamePanel.GHEIGHT - 658, GamePanel.GWIDTH + 21, null);
+				g.drawString("HP: -- ", 65,
+						GamePanel.GHEIGHT - 50);
+			}
+			
+			//Displays Type of Unit
+		/*	if(Player.unitSelected() != false)
+				g.drawString(" > " + "Unit Type: " + drawType(), 150,
+						GamePanel.GHEIGHT - 50);
+			else
+				g.drawString(" > Unit Type: -- ", 150,
+						GamePanel.GHEIGHT - 50);
+		*/
+			
+		//Displays Attack Power of Unit
+			if(Player.unitSelected() != false){
+				g.drawImage(ammo, GamePanel.GHEIGHT - 590, GamePanel.GWIDTH + 21, null);
+				g.drawString("AP: " + drawAttack(), 140,
+						GamePanel.GHEIGHT - 50);
+			}
+			else{
+				g.drawImage(ammo, GamePanel.GHEIGHT - 590, GamePanel.GWIDTH + 21, null);
+				g.drawString("AP: -- ", 140,
+						GamePanel.GHEIGHT - 50);
+			}
+			
+			//Displays Attack
+			/*for(int i = 0; i < attack; i++){
+				if(Player.unitSelected() != false){
+					if(drawAttack() == 1)
+						g.drawImage(bullet, 325,
+								GamePanel.GHEIGHT - 75, null);
+					else if(drawAttack() == 2){
+						g.drawImage(bullet, 325,
+								GamePanel.GHEIGHT - 75, null);
+						g.drawImage(bullet, 340,
+								GamePanel.GHEIGHT - 75, null);
+					}
+					}
+				}*/
+	}
+	
 	//set text from Input
 	public static void setText(String text1) {
 		text = text1;
