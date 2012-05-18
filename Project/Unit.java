@@ -33,6 +33,7 @@ public class Unit {
  protected boolean isSelected = false; // Is the unit seleceted?
  protected boolean moved = false;
  protected boolean hasUnitShot = false;   //Dan: ensures that unit can only shoot once
+ protected int point; // points are for keeping score. The more points, the more units a player can buy; Sidra May 17
  //move restrictions macro to be used in inherited units and Actions
  java.util.ArrayList<Buff> buffList;
  
@@ -41,14 +42,14 @@ public class Unit {
  public static final int WATER_ONLY = 2;
  
  public Unit(){
-   HP = numMoves = type = attack = range = locX = locY;
+   HP = numMoves = type = attack = range = locX = locY = point;
    type = 255; // Undefined
    restriction = 0; // No restriction
    description = "Undefined";
    buffList = new java.util.ArrayList<Buff>();
  }
  
- public Unit(int setHP, int setNumMoves, int Utype, String desc, int restrict, int ATK, int attackRange, int locationX, int locationY){
+ public Unit(int setHP, int setNumMoves, int Utype, String desc, int restrict, int ATK, int attackRange, int locationX, int locationY, int points){
    HP = setHP;
    fullHP = setHP;
    numMoves = setNumMoves;
@@ -59,6 +60,7 @@ public class Unit {
    range = attackRange;
    locX = locationX;
    locY = locationY;
+   point = points;
    buffList = new java.util.ArrayList<Buff>();
  }
  public int getMoves() {
@@ -115,6 +117,14 @@ public class Unit {
  public int getLocationY() {
    return locY;
  }
+ 
+ public int getPoint(){ // Added by Sidra; May 17
+	 return point;
+ }
+ public void setPoint(int p){
+	 point = p;
+ }
+ 
  public void setHasUnitShot(boolean b){
    hasUnitShot = b;
  }
