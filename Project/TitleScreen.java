@@ -103,7 +103,7 @@ public class TitleScreen extends JPanel {
 		title.setBounds(10, 160, 585, 85);
 
 		//---- background ----
-		background.setIcon(new ImageIcon("images/bg.png"));
+		background.setIcon(new ImageIcon("images/bg.gif"));
 		add(background);
 		background.setBounds(0, 0, 605, 700);
 
