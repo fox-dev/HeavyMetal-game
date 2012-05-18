@@ -28,12 +28,13 @@ public class UnitWater extends Unit {
   private static final int ATTACK_RANGE = 2;
   private static final int SPAWN_LOC_X = 0;
   private static final int SPAWN_LOC_Y = 0;
+  private static final int POINT = 150; //Added by Sidra; May 17
   
 	public UnitWater() {
-		  super(HP_DEFAULT,MOVES_DEFAULT,UNIT_TYPE,UNIT_DESCRIPTION,MOVE_RESTRICTION,ATK_DEFAULT,ATTACK_RANGE,SPAWN_LOC_X,SPAWN_LOC_Y);
+		  super(HP_DEFAULT,MOVES_DEFAULT,UNIT_TYPE,UNIT_DESCRIPTION,MOVE_RESTRICTION,ATK_DEFAULT,ATTACK_RANGE,SPAWN_LOC_X,SPAWN_LOC_Y,POINT);
 	}
 	
-	public UnitWater(int setHP, int setNumMoves, int Utype, String desc, int restrict, int ATK, int range, int locationX, int locationY) {
-		super(setHP, setNumMoves, Utype, desc, restrict, ATK, range, locationX, locationY);
+	public UnitWater(int setHP, int setNumMoves, int Utype, String desc, int restrict, int ATK, int range, int locationX, int locationY, int setPoint) {
+		super(setHP, setNumMoves, Utype, desc, restrict, ATK, range, locationX, locationY, setPoint);
 	}
 }
