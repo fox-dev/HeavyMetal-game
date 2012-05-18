@@ -3,8 +3,8 @@ package project;
 import java.awt.*;
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
-import javax.swing.GroupLayout;
 
 //This class represents the title-screen panel to be added to the Frame.
 
@@ -26,6 +26,12 @@ public class TitleScreen extends JPanel {
 		GamePanel gp = new GamePanel();
 		ff.startGame(); //Adds the gamepanel to the frame, and starts the game.
 	}
+	
+	//Rules button function - Sidra; Currently does nothing
+		private void ruleButtonMouseClicked(MouseEvent e){
+			
+		}
+
 
 
 	private void initComponents() {
@@ -33,6 +39,7 @@ public class TitleScreen extends JPanel {
 		// Generated using JFormDesigner Evaluation license - Andrew Abriam
 		exitButton = new JButton();
 		startButton = new JButton();
+		ruleButton = new JButton();
 		title = new JLabel();
 		background = new JLabel();
 
@@ -57,7 +64,7 @@ public class TitleScreen extends JPanel {
 			}
 		});
 		add(exitButton);
-		exitButton.setBounds(165, 415, 280, 30);
+		exitButton.setBounds(165, 445, 280, 30);
 
 		//---- startButton ----
 		startButton.setText("Start Game");
@@ -70,6 +77,19 @@ public class TitleScreen extends JPanel {
 		});
 		add(startButton);
 		startButton.setBounds(165, 335, 280, 40);
+
+		//---- Rules ---- Added May 17; Sidra
+		ruleButton.setText("Rules");
+		ruleButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		ruleButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ruleButtonMouseClicked(e);
+			}
+		});		
+		add(ruleButton);
+		ruleButton.setBounds(165, 395, 280, 30);
+				
 
 		//---- title ----
 		title.setText("HEAVY METAL");
@@ -107,6 +127,7 @@ public class TitleScreen extends JPanel {
 	// Generated using JFormDesigner Evaluation license - Andrew Abriam
 	private JButton exitButton;
 	private JButton startButton;
+	private JButton ruleButton;
 	private JLabel title;
 	private JLabel background;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables
