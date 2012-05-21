@@ -5,6 +5,8 @@ public class Player_AI extends Player{
   private Map map;
   private int[][] buffArray;
   private Player enemyPlayer;
+ // Boolean for explosions with the AI since it cannot select units like a real player
+  protected static boolean hasJustMovedUnits;
   java.util.ArrayList<Unit> tgtFocusList;
   public Player_AI(){
     super(Player.P_AI);    
@@ -37,6 +39,7 @@ public class Player_AI extends Player{
   }
   //moves unit to closest square by tgt
   private void moveUnitTo(Unit src, Unit tgt){
+    setHasJustMovedUnitsFalse();
     int [][] tempArr = actions.makeNewMovementDisplay(src);
     //cycle through tempArr and find the movable location closest to tgt
     int tgtX = tgt.getLocationX();
@@ -58,8 +61,10 @@ public class Player_AI extends Player{
         }
       }
     }
-    if(xDest >= 0 && yDest >= 0)
+  if(xDest >= 0 && yDest >= 0){
     	actions.moveUnit(src, xDest, yDest);
+       setHasJustMovedUnitsTrue();
+  }
   }
   
   private Unit findClosestEnemy(Unit src){
@@ -80,6 +85,21 @@ public class Player_AI extends Player{
     }
     return tgt;
   }
+  
+  // Set moved units true
+  public void setHasJustMovedUnitsTrue(){
+    hasJustMovedUnits = true;
+  }
+  
+  // Set moved units false
+  public void setHasJustMovedUnitsFalse){
+     hasJustMovedUnits = false;
+   }
+   
+  // Get boolean for if a player has moved a unit that turn.
+  public void getHasJustMovedUnits(){
+     return hasJustMovedUnits;
+  }   
   
   //NOT IMPLEMENTED YET
   void moveToClosestBuff(){
