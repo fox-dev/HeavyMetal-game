@@ -10,6 +10,7 @@ public class Player {
   private static final int P2_NUM_AIR = 1;
   private static final int P2_NUM_GROUND = 1;
   private static final int P2_NUM_WATER = 1;
+  private static boolean AImoved;
   public static final int P1 = 1;
   public static final int P2 = 2;
   public static final int P_AI = 3;
@@ -150,7 +151,17 @@ public class Player {
 		selected = false;
 	}
 	
+	public boolean getAImoved() {
+		return AImoved;
+	}
 
+	public void setAImovedTrue() {
+		AImoved = true;
+	}
+	
+	public void setAImovedFalse() {
+		AImoved = false;
+	}
 }
 
 

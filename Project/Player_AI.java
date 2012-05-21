@@ -1,5 +1,10 @@
 package project;
 
+import project.Actions;
+import project.Map;
+import project.Player;
+import project.Unit;
+
 public class Player_AI extends Player{
   private Actions actions;
   private Map map;
@@ -22,6 +27,7 @@ public class Player_AI extends Player{
   
   //moves and attacks closest enemy unit if possible
   void moveAttackAll(){
+	setHasJustMovedUnitsTrue();
     for(Unit u: units){
       moveAndAttack(u);
       //.35 second delay between moving units
@@ -31,6 +37,7 @@ public class Player_AI extends Player{
 				ex.printStackTrace();
 			}
     }
+    setHasJustMovedUnitsFalse();
   }
   private void moveAndAttack(Unit u){
     Unit tgt = findClosestEnemy(u);
@@ -39,7 +46,6 @@ public class Player_AI extends Player{
   }
   //moves unit to closest square by tgt
   private void moveUnitTo(Unit src, Unit tgt){
-    setHasJustMovedUnitsFalse();
     int [][] tempArr = actions.makeNewMovementDisplay(src);
     //cycle through tempArr and find the movable location closest to tgt
     int tgtX = tgt.getLocationX();
@@ -88,18 +94,13 @@ public class Player_AI extends Player{
   
   // Set moved units true
   public void setHasJustMovedUnitsTrue(){
-    hasJustMovedUnits = true;
+    this.setAImovedTrue();
   }
   
   // Set moved units false
-  public void setHasJustMovedUnitsFalse){
-     hasJustMovedUnits = false;
+  public void setHasJustMovedUnitsFalse(){
+	  this.setAImovedFalse();
    }
-   
-  // Get boolean for if a player has moved a unit that turn.
-  public void getHasJustMovedUnits(){
-     return hasJustMovedUnits;
-  }   
   
   //NOT IMPLEMENTED YET
   void moveToClosestBuff(){
