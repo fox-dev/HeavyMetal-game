@@ -1,11 +1,13 @@
 package project;
 
+import project.Buff;
+
 public class BuffRange extends Buff{
-  private static final String DESCRIPTION = "Extends range of unit";
   private static final int BUFF_ID = Buff.RANGE;
   private static final int BUFF_VALUE = 1;
   private static final int DURATION_MOVES = Integer.MAX_VALUE;    
   private static final int DURATION_ATK = 3;
+  public static final String DESCRIPTION = "Range +" + BUFF_VALUE + " for: " + DURATION_ATK + " attacks";
   public BuffRange(){
     super(DESCRIPTION, BUFF_ID, BUFF_VALUE, null, DURATION_MOVES, DURATION_ATK);
   }

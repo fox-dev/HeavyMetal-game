@@ -82,10 +82,11 @@ public class Drawing {
 		drawcurrentRect(g);
 		drawDisplayBox(g);
 		removeAnimations();//Andrew
+		drawBuffBox(g); //dan
 	}
 
 	public void drawBuff(Graphics g){
-	  if(actions.actionsRules.buff_On == true){
+	  if(ActionsRules.buff_On == true){
   	  int [][] b = actions.getBuffArray();
   	  int bValue;
       for(int i = 0; i < world.getMap().getX(); i++) {
@@ -278,8 +279,7 @@ public class Drawing {
 		}
 	}
 	
-	
-	//Removes the explosion debris once a new unit is selected.
+//Removes the explosion debris once a new unit is selected.
 	public void removeAnimations(){
 		if(input.getActivePlayer().unitSelected()){
 			decExplosions();
@@ -318,4 +318,44 @@ public class Drawing {
 				}
 		}
 	}
+	
+	public void drawBuffBox(Graphics g){
+	  int x = input.getMouseX();
+	  int y = input.getMouseY();
+	  if(x >= actions.buffArray.length || y >= actions.buffArray[0].length)
+	  	return;
+	  int buffType = actions.buffArray[x][y];
+	  String s = null;
+    switch(buffType){
+    case Buff.ATTACK:
+      s = BuffAttack.DESCRIPTION;
+      break;
+    case Buff.HEAL:
+      s = BuffHealHP.DESCRIPTION;
+      break;
+    case Buff.NUM_MOVES:
+      s = BuffNumMoves.DESCRIPTION;
+      break;
+    case Buff.RANGE:
+      s = BuffRange.DESCRIPTION;
+      break;
+    }
+    if(s != null){
+      g.setColor(Color.RED);
+      //Positions of where box is drawn
+      int boxx =(x * 30) - 100;
+      int boxy = (y * 30) - 50;
+      if(boxx < 0) {
+        boxx += 100;
+      }
+      if(boxy < 0) {
+        boxy += 80;
+      }
+      g.fillRoundRect(boxx,boxy, 160, 40, 40, 40);
+      //health = (player1.getUnit(i).getHP() / player1.getUnit(i).fullHP) * 100;
+      g.setColor(Color.WHITE);
+      g.drawString(s, boxx +10, boxy + 25);
+    }
+  }
+	
 }

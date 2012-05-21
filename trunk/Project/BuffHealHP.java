@@ -1,11 +1,11 @@
 package project;
 
 public class BuffHealHP extends Buff{
-  private static final String DESCRIPTION = "Restore HP";
   private static final int BUFF_ID = Buff.HEAL;
   private static final int BUFF_VALUE = 3;
   private static final int DURATION_MOVES = 0;    
   private static final int DURATION_ATK = 0;
+  public static final String DESCRIPTION = "Heal " + BUFF_VALUE + "hp";
   public BuffHealHP(){
     super(DESCRIPTION, BUFF_ID, BUFF_VALUE, null, DURATION_MOVES, DURATION_ATK);
   }

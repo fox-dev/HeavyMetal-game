@@ -10,24 +10,24 @@ public class Player {
   private static final int P2_NUM_AIR = 1;
   private static final int P2_NUM_GROUND = 1;
   private static final int P2_NUM_WATER = 1;
+  public static final int P1 = 1;
+  public static final int P2 = 2;
+  public static final int P_AI = 3;
   
   // Creates the units
   // Keep track of active units
   // How many units that have been moved during the turn
 
-  private ArrayList<Unit> units = new ArrayList<Unit>();
-  private ArrayList<Unit> deadunits = new ArrayList<Unit>();
-  private int playNo; // Francisco Edit
+  protected ArrayList<Unit> units = new ArrayList<Unit>();
+  protected ArrayList<Unit> deadunits = new ArrayList<Unit>();
+  protected int playNo; // Francisco Edit
   
   // Boolean so that a player can only have 1 selected unit at a time -Andrew
-  private static boolean selected;
-  private int selectedUnitNumber = -1;
+  protected static boolean selected;
+  protected int selectedUnitNumber = -1;
 
   public Player(int playNum){
-    if(playNum == 1)
-      helpConstructor(playNum, P1_NUM_AIR, P1_NUM_GROUND, P1_NUM_WATER );
-    else //playNum == 2
-      helpConstructor(playNum, P2_NUM_AIR, P2_NUM_GROUND, P2_NUM_WATER );
+    helpConstructor(playNum, P1_NUM_AIR, P1_NUM_GROUND, P1_NUM_WATER );
   }
   public Player(int playerNum, int numAir, int numGround, int numWater){
     helpConstructor(playerNum, numAir, numGround, numWater);

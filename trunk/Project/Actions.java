@@ -51,7 +51,6 @@ public class Actions {
   Player p1, p2;
   Map mapRef;
   int[][] moveArrayDisplay; //used in public boolean moveLegal(Unit u, int destX, int destY)
-  ActionsRules actionsRules;
   private String msg;
   int[][] buffArray;  //used to location and apply buffs to units
   
@@ -62,15 +61,19 @@ public class Actions {
                                                {0, 0, 1, -1} };
 
   public Actions(Player p1, Player p2, Map mapRef) {
+    buffArray = null;
     this.p1 = p1;
     this.p2 = p2;
     this.mapRef = mapRef;
     respawn(this.p1, 1);  //added May 16, 2012
     respawn(this.p2, 4);  //added May 16, 2012
-    actionsRules = new ActionsRules();
-    if(actionsRules.buff_On == true)
+    if(ActionsRules.buff_On == true)
       buffArray = makeBuffArr(this.mapRef);
     msg = null;
+    //accounting for AI May 20 2012
+    if(ActionsRules.AI_On == true && this.p2.getPlayerNum() == Player.P_AI){
+      ((Player_AI)(this.p2)).seed(this, mapRef, buffArray, p1);
+    }
   }
 
   public int[][] makeNewMovementDisplay(Unit u){
@@ -89,9 +92,9 @@ public class Actions {
     if(fireLegal(src, tgt)){
       tgt.setHP(tgt.getHP() - src.getAttack());
       src.setHasUnitShot(true);
-      if(actionsRules.returnFire_On == true)
-        actionsRules.returnFire(tgt, src);
-      if(actionsRules.buff_On == true){
+      if(ActionsRules.returnFire_On == true)
+        ActionsRules.returnFire(tgt, src);
+      if(ActionsRules.buff_On == true){
         //Remove buffs if their duration is expired
         src.iAttacked();  //deals with Buff durations
         src.cleanBuffList();  //removes Buff from units list and it's effects
@@ -122,8 +125,8 @@ public class Actions {
       return false;
     }
     //if friendly fire is OFF check if other unit is a friendly  //CASE NEVER TAKEN INTO CONSIDERATION due to logic in Input.java.  May change
-    if(actionsRules.friendlyFire_On == false)
-      if(actionsRules.friendlyUnits(this, src,tgt)){
+    if(ActionsRules.friendlyFire_On == false)
+      if(ActionsRules.friendlyUnits(this, src,tgt)){
         msg = "Cannot fire at friendly targets";
         return false;
       }
@@ -139,7 +142,7 @@ public class Actions {
       u.setLocationX(x);
       u.setLocationY(y);
       u.moved();
-      if( actionsRules.buff_On == true ){
+      if( ActionsRules.buff_On == true ){
         //Check if unit is on a buff.  If on buff, add buff and remove from buffArray
         int b = buffArray[x][y];
         switch(b){
