@@ -1,11 +1,13 @@
 package project;
 
+import project.Buff;
+
 public class BuffNumMoves extends Buff{
-  private static final String DESCRIPTION = "Moves Buff";
   private static final int BUFF_ID = Buff.NUM_MOVES;
   private static final int BUFF_VALUE = 1;
   private static final int DURATION_MOVES = 3;    
   private static final int DURATION_ATK = Integer.MAX_VALUE;
+  public static final String DESCRIPTION = "Move +" + BUFF_VALUE + " for " + DURATION_MOVES + " moves";
   public BuffNumMoves(){
     super(DESCRIPTION, BUFF_ID, BUFF_VALUE, null, DURATION_MOVES, DURATION_ATK);
   }

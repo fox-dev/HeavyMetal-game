@@ -31,12 +31,17 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	public GamePanel() {
 		//Initialize
-		player1 = new Player(1);
-		player2 = new Player(2);
+		player1 = new Player(Player.P1);
+    //accounting for AI being on
+		if(ActionsRules.AI_On)
+			player2 = new Player_AI();
+		else
+			player2 = new Player(Player.P2);
+		
 		world = new World();
 		unitDisplay = new UnitDisplay(player1, player2);
     testactions = new Actions(player1,player2, world.getMap()); //Added -Andrew   // reordered -Dan Apr27, 2012
-		
+
     //testactions.respawn(player1, 1); //added dan  //moved to Actions.java May16, 2012
     //testactions.respawn(player2, 4); //added dan  //moved to Actions.java May16, 2012
     
@@ -59,8 +64,24 @@ public class GamePanel extends JPanel implements Runnable{
 					player1.unitsReset();
 					testinput.switchPlayerStatuses();
 					UnitDisplay.setPlayer(2);
+					
+					//if AI is turned on and activePlayer is an AI run this code and return, else run other code
+					if(ActionsRules.AI_On){
+						UnitDisplay.setText("AI is Running");
+						try	{
+							Thread.sleep(500); // do nothing for 500 miliseconds (.5 second)
+						}	catch(InterruptedException ex) {
+							ex.printStackTrace();
+						}
+						Player_AI ai = (Player_AI)player2;
+						ai.moveAttackAll();
+						ai.unitsReset();
+						testinput.switchPlayerStatuses();
+						UnitDisplay.setPlayer(Player.P1);
+						UnitDisplay.setText("AI has completed. Awaiting Unit Selection...");
+					}//END AI Edits
 				}
-				if(player2.checkTurnOver() == true){
+				if(player2.checkTurnOver() == true && ActionsRules.AI_On == false){
 					UnitDisplay.setText("Players have switched. Awaiting Unit Selection...");
 					player2.unitsReset();
 					testinput.switchPlayerStatuses();

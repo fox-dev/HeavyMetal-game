@@ -36,4 +36,5 @@ public abstract class Buff {
     return false;
   }
   public void setUnit(Unit u) { this.u = u; }
+  public String getDescription() { return description; }
 }
