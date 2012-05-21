@@ -81,6 +81,7 @@ public class Drawing {
     drawBuff(g); //dan
 		drawcurrentRect(g);
 		drawDisplayBox(g);
+		removeAnimations();//Andrew
 	}
 
 	public void drawBuff(Graphics g){
@@ -274,6 +275,47 @@ public class Drawing {
 				g.drawImage(explosions2.get(i), player2.getdeadunit(i).getLocationX() * World.TILE_SIZE, 
 						player2.getdeadunit(i).getLocationY() * World.TILE_SIZE, null);
 			}
+		}
+	}
+	
+	
+	//Removes the explosion debris once a new unit is selected.
+	public void removeAnimations(){
+		if(input.getActivePlayer().unitSelected()){
+			decExplosions();
+		}
+		
+		
+	}
+	
+	//The explosion animation is played once a unit is destroyed, then the deadUnits array and explosion array are decremented so that
+	//there are not multiple instances of different explosions.  The arrays for the explosions are still needed so that the image remains
+	//and is not instantaneously removed due to the thread redrawing.
+	public void decExplosions(){
+		explosion.flush();
+		if(explosions1.size() > 0){
+			explosions1.remove(0);
+			numExplosions1--;
+			if(input.getActivePlayer().deadUnitsSize() > 0){
+				input.getActivePlayer().removeExplodingUnit();
+			}
+			
+			if(input.getWaitingPlayer().deadUnitsSize() > 0){
+				input.getWaitingPlayer().removeExplodingUnit();
+			}
+		
+		}
+		
+		if(explosions2.size() > 0){
+			explosions2.remove(0);
+			numExplosions2--;
+			if(input.getActivePlayer().deadUnitsSize() > 0){
+					input.getActivePlayer().removeExplodingUnit();
+				}
+				
+				if(input.getWaitingPlayer().deadUnitsSize() > 0){
+					input.getWaitingPlayer().removeExplodingUnit();
+				}
 		}
 	}
 }

@@ -115,6 +115,16 @@ public class Input {
 		//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 		//           GET FUNCTIONS
 		//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+		//Get function to get the Active Player
+		public Player getActivePlayer(){
+			return activePlayer;
+		}
+		
+		//Get function to get the Waiting Player
+		public Player getWaitingPlayer(){
+			return waitingPlayer;
+		}
+		
 		//Get function for the pixel location of the mouseclick X
 		public int getRealX(){
 			return realX;
