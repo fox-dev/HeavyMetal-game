@@ -284,7 +284,7 @@ public class Drawing {
 		if(input.getActivePlayer().unitSelected()){
 			decExplosions();
 		}
-    if(!input.getActivePlayer().getAImoved()){ //For the AI movements
+		if(!input.getActivePlayer().getAImoved() & input.getActivePlayer().unitSelected()){ //For the AI movements
       decExplosions();
    }
 		
