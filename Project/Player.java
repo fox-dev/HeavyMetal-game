@@ -42,6 +42,7 @@ public class Player {
       units.add(new UnitGround());
     for(int i = 0; i < numWater; i++)
       units.add(new UnitWater());
+    units.add(new UnitBase());
   }
   
   // Francisco Edit: Returns player number
@@ -90,6 +91,8 @@ public class Player {
 	  for(Unit currentUnit : units){
 		  currentUnit.moved();
 		  currentUnit.attacked();
+		  if(currentUnit instanceof UnitBase)
+		  	((UnitBase)(currentUnit)).baseAttacked();
 	  }
   }
   
@@ -162,6 +165,7 @@ public class Player {
 	public void setAImovedFalse() {
 		AImoved = false;
 	}
+	public void addUnit(Unit u){ units.add(u); } 
 }
 
 

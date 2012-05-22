@@ -21,7 +21,8 @@ public class Drawing {
 	//Added boats images -Sidra
 	//private Image moveable, explosion, hpfull, hpempty, boat1, boat2, hover, hover2;
 	//Added buff Images - Dan
-	private Image buffAtk, buffNumMoves, buffHealHP, buffRange, buff;
+	private Image buffAtk, buffNumMoves, buffHealHP, buffRange, buff, buffPoints;
+	private Image unitBase, unitBase1;
 	private World world;
 	private Input input;
 	private Actions actions;
@@ -64,11 +65,15 @@ public class Drawing {
 		health = 0;
 		numExplosions1 = numExplosions2 = 0;
 		
+		unitBase = new ImageIcon("images/unitBase.png").getImage();
+		unitBase1 = new ImageIcon("images/unitBase1.png").getImage();
 		//buffImages
 		buffAtk = new ImageIcon("images/ammo.png").getImage();
 		buffNumMoves = new ImageIcon("images/moves.png").getImage();
 		buffHealHP = new ImageIcon("images/healthpot.png").getImage();
 		buffRange = new ImageIcon("images/range.png").getImage();
+		buffPoints = new ImageIcon("images/buffPoints.gif").getImage();
+		
 	}
 	
 	//Cycles through the draw methods to draw everything.
@@ -102,6 +107,8 @@ public class Drawing {
               buff = buffNumMoves;  break;
             case Buff.RANGE:
               buff = buffRange;  break;
+            case Buff.POINTS:
+            	buff = buffPoints; break;
           }
           if(buff != null)
             g.drawImage(buff, i * World.TILE_SIZE, j * World.TILE_SIZE, null);
@@ -140,6 +147,17 @@ public class Drawing {
 				else
 					current = boat1;
 			}
+			//added DAN
+			else if (player1.getUnit(i).getType() == 10){ //10 is UnitBase type
+				//Draws units -dan
+				if(player1.getUnit(i).isSelected()) {
+					current = unitBase1;
+					if(player1.getUnit(i).getHasUnitShot() == false)
+						drawAttack(player1.getUnit(i), g);
+				}
+				else
+					current = unitBase;
+			}
 			g.drawImage(current, player1.getUnit(i).getLocationX()
 					* World.TILE_SIZE, player1.getUnit(i).getLocationY()
 					* World.TILE_SIZE, null);
@@ -176,11 +194,33 @@ public class Drawing {
 				else
 					current = boat2;
 			}
+			//added DAN
+			else if (player2.getUnit(i).getType() == 10){ //10 is UnitBase type
+				//Draws units -dan
+				if(player2.getUnit(i).isSelected()) {
+					current = unitBase1;
+					if(player2.getUnit(i).getHasUnitShot() == false)
+						drawAttack(player2.getUnit(i), g);
+				}
+				else
+					current = unitBase;
+			}
 			g.drawImage(current, player2.getUnit(i).getLocationX()
 					* World.TILE_SIZE, player2.getUnit(i).getLocationY()
 					* World.TILE_SIZE, null);
 		}
 
+	}
+	
+	public void drawAttack(Unit unit, Graphics g) {
+		int[][] attack = actions.rangeArray(unit);	
+		for(int i = 0; i < world.getMap().getX(); i++) {
+			for(int j = 0; j < world.getMap().getY(); j++) {
+				if(attack[i][j] == 1) {
+					g.drawImage(moveable, i * 30, j * 30, null);
+				}
+			}
+		}	
 	}
 	
 	public void drawMoves(Unit unit, Graphics g) {
@@ -226,7 +266,11 @@ public class Drawing {
 				g.fillRoundRect(boxx,boxy, 120, 40, 40, 40);
 				//health = (player1.getUnit(i).getHP() / player1.getUnit(i).fullHP) * 100;
 				g.setColor(Color.BLACK);
-				g.drawString("HP: " + player1.getUnit(i).getHP(), boxx + 45, boxy + 25);
+				if(player1.getUnit(i) instanceof UnitBase)
+					g.drawString("HP: " + player1.getUnit(i).getHP() + "  Points: " + player1.getUnit(i).getPoint(), boxx + 5, boxy + 25);
+				else
+					g.drawString("HP: " + player1.getUnit(i).getHP(), boxx + 45, boxy + 25);
+
 			}
 		}
 		for(int i  = 0; i < player2.checkNumUnits(); i++) {
@@ -244,7 +288,11 @@ public class Drawing {
 				}
 				g.fillRoundRect(boxx, boxy, 120, 40, 40, 40);
 				g.setColor(Color.BLACK);
-				g.drawString("HP: " + player2.getUnit(i).getHP(), boxx + 45, boxy + 25);
+				if(player2.getUnit(i) instanceof UnitBase)
+					g.drawString("HP: " + player2.getUnit(i).getHP() + "  Points: " + player2.getUnit(i).getPoint(), boxx + 5, boxy + 25);
+				else
+					g.drawString("HP: " + player2.getUnit(i).getHP(), boxx + 45, boxy + 25);
+
 			}
 		}
 	}
@@ -345,6 +393,8 @@ public class Drawing {
     case Buff.RANGE:
       s = BuffRange.DESCRIPTION;
       break;
+    case Buff.POINTS:
+    	s = BuffPoints.DESCRIPTION;
     }
     if(s != null){
       g.setColor(Color.RED);

@@ -94,6 +94,17 @@ public class Input {
 			activePlayer.removeDeadUnits();
 		}
 		
+		if(selectedUnit instanceof UnitBase){
+			System.out.println("BEFORE");
+			if(checkActions.baseSpawnUnits((UnitBase)selectedUnit, pressedX, pressedY)){
+  			UnitDisplay.setText("Spawning a unit");
+  			activePlayer.setSelectedFalse();
+  			selectedUnit.unSelect();
+  			selectedUnit = null;
+  			System.out.println("Runing");
+			}
+		}
+		
 		}catch(NullPointerException npe){
 			UnitDisplay.setText("There is nothing there");
 		}
