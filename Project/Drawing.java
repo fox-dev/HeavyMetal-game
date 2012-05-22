@@ -17,9 +17,9 @@ public class Drawing {
 
 	//Variables and classes
 	private Player player1, player2;
-	private Image ground1, ground2, air1, air2, current, ground1selected, ground2selected, air1selected, air2selected;
+	private Image ground1, ground2, air1, air2, current, ground1selected, ground2selected, air1selected, air2selected, moveable, explosion, hpfull, hpempty, boat1, boat2, hover, hover2;
 	//Added boats images -Sidra
-	private Image moveable, explosion, hpfull, hpempty, boat1, boat2, hover, hover2;
+	//private Image moveable, explosion, hpfull, hpempty, boat1, boat2, hover, hover2;
 	//Added buff Images - Dan
 	private Image buffAtk, buffNumMoves, buffHealHP, buffRange, buff;
 	private World world;
@@ -45,19 +45,19 @@ public class Drawing {
 		this.player2 = player2;
 		this.actions = actions;
 		//Load images
-		ground1 = new ImageIcon("images/tank.png").getImage();
-		ground2 = new ImageIcon("images/tank2.png").getImage();
+		ground1 = new ImageIcon("images/RedTank.gif").getImage();
+		ground2 = new ImageIcon("images/BluTank.gif").getImage();
 		ground1selected = new ImageIcon("images/tankselected.png").getImage();
 		ground2selected = new ImageIcon("images/tank2selected.png").getImage();
-		air1 = new ImageIcon("images/airplane.png").getImage();
-		air2 = new ImageIcon("images/airplane2.png").getImage();
+		air1 = new ImageIcon("images/RedPlane.gif").getImage();
+		air2 = new ImageIcon("images/BluPlane.gif").getImage();
 		air1selected = new ImageIcon("images/airplaneselected.png").getImage();
 		air2selected = new ImageIcon("images/airplane2selected.png").getImage();
 		moveable = new ImageIcon("images/moveable.png").getImage();
 		explosion = new ImageIcon("images/explosion.gif").getImage();
 		hpfull = new ImageIcon("images/healthfull.png").getImage();
 		hpempty = new ImageIcon("images/healthempty.phg").getImage();
-		boat1 = new ImageIcon("images/boat.gif").getImage();
+		boat1 = new ImageIcon("images/RedBoat.gif").getImage();
 		boat2 = new ImageIcon("images/boat2.gif").getImage();
 		hover = new ImageIcon("images/hover.png").getImage();
 		hover2 = new ImageIcon("images/hover2.png").getImage();
@@ -81,7 +81,7 @@ public class Drawing {
     drawBuff(g); //dan
 		drawcurrentRect(g);
 		drawDisplayBox(g);
-		removeAnimations();//Andrew
+		//removeAnimations();//Andrew
 		drawBuffBox(g); //dan
 	}
 
@@ -253,6 +253,7 @@ public class Drawing {
 	public void drawExplosion(Graphics g) {
 		if(player1.deadUnitsSize() > 0) {
 			if(player1.deadUnitsSize() > numExplosions1) {
+				decExplosions();
 				Image tempImage = new ImageIcon("images/explosion.gif").getImage();
 				explosions1.add(tempImage);
 				numExplosions1++;
@@ -260,6 +261,7 @@ public class Drawing {
 		}
 		if(player2.deadUnitsSize() > 0) {
 			if(player2.deadUnitsSize() > numExplosions2) {
+				decExplosions();
 				Image tempImage = new ImageIcon("images/explosion.gif").getImage();
 				explosions2.add(tempImage);
 				numExplosions2++;
@@ -286,10 +288,11 @@ public class Drawing {
 		}
 		if(!input.getActivePlayer().getAImoved() & input.getActivePlayer().unitSelected()){ //For the AI movements
       decExplosions();
+		}
+		else if (!input.getActivePlayer().getAIattack()) {
+    	  decExplosions();
+      }
    }
-		
-		
-	}
 	
 	//The explosion animation is played once a unit is destroyed, then the deadUnits array and explosion array are decremented so that
 	//there are not multiple instances of different explosions.  The arrays for the explosions are still needed so that the image remains
