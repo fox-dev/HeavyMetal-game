@@ -99,11 +99,52 @@ public class Actions {
         src.iAttacked();  //deals with Buff durations
         src.cleanBuffList();  //removes Buff from units list and it's effects
       }
+      if(tgt.getHP() <= 0){ //unit is dead
+      	Player p = this.playerOfUnit(src);
+        Unit findBaseUnit = p.getUnit(0);
+        for(int i = 1; findBaseUnit != null; i++ ){
+        	if(findBaseUnit instanceof UnitBase){
+        		findBaseUnit.setPoint(findBaseUnit.getPoint() + tgt.getPoint());
+        	}
+        	findBaseUnit = p.getUnit(i);
+        }
+      }
       p1.removeDeadUnits();
       p2.removeDeadUnits();
       return true;
     }
     return false;
+  }
+  public boolean baseSpawnUnits(UnitBase base, int tgtX, int tgtY){
+  	base.baseUnitShot();
+  	if(base.getHasUnitShot() == true) //base unit cannot spawn units
+  		return false;
+  	int terrainType = mapRef.getArr(tgtX,  tgtY);
+  	if(terrainType != Map.GROUND)
+  		return false;
+    if (tgtX < 0 || tgtX > (mapRef.getX() - 1) || (tgtY < 0 || tgtY > (mapRef.getY() - 1)))
+      return false;    
+    int[][] arr = new int[mapRef.getX()][mapRef.getY()];  
+    Unit tempUnit;
+    for(int i = 0; p1.getUnit(i) != null; i++){
+      tempUnit = p1.getUnit(i);
+      arr[tempUnit.getLocationX()][tempUnit.getLocationY()] = A_UNIT_IS_HERE;
+    }
+    for(int i = 0; p2.getUnit(i) != null; i++){
+      tempUnit = p2.getUnit(i);
+      arr[tempUnit.getLocationX()][tempUnit.getLocationY()] = A_UNIT_IS_HERE;
+    }
+  	if( arr[tgtX][tgtY] != A_UNIT_IS_HERE && base.isXYinRange(tgtX, tgtY) == true){
+  		//spawn a unit at (tgtX, tgtY)
+  		Player p = this.playerOfUnit(base); //find the Player of the base
+  		Unit u = new UnitGround();
+  		u.setXY(tgtX,  tgtY);
+  		p.addUnit(u);
+  		base.setPoint(base.getPoint() - u.getPoint());
+  		base.baseUnitShot();
+  		return true;
+  	}
+  	return false;
   }
   
   public boolean fireLegal(Unit src, Unit tgt){ //made public -Andrew
@@ -160,6 +201,18 @@ public class Actions {
             break;
           case Buff.RANGE:
             u.addAndApplyBuff(new BuffRange());
+            buffArray[x][y] = 0;
+            break;
+          case Buff.POINTS:
+          	BuffPoints buff = new BuffPoints();
+            Player p = this.playerOfUnit(u);
+            Unit findBaseUnit = p.getUnit(0);
+            for(int i = 1; findBaseUnit != null; i++ ){
+            	if(findBaseUnit instanceof UnitBase){
+            		buff.applyPointBuff((UnitBase)findBaseUnit);
+            	}
+            	findBaseUnit = p.getUnit(i);
+            }
             buffArray[x][y] = 0;
             break;
         }
@@ -396,8 +449,8 @@ public class Actions {
     if(yMin < 0)
       yMin = 0;
     int yMax = unitY + range;
-    if(yMin > mapRef.getY()-1)
-      yMin = mapRef.getY()-1;
+    if(yMax > mapRef.getY()-1)
+      yMax = mapRef.getY()-1;
     
     //trim edges of "shot box" based on range
     for(int i = xMin; i <= xMax; i++){
@@ -500,8 +553,8 @@ public class Actions {
       tempX = r.nextInt(xMax); //note: values from 0 to xMax-1;
       tempY = r.nextInt(yMax);
       if(temp[tempX][tempY] != A_UNIT_IS_HERE){
-        //get random number between 100 - 103 || between Buff.ATTACK to Buff.RANGE
-        temp[tempX][tempY] = r.nextInt(4) + 100;
+        //get random number between 100 - 104 || between Buff.ATTACK to Buff.POINTS
+        temp[tempX][tempY] = r.nextInt(5) + 100;
         i++;
       }
     }

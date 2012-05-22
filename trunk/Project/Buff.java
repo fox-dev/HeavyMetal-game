@@ -15,6 +15,7 @@ public abstract class Buff {
   public static final int NUM_MOVES = 101;
   public static final int HEAL = 102;
   public static final int RANGE = 103;
+  public static final int POINTS = 104;
   public static final int MAX_NUM_BUFFS = 20;
   
   public Buff(String description, int buffID, int buffValue, Unit u, int durationMoves, int durationAtk) {

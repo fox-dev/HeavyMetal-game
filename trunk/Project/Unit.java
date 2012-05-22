@@ -168,7 +168,7 @@ public class Unit {
  public void addAndApplyBuff(Buff buff){
    buff.setUnit(this);
    buff.applyBuff();
-   if(buff.getBuffID() != Buff.HEAL)
+   if(buff.getBuffID() != Buff.HEAL || buff.getBuffID() != Buff.POINTS)
      buffList.add(buff);
  }
  public void cleanBuffList(){
