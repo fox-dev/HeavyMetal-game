@@ -337,9 +337,6 @@ public class Drawing {
 		if(!input.getActivePlayer().getAImoved() & input.getActivePlayer().unitSelected()){ //For the AI movements
       decExplosions();
 		}
-		else if (!input.getActivePlayer().getAIattack()) {
-    	  decExplosions();
-      }
    }
 	
 	//The explosion animation is played once a unit is destroyed, then the deadUnits array and explosion array are decremented so that
