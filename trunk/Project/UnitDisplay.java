@@ -96,15 +96,6 @@ public class UnitDisplay {
 						GamePanel.GHEIGHT - 50);
 			}
 			
-			//Displays Type of Unit
-		/*	if(Player.unitSelected() != false)
-				g.drawString(" > " + "Unit Type: " + drawType(), 150,
-						GamePanel.GHEIGHT - 50);
-			else
-				g.drawString(" > Unit Type: -- ", 150,
-						GamePanel.GHEIGHT - 50);
-		*/
-			
 		//Displays Attack Power of Unit
 			if(Player.unitSelected() != false){
 				g.drawImage(ammo, GamePanel.GHEIGHT - 590, GamePanel.GWIDTH + 21, null);
@@ -117,21 +108,6 @@ public class UnitDisplay {
 						GamePanel.GHEIGHT - 50);
 			}
 			
-			
-			//Displays Attack
-			/*for(int i = 0; i < attack; i++){
-				if(Player.unitSelected() != false){
-					if(drawAttack() == 1)
-						g.drawImage(bullet, 325,
-								GamePanel.GHEIGHT - 75, null);
-					else if(drawAttack() == 2){
-						g.drawImage(bullet, 325,
-								GamePanel.GHEIGHT - 75, null);
-						g.drawImage(bullet, 340,
-								GamePanel.GHEIGHT - 75, null);
-					}
-					}
-				}*/
 	}
 	
 	//set text from Input
@@ -158,63 +134,21 @@ public class UnitDisplay {
 	public void setUnits(){
 		for (int i = 0; i < player1.checkNumUnits(); i++) {
 			//Sets Player1's Unit if selected
-			if(player1.getUnit(i).getType() == 0) {
-				//Ground
 				if(player1.getUnit(i).isSelected()) {
 					setHP(player1.getUnit(i));
 					setType(player1.getUnit(i));
 					setAttack(player1.getUnit(i));
 					setPoint(player1.getUnit(i));
 				}
-			}
-			else if (player1.getUnit(i).getType() == 1) {
-				//Air
-				if(player1.getUnit(i).isSelected()) {						
-					setHP(player1.getUnit(i));
-					setType(player1.getUnit(i));
-					setAttack(player1.getUnit(i));
-					setPoint(player1.getUnit(i));
-				}
-			}
-			else if(player1.getUnit(i).getType() == 2) {
-				//Water
-				if(player1.getUnit(i).isSelected()) {						
-					setHP(player1.getUnit(i));
-					setType(player1.getUnit(i));
-					setAttack(player1.getUnit(i));
-					setPoint(player1.getUnit(i));
-				}
-			}
 		}
 		for (int i = 0; i < player2.checkNumUnits(); i++) {
 			//Sets Player2's Unit if selected
-			if(player2.getUnit(i).getType() == 0) {
-				//Ground
 				if(player2.getUnit(i).isSelected()) {
 					setHP(player2.getUnit(i));
 					setType(player2.getUnit(i));
 					setAttack(player2.getUnit(i));
 					setPoint(player2.getUnit(i));
 				}
-			}
-			else if (player2.getUnit(i).getType() == 1) {
-				//Air
-				if(player2.getUnit(i).isSelected()) {
-					setHP(player2.getUnit(i));
-					setType(player2.getUnit(i));
-					setAttack(player2.getUnit(i));
-					setPoint(player2.getUnit(i));
-				}
-			}
-			else if(player2.getUnit(i).getType() == 2) {
-				//Water
-				if(player2.getUnit(i).isSelected()) {						
-					setHP(player2.getUnit(i));
-					setType(player2.getUnit(i));
-					setAttack(player2.getUnit(i));
-					setPoint(player2.getUnit(i));
-				}
-			}
 		}
 	}
 		
