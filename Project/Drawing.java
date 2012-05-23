@@ -15,6 +15,7 @@ public class Drawing {
       //Variables and classes
       private Player player1, player2;
       private Image attackable, ground1, ground2, air1, air2, current, ground1selected, ground2selected, air1selected, air2selected, boat1, boat2, boat1selected, boat2selected;
+      private Image medic1, medic2, medic1selected, medic2selected, medic1Inactive, medic2Inactive;
       private Image ground1Inactive, ground2Inactive, air1Inactive,air2Inactive,boat1Inactive,boat2Inactive;
       private Image moveable, explosion, hpfull, hpempty;
       //Added buff Images - Dan
@@ -56,6 +57,10 @@ public class Drawing {
               boat2 = new ImageIcon("images/BluBoat.gif").getImage();
               boat1selected = new ImageIcon("images/SelectedRedBoat.gif").getImage();
               boat2selected = new ImageIcon("images/SelectedBluBoat.gif").getImage();
+              medic1 = new ImageIcon("images/BluHealth.gif").getImage();
+              medic2 = new ImageIcon("images/SelectedBluHealth.gif").getImage();
+              medic1selected = new ImageIcon("images/RedHealth.gif").getImage();
+              medic2selected = new ImageIcon("images/SelectedRedHealth.gif").getImage();
               // ---
               health = 0;
               numExplosions1 = numExplosions2 = 0;
@@ -83,7 +88,8 @@ public class Drawing {
               air2Inactive = new ImageIcon("images/BluPlaneIA.gif").getImage();
               boat1Inactive = new ImageIcon("images/RedBoatIA.gif").getImage();
               boat2Inactive = new ImageIcon("images/BluBoatIA.gif").getImage();
-              
+              medic1Inactive = new ImageIcon("images/RedHealthIA.gif").getImage();
+              medic2Inactive = new ImageIcon("images/BlueHealthIA.gif").getImage();
       }
       
       //Cycles through the draw methods to draw everything.
@@ -174,6 +180,22 @@ public class Drawing {
                               else
                                       current = boat1;
                       }
+                      
+                      else if (player1.getUnit(i).getType() == 3){
+                          //Draws Medic units -Sidra
+                          if(player1.getUnit(i).isSelected()) {
+                                  current = medic1selected;
+                                  
+                                  drawRange(player1.getUnit(i), g);
+                                  drawMoves(player1.getUnit(i), g);
+                          }
+                          else if(input.getWaitingPlayer().getPlayerNum() == 1)
+                          	current = medic1Inactive;
+                          else if(player1.getUnit(i).hasUnitShot && player1.getUnit(i).moved)
+                          	current = medic1Inactive;
+                          else
+                                  current = medic1;
+                      }
                       //added DAN
                       else if (player1.getUnit(i).getType() == 10){ //10 is UnitBase type
                               //Draws units -dan
@@ -238,6 +260,22 @@ public class Drawing {
                               	current = boat2Inactive;
                               else
                                       current = boat2;
+                      }
+                      
+                      else if (player2.getUnit(i).getType() == 3){
+                          //Draws Medic units -Sidra
+                          if(player2.getUnit(i).isSelected()) {
+                                  current = medic2selected;
+                                  
+                                  drawRange(player2.getUnit(i), g);
+                                  drawMoves(player2.getUnit(i), g);
+                          }
+                          else if(input.getWaitingPlayer().getPlayerNum() == 2)
+                          	current = medic2Inactive;
+                          else if(player2.getUnit(i).hasUnitShot && player2.getUnit(i).moved)
+                          	current = medic2Inactive;
+                          else
+                                  current = medic2;
                       }
                       //added DAN
                       else if (player2.getUnit(i).getType() == 10){ //10 is UnitBase type
