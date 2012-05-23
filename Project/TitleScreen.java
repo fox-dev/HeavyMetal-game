@@ -1,6 +1,7 @@
 package project;
 
-import java.awt.*;
+//MY COPY
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -23,12 +24,22 @@ public class TitleScreen extends JPanel {
 	}
 
 	private void startButtonMouseClicked(MouseEvent e) {
-		GamePanel gp = new GamePanel();
+	
 		ff.startGame(); //Adds the gamepanel to the frame, and starts the game.
 	}
 	
 	//Rules button function - Sidra; Currently does nothing
 		private void ruleButtonMouseClicked(MouseEvent e){
+			
+		}
+		
+	//Options Button
+		private void optionsButtonMouseClicked(MouseEvent e){
+			ff.addOptions();
+			
+		}
+    //Map Edit Button		
+		private void mapEditButtonMouseClicked(MouseEvent e){
 			
 		}
 
@@ -39,19 +50,15 @@ public class TitleScreen extends JPanel {
 		// Generated using JFormDesigner Evaluation license - Andrew Abriam
 		exitButton = new JButton();
 		startButton = new JButton();
+		optionsButton = new JButton();
+		mapEditButton = new JButton();
 		ruleButton = new JButton();
 		title = new JLabel();
 		background = new JLabel();
 
 		//======== this ========
 
-		// JFormDesigner evaluation mark
-		setBorder(new javax.swing.border.CompoundBorder(
-			new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder(0, 0, 0, 0),
-				"JFormDesigner Evaluation", javax.swing.border.TitledBorder.CENTER,
-				javax.swing.border.TitledBorder.BOTTOM, new java.awt.Font("Dialog", java.awt.Font.BOLD, 12),
-				java.awt.Color.red), getBorder())); addPropertyChangeListener(new java.beans.PropertyChangeListener(){public void propertyChange(java.beans.PropertyChangeEvent e){if("border".equals(e.getPropertyName()))throw new RuntimeException();}});
-
+		
 		setLayout(null);
 
 		//---- exitButton ----
@@ -64,7 +71,8 @@ public class TitleScreen extends JPanel {
 			}
 		});
 		add(exitButton);
-		exitButton.setBounds(165, 445, 280, 30);
+		exitButton.setBounds(165, 545, 280,30);
+		
 
 		//---- startButton ----
 		startButton.setText("Start Game");
@@ -89,6 +97,30 @@ public class TitleScreen extends JPanel {
 		});		
 		add(ruleButton);
 		ruleButton.setBounds(165, 395, 280, 30);
+		
+		//---Options---
+		optionsButton.setText("Options");
+		optionsButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		optionsButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				optionsButtonMouseClicked(e);
+			}
+		});
+		add(optionsButton);
+		optionsButton.setBounds(165, 445, 280, 30);
+		
+		//---MapEditor---
+		mapEditButton.setText("Map Editor");
+		mapEditButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		mapEditButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				mapEditButtonMouseClicked(e);
+			}
+		});
+		add(mapEditButton);
+		mapEditButton.setBounds(165, 495, 280,30);
 				
 
 		//---- title ----
@@ -127,6 +159,8 @@ public class TitleScreen extends JPanel {
 	// Generated using JFormDesigner Evaluation license - Andrew Abriam
 	private JButton exitButton;
 	private JButton startButton;
+	private JButton optionsButton;
+	private JButton mapEditButton;
 	private JButton ruleButton;
 	private JLabel title;
 	private JLabel background;
