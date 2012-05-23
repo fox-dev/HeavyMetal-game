@@ -1,10 +1,5 @@
 package project;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 import javax.swing.ButtonGroup;
 
 /**
@@ -89,7 +84,7 @@ public class Options extends javax.swing.JPanel {
 
         AI_On.setText("On");
 
-        AI_Off.setSelected(true);
+        
         AI_Off.setText("Off");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -114,7 +109,7 @@ public class Options extends javax.swing.JPanel {
 
         friendlyFireOn.setText("On");
 
-        friendlyFireOff.setSelected(true);
+       
         friendlyFireOff.setText("Off");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -136,7 +131,7 @@ public class Options extends javax.swing.JPanel {
                 .addGap(0, 9, Short.MAX_VALUE))
         );
 
-        buffsOn.setSelected(true);
+       
         buffsOn.setText("On");
 
         buffsOff.setText("Off");
@@ -265,6 +260,9 @@ public class Options extends javax.swing.JPanel {
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(103, 103, 103))
         );
+        getSettings();
+        
+       
     }// </editor-fold>
 
     private void CancelActionPerformed(java.awt.event.ActionEvent evt) {                                         
@@ -312,6 +310,18 @@ public class Options extends javax.swing.JPanel {
     	buffsOn.setSelected(true);
     	AI_Off.setSelected(true);
     }
+    
+    private void getSettings(){
+    	friendlyFireOff.setSelected(!ActionsRules.friendlyFire_On);
+    	friendlyFireOn.setSelected(ActionsRules.friendlyFire_On);
+    	
+    	buffsOff.setSelected(!ActionsRules.buff_On);
+    	buffsOn.setSelected(ActionsRules.buff_On);
+    	
+    	AI_Off.setSelected(!ActionsRules.AI_On);
+    	AI_On.setSelected(ActionsRules.AI_On);
+    	 	
+    }
 
     // Variables declaration - do not modify
     private javax.swing.JRadioButton AI_Off;
@@ -337,3 +347,4 @@ public class Options extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel5;
     // End of variables declaration
 }
+
