@@ -50,7 +50,7 @@ public class Player {
       units.add(new UnitGround());
     for(int i = 0; i < numWater; i++)
       units.add(new UnitWater());
-    //units.add(new UnitBase());
+    units.add(new UnitBase());
   }
   
   // Francisco Edit: Returns player number
