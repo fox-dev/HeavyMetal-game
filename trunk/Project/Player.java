@@ -5,11 +5,14 @@ import java.util.ArrayList;
 public class Player {
   //for public Player(int playerNum, int numAir, int numGround, int numWater)
   private static final int P1_NUM_AIR = 1;
-  private static final int P1_NUM_GROUND = 1;
-  private static final int P1_NUM_WATER = 1;
+  private static final int P1_NUM_GROUND = 0;
+  private static final int P1_NUM_WATER = 0;
   private static final int P2_NUM_AIR = 1;
   private static final int P2_NUM_GROUND = 1;
   private static final int P2_NUM_WATER = 1;
+  private static final int P3_NUM_GROUND = 1;
+  private static final int P3_NUM_AIR = 1;
+  private static final int P3_NUM_WATER = 1;
   private static boolean AImoved;
   public static final int P1 = 1;
   public static final int P2 = 2;
@@ -28,7 +31,12 @@ public class Player {
   protected int selectedUnitNumber = -1;
 
   public Player(int playNum){
-    helpConstructor(playNum, P1_NUM_AIR, P1_NUM_GROUND, P1_NUM_WATER );
+	  if (playNum == 1)
+		  helpConstructor(playNum, P1_NUM_AIR, P1_NUM_GROUND, P1_NUM_WATER);
+	  else if (playNum == 2)
+		  helpConstructor(playNum, P2_NUM_AIR, P2_NUM_GROUND, P2_NUM_WATER);
+	  else if (playNum == 3)
+		  helpConstructor(playNum, P3_NUM_AIR, P3_NUM_GROUND, P3_NUM_WATER);
   }
   public Player(int playerNum, int numAir, int numGround, int numWater){
     helpConstructor(playerNum, numAir, numGround, numWater);
@@ -42,7 +50,7 @@ public class Player {
       units.add(new UnitGround());
     for(int i = 0; i < numWater; i++)
       units.add(new UnitWater());
-    units.add(new UnitBase());
+    //units.add(new UnitBase());
   }
   
   // Francisco Edit: Returns player number

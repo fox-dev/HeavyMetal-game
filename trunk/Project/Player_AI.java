@@ -41,8 +41,11 @@ public class Player_AI extends Player{
   }
   private void moveAndAttack(Unit u){
     Unit tgt = findClosestEnemy(u);
-    moveUnitTo(u, tgt);
-    actions.fire(u, tgt);
+    // Fixes the null pointer exception when Player 1 explodes and the AI can't find units
+    if (tgt != null) {
+    	moveUnitTo(u, tgt);
+    	actions.fire(u, tgt);
+    }
   }
   //moves unit to closest square by tgt
   private void moveUnitTo(Unit src, Unit tgt){

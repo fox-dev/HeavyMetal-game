@@ -19,6 +19,7 @@ public class GamePanel extends JPanel implements Runnable{
 	private volatile boolean running = false;
 	private long period = 15 * 1000000; //(15 milisecond to nanoseconds)
 	private static final int DELAYS_BEFORE_YEILD = 10; 
+	private boolean gameOver = false; // On mouseclick, game will go back to title screen when true
 	
 	//Classes for various objects to be drawn and manipulated
 	World world;
@@ -29,7 +30,7 @@ public class GamePanel extends JPanel implements Runnable{
 	UnitDisplay unitDisplay;
 	Drawing drawing;
 	
-	public GamePanel() {
+	public GamePanel(final FrameFunctions ff) {
 		//Initialize
 		player1 = new Player(Player.P1);
     //accounting for AI being on
@@ -66,7 +67,7 @@ public class GamePanel extends JPanel implements Runnable{
 					UnitDisplay.setPlayer(2);
 					
 					//if AI is turned on and activePlayer is an AI run this code and return, else run other code
-					if(ActionsRules.AI_On){
+					if(ActionsRules.AI_On & player1.checkNumUnits() > 0){
 						UnitDisplay.setText("AI is Running");
 						try	{
 							Thread.sleep(500); // do nothing for 500 miliseconds (.5 second)
@@ -86,6 +87,26 @@ public class GamePanel extends JPanel implements Runnable{
 					player2.unitsReset();
 					testinput.switchPlayerStatuses();
 					UnitDisplay.setPlayer(1);
+				}
+				// END GAME IF STATEMENT
+				if (player1.checkNumUnits() <= 0 || player2.checkNumUnits() <= 0) {
+					if (player1.checkNumUnits() <= 0 & !ActionsRules.AI_On)
+						UnitDisplay.setText("PLAYER 2 WINS!");
+					else if (player2.checkNumUnits() <= 0 & !ActionsRules.AI_On)
+						UnitDisplay.setText("PLAYER 1 WINS!");
+					else
+						UnitDisplay.setText("CPU PLAYER WINS!");
+					try {
+						Thread.sleep(4000); // Sleep 4 seconds or else the title screen pops on the same mouse click
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					}
+					gameOver = true;
+				}
+				// Go straight to the title screen. Do not pass go
+				if (gameOver) {
+					UnitDisplay.setText("Player 1 will start. Click a Unit to Play."); // Reset greeting message
+					ff.cleanUp();
 				}
 			}
 			
@@ -226,4 +247,3 @@ public class GamePanel extends JPanel implements Runnable{
 	
 
 }
-
