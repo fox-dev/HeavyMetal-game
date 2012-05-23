@@ -61,7 +61,7 @@ public class Drawing {
               numExplosions1 = numExplosions2 = 0;
               moveable = new ImageIcon("images/moveable.png").getImage();
               attackable = new ImageIcon("images/Attackable.png").getImage();
-              explosion = new ImageIcon("images/explosion.gif").getImage();
+              explosion = new ImageIcon("images/SingleExplosion.gif").getImage();
               hpfull = new ImageIcon("images/healthfull.png").getImage();
               hpempty = new ImageIcon("images/healthempty.phg").getImage();
               // ---
@@ -361,7 +361,7 @@ public class Drawing {
               if(player1.deadUnitsSize() > 0) {
                       if(player1.deadUnitsSize() > numExplosions1) {
                               decExplosions();
-                              Image tempImage = new ImageIcon("images/explosion.gif").getImage();
+                              Image tempImage = new ImageIcon("images/SingleExplosion.gif").getImage();
                               explosions1.add(tempImage);
                               numExplosions1++;
                       }
@@ -369,7 +369,7 @@ public class Drawing {
               if(player2.deadUnitsSize() > 0) {
                       if(player2.deadUnitsSize() > numExplosions2) {
                               decExplosions();
-                              Image tempImage = new ImageIcon("images/explosion.gif").getImage();
+                              Image tempImage = new ImageIcon("images/SingleExplosion.gif").getImage();
                               explosions2.add(tempImage);
                               numExplosions2++;
                       }
