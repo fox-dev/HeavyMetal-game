@@ -8,6 +8,7 @@ public class FrameFunctions {
 	Frame frame;
 	TitleScreen ts;
 	Options op;
+	GamePanel gp;
 
 	public FrameFunctions() {
 		ts = new TitleScreen(this);
@@ -26,7 +27,7 @@ public class FrameFunctions {
 	 * for the title screen panel to start a game.
 	 */
 	public void startGame(){
-		GamePanel gp = new GamePanel();
+		gp = new GamePanel(this);
 		this.addGame(gp);
 		this.removeTitle(ts);
 	}
@@ -45,7 +46,16 @@ public class FrameFunctions {
 		frame.validate();
 	}
 
-	
+	public void removeGame(GamePanel gp) {
+		frame.remove(gp);
+		frame.invalidate();
+		frame.validate();
+	}
+	public void cleanUp() {
+		this.removeGame(gp);
+		ts = new TitleScreen(this);
+		this.addTitle(ts);
+	}
 	/*Note: Add remove functions here when making other panels*/
 	
 	//Add the options panel
