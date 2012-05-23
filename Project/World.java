@@ -20,11 +20,11 @@ public class World {
 	private Image TILE_GRASS, TILE_WATER, TILE_MOUNTAIN, TILE_FOREST, TILE_BRIDGE;
 	
 	public World() {
-		TILE_GRASS = new ImageIcon("images/new_grass.png").getImage();
-		TILE_WATER = new ImageIcon("images/water.png").getImage();
+		TILE_GRASS = new ImageIcon("images/new_grass2.png").getImage();
+		TILE_WATER = new ImageIcon("images/new_water.png").getImage();
 		TILE_MOUNTAIN = new ImageIcon("images/mountainRocks.png").getImage();
-		TILE_FOREST = new ImageIcon("images/treetop2.png").getImage();
-		TILE_BRIDGE = new ImageIcon("images/bridge.png").getImage();
+		TILE_FOREST = new ImageIcon("images/new_forest.png").getImage();
+		TILE_BRIDGE = new ImageIcon("images/new_bridge.png").getImage();
 		// Map is now created before tiles and tileImg so we can get its dimensions
 		map = new Map();
 		// The rectangles and images now get the dimensions of the map
