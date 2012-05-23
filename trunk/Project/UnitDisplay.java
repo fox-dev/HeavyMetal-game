@@ -1,7 +1,9 @@
 package project;
-//This program will display texts: moves/attacks/player 1 and 2's health for each unit
-//It will give the user a chance to end their turn by pressing the end turn button
+//Mostly worked on by Sidra Chaudhry;
+//This program will display texts, Health (HP), Attack Power(AP), points (Coins collected) in the UnitDisplay; 
+//It will give the user a chance to end their turn by pressing the end turn button;
 //As of May 15, it will display different images depending on the current player.
+//Added a 'back to titleScreen' button; currently does not work
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -17,7 +19,7 @@ public class UnitDisplay {
 	
 	private Player player1, player2;
 	private Image endButton, back, p1, p2, p1No, p2No;
-	private Image health, ammo;
+	private Image health, ammo, titleButton, points;
 	private static String text, hp, type, point;
 	private static int playerNum;
 	private static String attack;
@@ -25,7 +27,10 @@ public class UnitDisplay {
 	//Static variables for the location and width of the end turn button to be used by input to end the
 	//turn
 	public static final int ENDBUTTONX = GamePanel.GWIDTH - 60
-			, ENDBUTTONY = GamePanel.GHEIGHT - 83, ENDBUTTONWIDTH = 40, ENDBUTTONHEIGHT = 38;
+			, ENDBUTTONY = GamePanel.GHEIGHT - 83, ENDBUTTONWIDTH = 30, ENDBUTTONHEIGHT = 29;
+	
+	public static final int TitleButtonX = GamePanel.GWIDTH - 105,
+			TitleButtonY = GamePanel.GHEIGHT - 83, TitleButtonWidth = 30, TitleButtonHeight = 29;
 
 	public UnitDisplay(Player player1, Player player2) {
 		this.player1 = player1;
@@ -38,6 +43,8 @@ public class UnitDisplay {
 		p2No = new ImageIcon("images/p2No.png").getImage();
 		health = new ImageIcon("images/healthpot.png").getImage();
 		ammo = new ImageIcon("images/ammo.png").getImage();
+		titleButton = new ImageIcon("images/button.png").getImage();
+		points = new ImageIcon("images/treasure.png").getImage();
 	}
 
 	public void setPlayer(Player player1, Player player2) {
@@ -51,6 +58,7 @@ public class UnitDisplay {
 		g.drawImage(back, GamePanel.GHEIGHT - 701, GamePanel.GWIDTH - 7, null);
 		//Drawing the image for the end turn button
 		g.drawImage(endButton, ENDBUTTONX, ENDBUTTONY, null);
+		g.drawImage(titleButton, TitleButtonX, TitleButtonY, null);
 		//Color of text is set to Green
 		g.setColor(Color.GREEN);
 	
@@ -74,17 +82,17 @@ public class UnitDisplay {
 			}
 			
 			
-			//Displays Text
+		//Displays Text
 			if(getText() != null)
 				g.drawString(" > " + getText(), 50,
 						GamePanel.GHEIGHT - 75);
 			else //Greeting
 				g.drawString(" > " + "Player 1 will start. Click a Unit to Play.", 50, GamePanel.GHEIGHT - 75);
 			
-			//Sets all Player1 and Player2 units for easier access to HP/UnitType/Attack Power
+		//Sets all Player1 and Player2 units for easier access to HP/UnitType/Attack Power
 			setUnits();
 			
-			//Displays HP of Units
+		//Displays HP of Units
 			if(Player.unitSelected() != false){
 				g.drawImage(health, GamePanel.GHEIGHT - 658, GamePanel.GWIDTH + 21, null);
 				g.drawString("HP: " + drawHP(), 65,
@@ -107,6 +115,19 @@ public class UnitDisplay {
 				g.drawString("AP: -- ", 140,
 						GamePanel.GHEIGHT - 50);
 			}
+			
+		//Displays Points of Player
+			if(Player.unitSelected() != false){
+				g.drawImage(points, GamePanel.GHEIGHT - 520, GamePanel.GWIDTH + 23, null);
+				g.drawString("Points: " + getPoint(), 207,
+						GamePanel.GHEIGHT - 50);
+		}
+			else{
+				g.drawImage(points, GamePanel.GHEIGHT - 520, GamePanel.GWIDTH + 23, null);
+				g.drawString("Points: -- ", 207,
+						GamePanel.GHEIGHT - 50);
+			}
+			
 			
 	}
 	
@@ -170,8 +191,8 @@ public class UnitDisplay {
 			type = "Air";
 		else if(unit.getType() == 2)
 			type = "Water";
-		else
-			type = "unknown";
+		else if(unit.getType() == 10)
+			type = "Base";
 	}
 	
 	//Gets Unit's Type

@@ -14,8 +14,9 @@ public class Drawing {
 
       //Variables and classes
       private Player player1, player2;
-      private Image ground1, ground2, air1, air2, current, ground1selected, ground2selected, air1selected, air2selected, moveable, explosion, hpfull, hpempty, boat1, boat2, hover, hover2;
+      private Image ground1, ground2, air1, air2, current, ground1selected, ground2selected, air1selected, air2selected, boat1, boat2, boat1selected, boat2selected;
       private Image ground1Inactive, ground2Inactive, air1Inactive,air2Inactive,boat1Inactive,boat2Inactive;
+      private Image moveable, explosion, hpfull, hpempty;
       //Added buff Images - Dan
       private Image buffAtk, buffNumMoves, buffHealHP, buffRange, buff, buffPoints;
       private Image unitBase1, unitBase2, unitBase1Select, unitBase2Select;
@@ -44,27 +45,28 @@ public class Drawing {
               //Load images
               ground1 = new ImageIcon("images/RedTank.gif").getImage();
               ground2 = new ImageIcon("images/BluTank.gif").getImage();
-              ground1selected = new ImageIcon("images/tankselected.png").getImage();
-              ground2selected = new ImageIcon("images/tank2selected.png").getImage();
+              ground1selected = new ImageIcon("images/SelectedRedTank.gif").getImage();
+              ground2selected = new ImageIcon("images/SelectedBluTank.gif").getImage();
               air1 = new ImageIcon("images/RedPlane.gif").getImage();
               air2 = new ImageIcon("images/BluPlane.gif").getImage();
-              air1selected = new ImageIcon("images/airplaneselected.png").getImage();
-              air2selected = new ImageIcon("images/airplane2selected.png").getImage();
+              air1selected = new ImageIcon("images/SelectedRedPlane.gif").getImage();
+              air2selected = new ImageIcon("images/SelectedBluPlane.gif").getImage();
+              boat1 = new ImageIcon("images/RedBoat.gif").getImage();
+              boat2 = new ImageIcon("images/BluBoat.gif").getImage();
+              boat1selected = new ImageIcon("images/SelectedRedBoat.gif").getImage();
+              boat2selected = new ImageIcon("images/SelectedBluBoat.gif").getImage();
+              // ---
+              health = 0;
+              numExplosions1 = numExplosions2 = 0;
               moveable = new ImageIcon("images/moveable.png").getImage();
               explosion = new ImageIcon("images/explosion.gif").getImage();
               hpfull = new ImageIcon("images/healthfull.png").getImage();
               hpempty = new ImageIcon("images/healthempty.phg").getImage();
-              boat1 = new ImageIcon("images/RedBoat.gif").getImage();
-              boat2 = new ImageIcon("images/BluBoat.gif").getImage();
-              hover = new ImageIcon("images/hover.png").getImage();
-              hover2 = new ImageIcon("images/hover2.png").getImage();
-              health = 0;
-              numExplosions1 = numExplosions2 = 0;
-              
+              // ---
               unitBase1 = new ImageIcon("images/RedBase.png").getImage();
-              unitBase1Select = new ImageIcon("images/RedBase.png").getImage();
+              unitBase1Select = new ImageIcon("images/SelectedRedBase.png").getImage();
               unitBase2 = new ImageIcon("images/BlueBase.png").getImage();
-              unitBase2Select = new ImageIcon("images/BlueBase.png").getImage();
+              unitBase2Select = new ImageIcon("images/SelectedBluBase.png").getImage();
               //buffImages
               buffAtk = new ImageIcon("images/ammo.png").getImage();
               buffNumMoves = new ImageIcon("images/moves.png").getImage();
@@ -156,7 +158,7 @@ public class Drawing {
                       else if (player1.getUnit(i).getType() == 2){
                               //Draws Boat units -Sidra
                               if(player1.getUnit(i).isSelected()) {
-                                      current = boat1;
+                                      current = boat1selected;
                                       drawMoves(player1.getUnit(i), g);
                               }
                               else if(input.getWaitingPlayer().getPlayerNum() == 1)
@@ -170,12 +172,12 @@ public class Drawing {
                       else if (player1.getUnit(i).getType() == 10){ //10 is UnitBase type
                               //Draws units -dan
                               if(player1.getUnit(i).isSelected()) {
-                                      current = unitBase1;
+                                      current = unitBase1Select;
                                       if(player1.getUnit(i).getHasUnitShot() == false)
                                               drawAttack(player1.getUnit(i), g);
                               }
                               else
-                                      current = unitBase1Select;
+                                      current = unitBase1;
                       }
                       g.drawImage(current, player1.getUnit(i).getLocationX()
                                       * World.TILE_SIZE, player1.getUnit(i).getLocationY()
@@ -215,7 +217,7 @@ public class Drawing {
                       else if (player2.getUnit(i).getType() == 2){
                               //Draws Boat units -Sidra
                               if(player2.getUnit(i).isSelected()) {
-                                      current = boat2;
+                                      current = boat2selected;
                                       drawMoves(player2.getUnit(i), g);
                               }
                               else if(input.getWaitingPlayer().getPlayerNum() == 2 || input.getWaitingPlayer().getPlayerNum() == 3)
@@ -229,12 +231,12 @@ public class Drawing {
                       else if (player2.getUnit(i).getType() == 10){ //10 is UnitBase type
                               //Draws units -dan
                               if(player2.getUnit(i).isSelected()) {
-                                      current = unitBase2;
+                                      current = unitBase2Select;
                                       if(player2.getUnit(i).getHasUnitShot() == false)
                                               drawAttack(player2.getUnit(i), g);
                               }
                               else
-                                      current = unitBase2Select;
+                                      current = unitBase2;
                       }
                       g.drawImage(current, player2.getUnit(i).getLocationX()
                                       * World.TILE_SIZE, player2.getUnit(i).getLocationY()
