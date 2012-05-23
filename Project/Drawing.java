@@ -51,7 +51,7 @@ public class Drawing {
               air1selected = new ImageIcon("images/airplaneselected.png").getImage();
               air2selected = new ImageIcon("images/airplane2selected.png").getImage();
               moveable = new ImageIcon("images/moveable.png").getImage();
-              explosion = new ImageIcon("images/SingleExplosion.gif").getImage();
+              explosion = new ImageIcon("images/explosion.gif").getImage();
               hpfull = new ImageIcon("images/healthfull.png").getImage();
               hpempty = new ImageIcon("images/healthempty.phg").getImage();
               boat1 = new ImageIcon("images/RedBoat.gif").getImage();
@@ -192,7 +192,7 @@ public class Drawing {
                                       current = ground2selected;
                                       drawMoves(player2.getUnit(i), g);
                               }
-                              else if(input.getWaitingPlayer().getPlayerNum() == 2)
+                              else if(input.getWaitingPlayer().getPlayerNum() == 2 || input.getWaitingPlayer().getPlayerNum() == 3)
                               	current = ground2Inactive;
                               else if(player2.getUnit(i).hasUnitShot && player2.getUnit(i).moved)
                               	current = ground2Inactive;
@@ -205,7 +205,7 @@ public class Drawing {
                                       current = air2selected;
                                       drawMoves(player2.getUnit(i), g);
                               }
-                              else if(input.getWaitingPlayer().getPlayerNum() == 2)
+                              else if(input.getWaitingPlayer().getPlayerNum() == 2 || input.getWaitingPlayer().getPlayerNum() == 3)
                               	current = air2Inactive;
                               else if(player2.getUnit(i).hasUnitShot && player2.getUnit(i).moved)
                               	current = air2Inactive;
@@ -218,7 +218,7 @@ public class Drawing {
                                       current = boat2;
                                       drawMoves(player2.getUnit(i), g);
                               }
-                              else if(input.getWaitingPlayer().getPlayerNum() == 2)
+                              else if(input.getWaitingPlayer().getPlayerNum() == 2 || input.getWaitingPlayer().getPlayerNum() == 3)
                               	current = boat2Inactive;
                               else if(player2.getUnit(i).hasUnitShot && player2.getUnit(i).moved)
                               	current = boat2Inactive;
@@ -333,7 +333,7 @@ public class Drawing {
               if(player1.deadUnitsSize() > 0) {
                       if(player1.deadUnitsSize() > numExplosions1) {
                               decExplosions();
-                              Image tempImage = new ImageIcon("images/SingleExplosion.gif").getImage();
+                              Image tempImage = new ImageIcon("images/explosion.gif").getImage();
                               explosions1.add(tempImage);
                               numExplosions1++;
                       }
@@ -341,7 +341,7 @@ public class Drawing {
               if(player2.deadUnitsSize() > 0) {
                       if(player2.deadUnitsSize() > numExplosions2) {
                               decExplosions();
-                              Image tempImage = new ImageIcon("images/SingleExplosion.gif").getImage();
+                              Image tempImage = new ImageIcon("images/explosion.gif").getImage();
                               explosions2.add(tempImage);
                               numExplosions2++;
                       }
