@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public class Player {
   //for public Player(int playerNum, int numAir, int numGround, int numWater)
   private static final int P1_NUM_AIR = 1;
-  private static final int P1_NUM_GROUND = 0;
-  private static final int P1_NUM_WATER = 0;
+  private static final int P1_NUM_GROUND = 1;
+  private static final int P1_NUM_WATER = 1;
   private static final int P2_NUM_AIR = 1;
   private static final int P2_NUM_GROUND = 1;
   private static final int P2_NUM_WATER = 1;
