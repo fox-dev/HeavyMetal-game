@@ -1,13 +1,13 @@
 package project;
 
-
 import java.awt.*;
 
 import javax.swing.ImageIcon;
 public class FrameFunctions {
 	
 	Frame frame;
-	TitleScreen ts; 
+	TitleScreen ts;
+	Options op;
 
 	public FrameFunctions() {
 		ts = new TitleScreen(this);
@@ -44,12 +44,32 @@ public class FrameFunctions {
 		frame.invalidate();
 		frame.validate();
 	}
+
 	
 	/*Note: Add remove functions here when making other panels*/
+	
+	//Add the options panel
+	public void addOptions(){
+		op = new Options(this);
+		frame.add(op);
+		this.removeTitle(ts);
+	}
+	
+	//Remove the options panel
+	public void removeOptions(Options op){
+		frame.remove(op);
+		ts = new TitleScreen(this);
+		this.addTitle(ts);
+		frame.invalidate();
+		frame.validate();
+	}
 
 	
 	
 	
 
 }
+
+
+
 
