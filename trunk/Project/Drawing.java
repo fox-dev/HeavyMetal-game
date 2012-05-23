@@ -14,7 +14,7 @@ public class Drawing {
 
       //Variables and classes
       private Player player1, player2;
-      private Image ground1, ground2, air1, air2, current, ground1selected, ground2selected, air1selected, air2selected, boat1, boat2, boat1selected, boat2selected;
+      private Image attackable, ground1, ground2, air1, air2, current, ground1selected, ground2selected, air1selected, air2selected, boat1, boat2, boat1selected, boat2selected;
       private Image ground1Inactive, ground2Inactive, air1Inactive,air2Inactive,boat1Inactive,boat2Inactive;
       private Image moveable, explosion, hpfull, hpempty;
       //Added buff Images - Dan
@@ -29,6 +29,7 @@ public class Drawing {
       private int health;
       private int numExplosions1, numExplosions2;
       private int[][] moves;
+      private int[][] attacks;
       private ArrayList<Image> explosions1 = new ArrayList<Image>();
       private ArrayList<Image> explosions2 = new ArrayList<Image>();
       
@@ -59,6 +60,7 @@ public class Drawing {
               health = 0;
               numExplosions1 = numExplosions2 = 0;
               moveable = new ImageIcon("images/moveable.png").getImage();
+              attackable = new ImageIcon("images/Attackable.png").getImage();
               explosion = new ImageIcon("images/explosion.gif").getImage();
               hpfull = new ImageIcon("images/healthfull.png").getImage();
               hpempty = new ImageIcon("images/healthempty.phg").getImage();
@@ -133,6 +135,7 @@ public class Drawing {
                               //Draws selected version of ground if unit is selected
                               if(player1.getUnit(i).isSelected()) {
                                       current = ground1selected;
+                                      drawRange(player1.getUnit(i), g);
                                       drawMoves(player1.getUnit(i), g);
                               }
                               else if(input.getWaitingPlayer().getPlayerNum() == 1)
@@ -146,6 +149,7 @@ public class Drawing {
                               //Draws selected version of air if unit is selected
                               if(player1.getUnit(i).isSelected()) {
                                       current = air1selected;
+                                      drawRange(player1.getUnit(i), g);
                                       drawMoves(player1.getUnit(i), g);
                               }
                               else if(input.getWaitingPlayer().getPlayerNum() == 1)
@@ -159,6 +163,8 @@ public class Drawing {
                               //Draws Boat units -Sidra
                               if(player1.getUnit(i).isSelected()) {
                                       current = boat1selected;
+                                      
+                                      drawRange(player1.getUnit(i), g);
                                       drawMoves(player1.getUnit(i), g);
                               }
                               else if(input.getWaitingPlayer().getPlayerNum() == 1)
@@ -192,6 +198,8 @@ public class Drawing {
                               //Draws the selected version of ground if that unit is currently selected
                               if(player2.getUnit(i).isSelected()) {
                                       current = ground2selected;
+                                      
+                                      drawRange(player2.getUnit(i), g);
                                       drawMoves(player2.getUnit(i), g);
                               }
                               else if(input.getWaitingPlayer().getPlayerNum() == 2 || input.getWaitingPlayer().getPlayerNum() == 3)
@@ -205,6 +213,8 @@ public class Drawing {
                               //Draws the selected version of air if unit is currently selected
                               if(player2.getUnit(i).isSelected()) {
                                       current = air2selected;
+                                      
+                                      drawRange(player2.getUnit(i), g);
                                       drawMoves(player2.getUnit(i), g);
                               }
                               else if(input.getWaitingPlayer().getPlayerNum() == 2 || input.getWaitingPlayer().getPlayerNum() == 3)
@@ -218,6 +228,8 @@ public class Drawing {
                               //Draws Boat units -Sidra
                               if(player2.getUnit(i).isSelected()) {
                                       current = boat2selected;
+                                      
+                                      drawRange(player2.getUnit(i), g);
                                       drawMoves(player2.getUnit(i), g);
                               }
                               else if(input.getWaitingPlayer().getPlayerNum() == 2 || input.getWaitingPlayer().getPlayerNum() == 3)
@@ -269,6 +281,20 @@ public class Drawing {
               }
               
       }
+      
+      public void drawRange(Unit unit, Graphics g) {
+          
+          attacks = actions.rangeArray(unit);
+          
+          for(int i = 0; i < world.getMap().getX(); i++) {
+                  for(int j = 0; j < world.getMap().getY(); j++) {
+                          if(attacks[i][j] == 1) {
+                                  g.drawImage(attackable, i * 30, j * 30, null);
+                          }
+                  }
+          }
+          
+  }
       
       //Drawing a rectangle around the current square with the mouse hovered over.
       public void drawcurrentRect(Graphics g) {
