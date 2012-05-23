@@ -21,7 +21,7 @@ public class World {
 	
 	public World() {
 		TILE_GRASS = new ImageIcon("images/new_grass2.png").getImage();
-		TILE_WATER = new ImageIcon("images/new_water.png").getImage();
+		TILE_WATER = new ImageIcon("images/new_waterRiple.gif").getImage();
 		TILE_MOUNTAIN = new ImageIcon("images/mountainRocks.png").getImage();
 		TILE_FOREST = new ImageIcon("images/new_forest.png").getImage();
 		TILE_BRIDGE = new ImageIcon("images/new_bridge.png").getImage();
