@@ -1,5 +1,7 @@
 package project;
 
+import project.Unit;
+
 public class UnitBase extends Unit {
   //defaults for UnitAir DAN
 	private static final int HP_DEFAULT = 10;
@@ -36,7 +38,7 @@ public class UnitBase extends Unit {
 	  //moved is always true.  A base cannot move.  Data member not necessary to spawn units
 		//but may effect other classes.
 		baseUnitShot();
-		moved = true;
+		moved = b;
 	}
 	public void baseMove(boolean b){ moved = true; };
 
