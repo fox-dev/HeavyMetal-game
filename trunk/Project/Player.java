@@ -100,7 +100,7 @@ public class Player {
 		  currentUnit.moved();
 		  currentUnit.attacked();
 		  if(currentUnit instanceof UnitBase)
-		  	((UnitBase)(currentUnit)).baseAttacked();
+		  	((UnitBase)(currentUnit)).moved();
 	  }
   }
   
@@ -132,8 +132,12 @@ public class Player {
   //Reset all units of Player to Unit.setHasUnitShot = false Dan
   public void unitsReset(){
     for (Unit currentUnit : units){
+    	
       currentUnit.movedFalse();
       currentUnit.setHasUnitShot(false);
+      if(currentUnit instanceof UnitBase){
+    	  currentUnit.movedFalse();
+      }
     }
   }
   
@@ -175,5 +179,3 @@ public class Player {
 	}
 	public void addUnit(Unit u){ units.add(u); } 
 }
-
-
