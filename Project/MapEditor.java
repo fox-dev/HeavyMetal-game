@@ -37,11 +37,11 @@ public class MapEditor extends JPanel{
 	
 	public MapEditor(FrameFunctions ff) {
 		this.ff = ff;
-		TILE_GRASS = new ImageIcon("images/new_grass.png").getImage();
-		TILE_WATER = new ImageIcon("images/water.png").getImage();
-		TILE_MOUNTAIN = new ImageIcon("images/mountainRocks.png").getImage();
-		TILE_FOREST = new ImageIcon("images/treetop2.png").getImage();
-		TILE_BRIDGE = new ImageIcon("images/bridge.png").getImage();
+		TILE_GRASS = new ImageIcon(World.GRASS_PATH).getImage();
+		TILE_WATER = new ImageIcon(World.WATER_PATH).getImage();
+		TILE_MOUNTAIN = new ImageIcon(World.MOUNTAIN_PATH).getImage();
+		TILE_FOREST = new ImageIcon(World.FOREST_PATH).getImage();
+		TILE_BRIDGE = new ImageIcon(World.BRIDGE_PATH).getImage();
 		back = new ImageIcon("images/background.png").getImage();
 		// Map is now created before tiles and tileImg so we can get its dimensions
 		map = new Map(20, 20, false);
