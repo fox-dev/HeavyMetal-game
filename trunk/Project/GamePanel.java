@@ -141,6 +141,120 @@ public class GamePanel extends JPanel implements Runnable{
 			
 		});
 	}
+	
+	//A lot of repeated code.  Need to clean this up.
+	public GamePanel(final FrameFunctions ff, Map m) {
+		//Initialize
+		player1 = new Player(Player.P1);
+    //accounting for AI being on
+		if(ActionsRules.AI_On)
+			player2 = new Player_AI();
+		else
+			player2 = new Player(Player.P2);
+		
+		world = new World(m);
+		unitDisplay = new UnitDisplay(player1, player2);
+    testactions = new Actions(player1,player2, world.getMap()); //Added -Andrew   // reordered -Dan Apr27, 2012
+
+    //testactions.respawn(player1, 1); //added dan  //moved to Actions.java May16, 2012
+    //testactions.respawn(player2, 4); //added dan  //moved to Actions.java May16, 2012
+    
+		testinput = new Input(player1,player2,testactions); //Added -Andrew
+		drawing = new Drawing(player1, player2, world, unitDisplay, testactions, testinput);
+		
+		//Replace with input select = new Select(player1, player2, world, 1, 2);
+		this.setPreferredSize(d);
+		this.setBackground(Color.WHITE);
+		this.setFocusable(true);
+		this.requestFocus();
+		
+		//Mouse listener
+		addMouseListener(new MouseAdapter() {
+			
+			public void mousePressed(MouseEvent e) { //Added -Andrew
+				testinput.directInput(e);
+				if(player1.checkTurnOver() == true){
+					UnitDisplay.setText("Players have switched. Awaiting Unit Selection...");
+					player1.unitsReset();
+					testinput.switchPlayerStatuses();
+					UnitDisplay.setPlayer(2);
+					
+					//if AI is turned on and activePlayer is an AI run this code and return, else run other code
+					if(ActionsRules.AI_On & player1.checkNumUnits() > 0){
+						UnitDisplay.setText("AI is Running");
+						try	{
+							Thread.sleep(500); // do nothing for 500 miliseconds (.5 second)
+						}	catch(InterruptedException ex) {
+							ex.printStackTrace();
+						}
+						Player_AI ai = (Player_AI)player2;
+						ai.moveAttackAll();
+						ai.unitsReset();
+						testinput.switchPlayerStatuses();
+						UnitDisplay.setPlayer(Player.P1);
+						UnitDisplay.setText("AI has completed. Awaiting Unit Selection...");
+					}//END AI Edits
+				}
+				if(player2.checkTurnOver() == true && ActionsRules.AI_On == false){
+					UnitDisplay.setText("Players have switched. Awaiting Unit Selection...");
+					player2.unitsReset();
+					testinput.switchPlayerStatuses();
+					UnitDisplay.setPlayer(1);
+				}
+				// END GAME IF STATEMENT
+				if (player1.checkNumUnits() <= 0 || player2.checkNumUnits() <= 0) {
+					if (player1.checkNumUnits() <= 0 & !ActionsRules.AI_On)
+						UnitDisplay.setText("PLAYER 2 WINS!");
+					else if (player2.checkNumUnits() <= 0 & !ActionsRules.AI_On)
+						UnitDisplay.setText("PLAYER 1 WINS!");
+					else
+						UnitDisplay.setText("CPU PLAYER WINS!");
+					try {
+						Thread.sleep(4000); // Sleep 4 seconds or else the title screen pops on the same mouse click
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					}
+					gameOver = true;
+				}
+				// Go straight to the title screen. Do not pass go
+				if (gameOver) {
+					UnitDisplay.setText("Player 1 will start. Click a Unit to Play."); // Reset greeting message
+					ff.cleanUp();
+				}
+			}
+			
+			public void mouseReleased(MouseEvent e) {
+				
+			}
+			
+			public void mouseClicked(MouseEvent e) {
+				
+			}
+			
+		});
+		
+		//Motion listener for current mouse position
+		addMouseMotionListener(new MouseAdapter() {
+			
+			public void mouseMoved(MouseEvent e) {
+				testinput.mouseMoved(e); //keeps track of the cursor location on the screen. -Andrew
+			}
+			//Added the following just incase we want to use them later
+			public void mouseDragged(MouseEvent e) {
+				
+			}
+			
+			public void mouseEntered(MouseEvent e) {
+				
+			}
+			
+			public void mouseExited(MouseEvent e) {
+				
+			}
+			
+		});
+	}
+	
 	//Start the game thread
 	public void addNotify() {
 		super.addNotify();

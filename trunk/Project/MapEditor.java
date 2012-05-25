@@ -98,13 +98,13 @@ public class MapEditor extends JPanel{
 				 * Don't have a button to start the game yet.
 				 * Need to change FrameFunctions, GamePanel, and World to add creating a new game
 				 * with a map sent in
+				 */
 				else if(e.getX() >= playButtonx && e.getX() <= playButtonx + TILE_SIZE) {
 					if(e.getY() >= blocky && e.getY() <= blocky + TILE_SIZE) {
 						System.out.println("Starting game");
 						start(map);
 					}
 				}
-				*/
 				
 			}
 			
@@ -113,9 +113,11 @@ public class MapEditor extends JPanel{
 
 	/*
 	 * Not yet implemented.  Need to add everything to create the new panel
+	 */
 	public void start(Map m) {
+		ff.startGameWithmap(m);
 	}
-	*/
+	
 	//Take the map and fill in a 2d array with images for drawing
 	private void loadArrays() {
 		for(int i = 0; i < map.getX(); i++) {

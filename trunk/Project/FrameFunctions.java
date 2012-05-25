@@ -8,6 +8,7 @@ public class FrameFunctions {
 	Frame frame;
 	TitleScreen ts;
 	Options op;
+	MapEditor me;
 	GamePanel gp;
 
 	public FrameFunctions() {
@@ -32,9 +33,27 @@ public class FrameFunctions {
 		this.removeTitle(ts);
 	}
 	
+	public void startGameWithmap(Map m) {
+		gp = new GamePanel(this, m);
+		this.addGame(gp);
+		this.removeMapEditor(me);
+	}
+	
 	//Add Title panel call
 	public void addTitle(TitleScreen ts){
 		frame.add(ts);
+		frame.invalidate();
+		frame.validate();
+	}
+	
+	public void addMapEditor() {
+		me = new MapEditor(this);
+		frame.add(me);
+		removeTitle(ts);
+	}
+	
+	public void removeMapEditor(MapEditor edit) {
+		frame.remove(me);
 		frame.invalidate();
 		frame.validate();
 	}
