@@ -27,7 +27,7 @@ public class MapEditor extends JPanel{
 	private final int waterx = grassx + 100, mountainx = grassx + 200, forrestx = grassx + 300,
 			bridgex = grassx + 400;
 	private final int playButtonx = grassx + 500;
-	
+	//Selected type of tile to change with the map
 	int selectedType = -1;
 	FrameFunctions ff;
 	
@@ -60,6 +60,7 @@ public class MapEditor extends JPanel{
 			
 			public void mousePressed(MouseEvent e) {
 				System.out.println("SelectedType = " + selectedType);
+				//Sets the tile to the current type then reloads the arrays to display the new map
 				if(selectedType != -1) {
 					if(e.getY() < GamePanel.GHEIGHT - 100) {
 							map.setArr(e.getX() / TILE_SIZE, e.getY() / TILE_SIZE, selectedType);
@@ -95,9 +96,8 @@ public class MapEditor extends JPanel{
 					}
 				}
 				/*
-				 * Don't have a button to start the game yet.
-				 * Need to change FrameFunctions, GamePanel, and World to add creating a new game
-				 * with a map sent in
+				 * Don't have a button to start the game yet, so it's currently just using the grass image
+				 * I need to add text under the button for it to say play, or maybe the button ccan.
 				 */
 				else if(e.getX() >= playButtonx && e.getX() <= playButtonx + TILE_SIZE) {
 					if(e.getY() >= blocky && e.getY() <= blocky + TILE_SIZE) {
@@ -112,7 +112,7 @@ public class MapEditor extends JPanel{
 	}
 
 	/*
-	 * Not yet implemented.  Need to add everything to create the new panel
+	 * Starts the game with the map created
 	 */
 	public void start(Map m) {
 		ff.startGameWithmap(m);
