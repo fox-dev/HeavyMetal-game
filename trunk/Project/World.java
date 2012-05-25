@@ -16,15 +16,21 @@ public class World {
 	// We're not using MAP_DEM at this moment
 	public static final int MAP_DEM = 20;
 	private int x= 0, y = 0;
+	public static final String GRASS_PATH = "images/new_grass2.png";
+	public static final String WATER_PATH = "images/new_waterRiple.gif";
+	public static final String MOUNTAIN_PATH = "images/mountainRocks.png";
+	public static final String FOREST_PATH = "images/new_forest.png";
+	public static final String BRIDGE_PATH = "images/new_bridge.png";
+	
 	
 	private Image TILE_GRASS, TILE_WATER, TILE_MOUNTAIN, TILE_FOREST, TILE_BRIDGE;
 	
 	public World() {
-		TILE_GRASS = new ImageIcon("images/new_grass2.png").getImage();
-		TILE_WATER = new ImageIcon("images/new_waterRiple.gif").getImage();
-		TILE_MOUNTAIN = new ImageIcon("images/mountainRocks.png").getImage();
-		TILE_FOREST = new ImageIcon("images/new_forest.png").getImage();
-		TILE_BRIDGE = new ImageIcon("images/new_bridge.png").getImage();
+		TILE_GRASS = new ImageIcon(GRASS_PATH).getImage();
+		TILE_WATER = new ImageIcon(WATER_PATH).getImage();
+		TILE_MOUNTAIN = new ImageIcon(MOUNTAIN_PATH).getImage();
+		TILE_FOREST = new ImageIcon(FOREST_PATH).getImage();
+		TILE_BRIDGE = new ImageIcon(BRIDGE_PATH).getImage();
 		// Map is now created before tiles and tileImg so we can get its dimensions
 		map = new Map();
 		// The rectangles and images now get the dimensions of the map
