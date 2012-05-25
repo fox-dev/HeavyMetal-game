@@ -40,6 +40,22 @@ public class World {
 		tileImg = new Image[map.getX()][map.getY()];
 		loadArrays();
 	}
+	
+	public World(Map m) {
+		TILE_GRASS = new ImageIcon(GRASS_PATH).getImage();
+		TILE_WATER = new ImageIcon(WATER_PATH).getImage();
+		TILE_MOUNTAIN = new ImageIcon(MOUNTAIN_PATH).getImage();
+		TILE_FOREST = new ImageIcon(FOREST_PATH).getImage();
+		TILE_BRIDGE = new ImageIcon(BRIDGE_PATH).getImage();
+		// Map is now created before tiles and tileImg so we can get its dimensions
+		map = m;
+		// The rectangles and images now get the dimensions of the map
+		// This makes non-square map dimensions like (20,20) or (15,15) possible
+		// without things crashing and burning
+		tiles = new Rectangle[map.getX()][map.getY()];
+		tileImg = new Image[map.getX()][map.getY()];
+		loadArrays();
+	}
 
 	
 	//Take the map and fill in a 2d array with images for drawing

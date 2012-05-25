@@ -40,7 +40,7 @@ public class TitleScreen extends JPanel {
 		}
     //Map Edit Button		
 		private void mapEditButtonMouseClicked(MouseEvent e){
-			
+			ff.addMapEditor();
 		}
 
 
