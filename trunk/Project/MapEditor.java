@@ -109,6 +109,29 @@ public class MapEditor extends JPanel{
 			}
 			
 		});
+		
+addMouseMotionListener(new MouseAdapter() {
+			
+			public void mouseMoved(MouseEvent e) {
+			}
+			public void mouseDragged(MouseEvent e) {
+				if(selectedType != -1) {
+					if(e.getY() < GamePanel.GHEIGHT - 100) {
+							map.setArr(e.getX() / TILE_SIZE, e.getY() / TILE_SIZE, selectedType);
+							loadArrays();
+					}	
+				}
+			}
+			
+			public void mouseEntered(MouseEvent e) {
+				
+			}
+			
+			public void mouseExited(MouseEvent e) {
+				
+			}
+			
+		});
 	}
 
 	/*
