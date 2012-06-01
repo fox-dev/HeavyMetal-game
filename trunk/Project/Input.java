@@ -2,6 +2,8 @@ package project;
 //
 import java.awt.event.MouseEvent;
 
+import javax.swing.JOptionPane;
+
 
 /*Standard input class switched to GUI form.  
  * Read Comments for code explanations below.
@@ -38,13 +40,22 @@ public class Input {
 	
 	
 	//Sidra's Update: Added a path to send texts to UnitDisplay.settext("text"); April 26, 2012.
-	public void directInput(MouseEvent e){
+	public int directInput(MouseEvent e){
 		mousePressed(e);
 		try{
 		
 		//If the mouse click is within range of the End Turn button, end the player's turn
 		if((activePlayer.unitSelected() == false) && realX >= UnitDisplay.ENDBUTTONX  && realY >= UnitDisplay.ENDBUTTONY && realX <= UnitDisplay.ENDBUTTONX + UnitDisplay.ENDBUTTONWIDTH && realY <= UnitDisplay.ENDBUTTONY + UnitDisplay.ENDBUTTONHEIGHT ){
 			activePlayer.forceTurnOver();
+		}
+		
+		// If the mouse click is within range of return title button
+		if((activePlayer.unitSelected() == false) && realX >= UnitDisplay.TitleButtonX && realY >= UnitDisplay.TitleButtonY && realX <= UnitDisplay.TitleButtonX + UnitDisplay.TitleButtonWidth && realY <= UnitDisplay.TitleButtonY + UnitDisplay.TitleButtonHeight) {
+			switch (JOptionPane.showConfirmDialog(null, "Return to title screen?\nThis will end the current game", "", 0, 2)) {
+				case 0: return 1;
+				case 1: break;
+				default: break;
+			}
 		}
 		
 		//Initial selected United, select a unit if the player hasn't selected one yet.
@@ -104,11 +115,10 @@ public class Input {
   			System.out.println("Runing");
 			}
 		}
-		
 		}catch(NullPointerException npe){
 			UnitDisplay.setText("There is nothing there");
 		}
-		
+		return 0;
 		
 	}
 	
