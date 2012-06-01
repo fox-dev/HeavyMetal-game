@@ -33,7 +33,7 @@ public class MapEditor extends JPanel{
 	
 	
 	
-	private Image TILE_GRASS, TILE_WATER, TILE_MOUNTAIN, TILE_FOREST, TILE_BRIDGE, back;
+	private Image TILE_GRASS, TILE_WATER, TILE_MOUNTAIN, TILE_FOREST, TILE_BRIDGE, BUTTON_PLAY, back;
 	
 	public MapEditor(FrameFunctions ff) {
 		this.ff = ff;
@@ -42,6 +42,7 @@ public class MapEditor extends JPanel{
 		TILE_MOUNTAIN = new ImageIcon(World.MOUNTAIN_PATH).getImage();
 		TILE_FOREST = new ImageIcon(World.FOREST_PATH).getImage();
 		TILE_BRIDGE = new ImageIcon(World.BRIDGE_PATH).getImage();
+		BUTTON_PLAY = new ImageIcon("images/playbutton.png").getImage();
 		back = new ImageIcon("images/background.png").getImage();
 		// Map is now created before tiles and tileImg so we can get its dimensions
 		map = new Map(20, 20, false);
@@ -195,7 +196,7 @@ addMouseMotionListener(new MouseAdapter() {
 		g.drawImage(TILE_MOUNTAIN, mountainx, blocky, null);
 		g.drawImage(TILE_FOREST, forrestx, blocky, null);
 		g.drawImage(TILE_BRIDGE, bridgex, blocky, null);
-		g.drawImage(TILE_GRASS, playButtonx, blocky, null);
+		g.drawImage(BUTTON_PLAY, playButtonx, blocky, null);
 		//Set the color of the text to green and draw the labels for the tiles
 		g.setColor(Color.GREEN);
 		g.drawString("Grass", grassx - 2, blocky + 42);
