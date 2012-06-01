@@ -59,7 +59,11 @@ public class GamePanel extends JPanel implements Runnable{
 		addMouseListener(new MouseAdapter() {
 			
 			public void mousePressed(MouseEvent e) { //Added -Andrew
-				testinput.directInput(e);
+				//testinput.directInput(e);
+				if (testinput.directInput(e) == 1) {
+					UnitDisplay.setText("Player 1 will start. Click a Unit to Play.");
+					ff.cleanUp();
+				}
 				if(player1.checkTurnOver() == true){
 					UnitDisplay.setText("Players have switched. Awaiting Unit Selection...");
 					player1.unitsReset();
@@ -172,7 +176,11 @@ public class GamePanel extends JPanel implements Runnable{
 		addMouseListener(new MouseAdapter() {
 			
 			public void mousePressed(MouseEvent e) { //Added -Andrew
-				testinput.directInput(e);
+				//testinput.directInput(e);
+				if (testinput.directInput(e) == 1) {
+					UnitDisplay.setText("Player 1 will start. Click a Unit to Play.");
+					ff.cleanUp();
+				}
 				if(player1.checkTurnOver() == true){
 					UnitDisplay.setText("Players have switched. Awaiting Unit Selection...");
 					player1.unitsReset();

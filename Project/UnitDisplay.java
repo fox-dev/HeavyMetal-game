@@ -35,7 +35,7 @@ public class UnitDisplay {
 	public UnitDisplay(Player player1, Player player2) {
 		this.player1 = player1;
 		this.player2 = player2;
-		endButton = new ImageIcon("images/button.png").getImage();
+		endButton = new ImageIcon("images/endbutton.png").getImage();
 		back = new ImageIcon("images/background.png").getImage();
 		p1 = new ImageIcon("images/player1.gif").getImage();
 		p1No = new ImageIcon("images/p1No.png").getImage();
@@ -43,7 +43,7 @@ public class UnitDisplay {
 		p2No = new ImageIcon("images/p2No.png").getImage();
 		health = new ImageIcon("images/healthpot.png").getImage();
 		ammo = new ImageIcon("images/ammo.png").getImage();
-		titleButton = new ImageIcon("images/button.png").getImage();
+		titleButton = new ImageIcon("images/titlebutton.png").getImage();
 		points = new ImageIcon("images/treasure.png").getImage();
 	}
 
