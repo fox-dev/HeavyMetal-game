@@ -3,10 +3,10 @@ package project;
 import project.Unit;
 
 public class UnitBase extends Unit {
-  //defaults for UnitAir DAN
+  //defaults for UnitBase DAN
 	private static final int HP_DEFAULT = 10;
 	private static final int MOVES_DEFAULT = 0;
-	private static final int UNIT_TYPE = 10; // Air type
+	private static final int UNIT_TYPE = 10; // Base type
 	private static final String UNIT_DESCRIPTION = "Fortess"; // A name for generic Base units
 	private static final int MOVE_RESTRICTION = Unit.LAND_ONLY; // LandOnly
 	private static final int ATK_DEFAULT = 0;  //This will be used as a unit generator

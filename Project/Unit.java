@@ -9,6 +9,7 @@ import project.Unit;
  * 0 = Ground
  * 1 = Air
  * 2 = Water
+ * 10 = Base
  * 255 = Undefined
  * 
  * Move Restrictions:

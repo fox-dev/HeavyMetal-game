@@ -1,5 +1,4 @@
 package project;
-//Mostly worked on by Sidra Chaudhry;
 //This program will display texts, Health (HP), Attack Power(AP), points (Coins collected) in the UnitDisplay; 
 //It will give the user a chance to end their turn by pressing the end turn button;
 //As of May 15, it will display different images depending on the current player.
