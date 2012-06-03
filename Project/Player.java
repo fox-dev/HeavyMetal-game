@@ -2,6 +2,9 @@ package project;
 
 import java.util.ArrayList;
 
+import project.Unit;
+import project.UnitBase;
+
 public class Player {
   //for public Player(int playerNum, int numAir, int numGround, int numWater)
   private static final int P1_NUM_AIR = 1;
@@ -99,8 +102,10 @@ public class Player {
 	  for(Unit currentUnit : units){
 		  currentUnit.moved();
 		  currentUnit.attacked();
-		  if(currentUnit instanceof UnitBase)
+		  if(currentUnit instanceof UnitBase){
 		  	((UnitBase)(currentUnit)).moved();
+		  	((UnitBase)(currentUnit)).setHasUnitShot(true);
+		  }
         
 	  }
   }
@@ -132,17 +137,15 @@ public class Player {
   //Reset all units of Player to Unit.moved == false Dan
   //Reset all units of Player to Unit.setHasUnitShot = false Dan
   public void unitsReset(){
-    for (Unit currentUnit : units){
-    	
-      currentUnit.movedFalse();
-      currentUnit.setHasUnitShot(false);
-      if(currentUnit instanceof UnitBase){
-    	  currentUnit.movedFalse();
-        
-        
-      }
-    }
-  }
+	    for (Unit currentUnit : units){
+	      currentUnit.movedFalse();
+	      currentUnit.setHasUnitShot(false);
+	      if(currentUnit instanceof UnitBase){
+	    	  currentUnit.movedFalse();
+	    	  currentUnit.attacked();
+	      }
+	    }
+	  }
   
   //Added by Dan 23 Apr 2012
   //returns true if u is a unit of this.Player
