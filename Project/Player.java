@@ -101,6 +101,7 @@ public class Player {
 		  currentUnit.attacked();
 		  if(currentUnit instanceof UnitBase)
 		  	((UnitBase)(currentUnit)).moved();
+        ((UnitBase)(currentUnit)).setHasUnitShot(true);
 	  }
   }
   
@@ -137,7 +138,8 @@ public class Player {
       currentUnit.setHasUnitShot(false);
       if(currentUnit instanceof UnitBase){
     	  currentUnit.movedFalse();
-        currentUnit.hasUnitShot = true;
+        currentUnit.attacked();
+        
       }
     }
   }
