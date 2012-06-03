@@ -44,7 +44,7 @@ public class UnitBase extends Unit {
 
 	public void attacked(){ baseUnitShot();	}
 	public void attackedFalse(){ baseUnitShot(); }
-	public void setHasUnitShot(boolean b) { hasUnitShot = b; }
+	public void setHasUnitShot(boolean b) { baseUnitShot(); }
 	//only changes hasUnitShot to true if not enough points to generate any kind of unit
 	//price of current units are in public static finals PRICE_(TYPE)
 	//boolean b is a dummy.
